@@ -1,1 +1,3 @@
-# product-customizer
+## product-customizer
+
+Product configurator for sellosyrotulos
