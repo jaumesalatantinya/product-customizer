@@ -23,7 +23,6 @@ class Api {
 
         switch ($this->request) {
             case "get-custom":
-                // $this->response = $this->getCustomization($this->idProd);
                 $this->response = $this->apiRequests->getTemplateCustomization($this->idProd);
                 $this->returnJSONResponse();
                 break;
@@ -34,6 +33,7 @@ class Api {
 
     public function returnJSONResponse(){
 
+        header('Content-Type: application/json');
         echo json_encode($this->response);
     }
 
