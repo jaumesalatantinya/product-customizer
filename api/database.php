@@ -1,22 +1,22 @@
 <?php
 class Database {
 
-    private $host = 'qtv922.sellosyrotulos.com';
-    private $database = 'qtv922';
-    private $user = 'qtv922';
-    private $pass = 'bdSELLOS15';
+    const HOST = 'qtv922.sellosyrotulos.com';
+    const DATABASE = 'qtv922';
+    const USER = 'qtv922';
+    const PASS = 'bdSELLOS15';
 
     private $con;
     private $numResults;
     private $results;
 
     public function connect(){
+
         if(!$this->con) {
-            $this->con = mysql_connect($this->host, $this->user, $this->pass);
+            $this->con = mysql_connect(self::HOST, self::USER, self::PASS);
             if($this->con) {
-                $seldb = mysql_select_db($this->database, $this->con);
+                $seldb = mysql_select_db(self::DATABASE, $this->con);
                 if($seldb) {
-                    // ⁄$this->con = true;
                     return true; 
                 } else {
                     return false; 
@@ -28,17 +28,20 @@ class Database {
             return true; 
         }
     }
-    public function select() {
-        $q = 'SELECT * FROM qtv922.bd_news';
+
+    public function select($q) {
+        
+        // echo ($q);
+        $table = [];
         $query = mysql_query($q, $this->con);
         if($query) {
             $this->numResults = mysql_num_rows($query);
-            while ($fila = mysql_fetch_assoc($query)) {
-                foreach($fila as $r) {
-                    echo $r, '<br>';
-                }
+            // echo ('numR'.$this->numResults);
+            while ($row = mysql_fetch_assoc($query)) {
+                array_push($table, $row);
             }
         }
+        return $table;
     }
     // public function insert()        {   }
     // public function delete()        {   }
