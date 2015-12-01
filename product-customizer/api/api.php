@@ -7,10 +7,12 @@ require_once('api-requests.php');
 
 class Api {
 
+
     private $request;
     private $idProd;
     private $response;
     private $apiRequests;
+
 
     public function __construct() {
 
@@ -18,6 +20,7 @@ class Api {
         $this->request = $_GET['request'];
         $this->idProd = $_GET['IDpro'];
     }
+
 
     public function handleRequest(){
 
@@ -31,12 +34,12 @@ class Api {
         }
     }
 
+
     public function returnJSONResponse(){
 
         header('Content-Type: application/json');
         echo json_encode($this->response);
     }
-
 }
 
 $api = new Api();

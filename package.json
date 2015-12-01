@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Sellos y Rotulos product customizer",
   "main": "index.js",
+  "scripts": {
+    "cleants": "rimraf product-customizer/**/*.js product-customizer/**/*.js.map",
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jaumesalatantinya/product-customizer.git"
@@ -16,7 +19,9 @@
   "devDependencies": {
     "browser-sync": "^2.10.0",
     "gulp": "^3.9.0",
+    "gulp-typescript": "^2.9.2",
     "gulp-util": "^3.0.7",
+    "typescript": "^1.7.3",
     "vinyl-ftp": "^0.4.5"
   }
 }

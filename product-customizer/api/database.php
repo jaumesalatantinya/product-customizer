@@ -1,6 +1,7 @@
 <?php
 class Database {
 
+
     const HOST = 'qtv922.sellosyrotulos.com';
     const DATABASE = 'qtv922';
     const USER = 'qtv922';
@@ -9,6 +10,7 @@ class Database {
     private $con;
     private $numResults;
     private $results;
+
 
     public function connect(){
 
