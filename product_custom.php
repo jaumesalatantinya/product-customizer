@@ -1,4 +1,4 @@
-<?php 
+<?php
     require_once('Connections/bd_start.php'); 
 ?>
 <?php
@@ -24,10 +24,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Sellos y Rótulos</title>
     <link href="styles/style.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"> </script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
+    <script src="product-customizer/area.js" type="text/javascript"></script>
+    <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
     <script type="text/javascript"> 
         $(document).ready(function(){
             <?php require_once('menu_jquery.php'); ?>
+            var productCustomizer = new ProductCustomizer();
         })  
     </script> 
     <script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
@@ -76,6 +80,13 @@
                     </form>
                 </div>
                 <div class="list">
+                    <div id="product-customizer">
+                        <ul>
+                            <li id="add-text-btn">Afegir text</li>
+                            <li id="add-image-btn">Afegir imatge</li>
+                            <li id="add-svg-btn">Afegir la teva propia imatge</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="clear"></div>

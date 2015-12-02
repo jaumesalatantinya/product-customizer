@@ -1,0 +1,16 @@
+{
+  "name": "llatjos",
+  "version": "1.0.0",
+  "description": "Clinica Llatjos",
+  "homepage": "https://www.clinicallatjos.com",
+  "license": "Clinica Llatjos. All rights reserved",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "angular": "~1.4.7",
+    "bootstrap": "~3.3.5",
+    "normalize-css": "normalize.css#~3.0.3",
+    "angular-route": "~1.4.7",
+    "angular-mocks": "~1.4.7"
+  }
+}

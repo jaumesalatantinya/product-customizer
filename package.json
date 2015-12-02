@@ -4,7 +4,7 @@
   "description": "Sellos y Rotulos product customizer",
   "main": "index.js",
   "scripts": {
-    "cleants": "rimraf product-customizer/**/*.js product-customizer/**/*.js.map",
+    "clean": "rimraf product-customizer/**/*.js product-customizer/**/*.js.map"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,11 @@
     "gulp": "^3.9.0",
     "gulp-typescript": "^2.9.2",
     "gulp-util": "^3.0.7",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-cli": "^0.1.1",
+    "karma-jasmine": "^0.3.6",
     "typescript": "^1.7.3",
     "vinyl-ftp": "^0.4.5"
   }
