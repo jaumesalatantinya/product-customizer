@@ -36,4 +36,7 @@ gulp.task('watch', function() {
     gulp.watch(wFiles, ['ftp', 'rbs']);
 });
 
+gulp.task('tdd', function() {
+});
+
 gulp.task('default', ['watch', 'serve', 'tdd']);

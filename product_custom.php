@@ -31,7 +31,7 @@
     <script type="text/javascript"> 
         $(document).ready(function(){
             <?php require_once('menu_jquery.php'); ?>
-            var productCustomizer = new ProductCustomizer();
+            new ProductCustomizer();
         })  
     </script> 
     <script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
