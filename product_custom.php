@@ -26,6 +26,7 @@
     <link href="styles/style.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
     <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
+    <script src="product-customizer/view.js" type="text/javascript"></script>
     <script src="product-customizer/area.js" type="text/javascript"></script>
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
     <script type="text/javascript"> 

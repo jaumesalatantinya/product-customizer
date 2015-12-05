@@ -8,6 +8,7 @@ class Api {
 
     private $request;
     private $idProd;
+    private $idCus;
     private $response;
     private $apiRequests;
 
@@ -17,6 +18,7 @@ class Api {
         $this->apiRequests = new ApiRequests();
         $this->request = $_GET['request'];
         $this->idProd = $_GET['IDpro'];
+        $this->idCus = $_GET['IDcus'];
     }
 
 
@@ -27,8 +29,12 @@ class Api {
                 $this->response = $this->apiRequests->getTemplateCustomization($this->idProd);
                 $this->returnJSONResponse();
                 break;
+            case "get-views-ids":
+                $this->response = $this->apiRequests->getViewsIds($this->idCus);
+                $this->returnJSONResponse();
+                break;
             default:
-                echo "Your favorite color is neither red, blue, nor green!";
+                echo "API PRODUCT CUSTOMIZER";
         }
     }
 

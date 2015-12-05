@@ -25,5 +25,10 @@ class ApiRequests {
 
         return $this->getTemplateCustomization($idProd);
     }
+
+    public function getViewsIds($idCus){
+        $q = 'SELECT * FROM bd_custom_views WHERE ID_cus =' . $idCus;
+        return $this->db->select($q);
+    }
 }
 ?>
