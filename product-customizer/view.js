@@ -1,39 +1,42 @@
-View = function (productCustomizer, idView) {
+View = function(productCustomizer, idView) {
 
-	this.pCustom = productCustomizer;
-	this.id = idView;
-	this.image;
-    this.areas = [];
+    this.pPCustom = productCustomizer;
+    this.idView = idView;
+    this.image;
     this.customElements = [];
 
     this.loadView();
 }
 
-View.prototype.loadView = function (){
+View.prototype.loadView = function() {
 
-	var self = this;
-	$.getJSON(this.pCustom.apiUrl+'get-view&IDcus='+this.idCus)
-        .done(function(data) {
-            self.idCus = data[0].IDcus;
+    var self = this;
+    $.getJSON(this.pPCustom.apiUrl + 'get-view&IDvie=' + this.idView)
+        .done(function(view) {
+            self.image = view[0].Image;
+            self.loadCustomElements();
         })
-        .fail( function() {
-            self.pCustom.showMsg('Yes');
+        .fail(function() {
+            self.pPCustom.showMsg('Error', 'loading view');
         });
 }
 
-View.prototype.loadAreas = function (idCus) {
+View.prototype.loadCustomElements = function() {
 
     var self = this;
+    $.getJSON(this.pPCustom.apiUrl + 'get-custom-elements&IDvie=' + this.idView)
+        .done(function(customElements) {
+            for (var i = customElements.length - 1; i >= 0; i--) {
+                self.createCustomElement(customElements[i]);
+            };                
+        })
+        .fail(function() {
+            self.pPCustom.showMsg('Error', 'loading custom elements');
+        });
 }
 
-View.prototype.createArea = function () {
+View.prototype.createCustomElement = function(customElementData) {
 
-}
-
-View.prototype.loadCustomElements = function () {
-
-}
-
-View.prototype.createCustomElement = function () {
-
+    var self = this;
+    self.customElements.push(new CustomElement(self, customElementData));
 }

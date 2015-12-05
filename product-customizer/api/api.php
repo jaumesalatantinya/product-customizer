@@ -19,6 +19,7 @@ class Api {
         $this->request = $_GET['request'];
         $this->idProd = $_GET['IDpro'];
         $this->idCus = $_GET['IDcus'];
+        $this->idVie = $_GET['IDvie'];
     }
 
 
@@ -31,6 +32,14 @@ class Api {
                 break;
             case "get-views-ids":
                 $this->response = $this->apiRequests->getViewsIds($this->idCus);
+                $this->returnJSONResponse();
+                break;
+            case "get-view":
+                $this->response = $this->apiRequests->getView($this->idVie);
+                $this->returnJSONResponse();
+                break;
+            case "get-custom-elements":
+                $this->response = $this->apiRequests->getCustomElements($this->idVie);
                 $this->returnJSONResponse();
                 break;
             default:

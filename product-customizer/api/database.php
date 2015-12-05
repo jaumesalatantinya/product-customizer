@@ -14,31 +14,25 @@ class Database {
 
     public function connect(){
 
-        if(!$this->con) {
-            $this->con = mysql_connect(self::HOST, self::USER, self::PASS);
-            if($this->con) {
-                $seldb = mysql_select_db(self::DATABASE, $this->con);
-                if($seldb) {
-                    return true; 
-                } else {
-                    return false; 
-                }
+        $this->con = mysql_connect(self::HOST, self::USER, self::PASS);
+        if($this->con) {
+            $seldb = mysql_select_db(self::DATABASE, $this->con);
+            if($seldb) {
+                return true; 
             } else {
                 return false; 
             }
         } else {
-            return true; 
+            return false; 
         }
     }
 
     public function select($q) {
         
-        // echo ($q);
         $table = [];
         $query = mysql_query($q, $this->con);
         if($query) {
             $this->numResults = mysql_num_rows($query);
-            // echo ('numR'.$this->numResults);
             while ($row = mysql_fetch_assoc($query)) {
                 array_push($table, $row);
             }

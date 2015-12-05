@@ -8,6 +8,7 @@ ProductCustomizer = function() {
     this.views = [];
     this.currentView = 0;
     this.apiUrl = 'product-customizer/api/api.php?request=';
+    this.isAdmin = true;
 
     this.loadCustomization()
         // .done(self.loadViews());
@@ -45,71 +46,34 @@ ProductCustomizer.prototype.loadViews = function() {
             self.showMsg('Error', 'loading Views');
         });
 }
+
 ProductCustomizer.prototype.createView = function(idView) {
 
     //TODO CHEK IF idView is null that means that we have request to DB
+    var self = this;
     self.views.push(new View(self, idView));
+    //TODO append view to navigation view
 }
 
-ProductCustomizer.prototype.renderView = function() {
+ProductCustomizer.prototype.drawView = function() {
 
 }
 
 ProductCustomizer.prototype.bindings = function() {
 
     var self = this;
-    $('#add-text-btn').click(self.addCustomElement('text'));
-    $('#add-image-btn').click(self.addCustomElement('img'));
-    $('#add-svg-btn').click(self.addCustomElement('svg'));
+    $('#add-text-btn').click(self.btnAddCustomElement('text'));
+    $('#add-image-btn').click(self.btnAddCustomElement('img'));
+    $('#add-svg-btn').click(self.btnAddCustomElement('svg'));
 }
 
-ProductCustomizer.prototype.addCustomElement = function(type) {
+ProductCustomizer.prototype.btnAddCustomElement = function(type) {
 
     var self = this;
 }
 
 ProductCustomizer.prototype.showMsg = function(type, msg) {
 
-    // TODO showMsgModal with msgError
+    // TODO show modal warrning or error
     console.log(type + ' ' + msg)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ProductCustomizer.prototype.addText = function() {
-
-//     var self = this;
-//     // TODO check is AREA is initalized
-//     //appendText
-// }
-
-// ProductCustomizer.prototype.addImage = function() {
-
-//     var self = this;
-//     // TODO check is AREA is initalized
-//     //appendImage
-// }
-
-// ProductCustomizer.prototype.addSvg = function() {
-
-//     var self = this;
-//     // TODO check is AREA is initalized
-//     //appendImage
-// }

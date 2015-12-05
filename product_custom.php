@@ -32,8 +32,8 @@
     <script type="text/javascript"> 
         $(document).ready(function(){
             <?php require_once('menu_jquery.php'); ?>
-            new ProductCustomizer();
-        })  
+            new ProductCustomizer(); 
+        });
     </script> 
     <script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
     <script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.pack.js"></script>
@@ -87,6 +87,7 @@
                             <li id="add-image-btn">Afegir imatge</li>
                             <li id="add-svg-btn">Afegir la teva propia imatge</li>
                         </ul>
+                        <ul id="nav-views"></ul>
                     </div>
                 </div>
             </div>
