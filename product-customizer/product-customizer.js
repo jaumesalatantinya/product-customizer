@@ -1,6 +1,6 @@
-//import {Area} from './area';
+'use strict';
 
-ProductCustomizer = function() {
+var ProductCustomizer = function(conf) {
 
     var self = this;
     this.rootE = $('#product-customizer');
@@ -8,7 +8,7 @@ ProductCustomizer = function() {
     this.views = [];
     this.currentView = 0;
     this.apiUrl = 'product-customizer/api/api.php?request=';
-    this.isAdmin = true;
+    this.isAdmin = (conf && conf.isAdmin)?conf.isAdmin: false;
 
     this.loadCustomization()
         // .done(self.loadViews());
@@ -62,9 +62,9 @@ ProductCustomizer.prototype.drawView = function() {
 ProductCustomizer.prototype.bindings = function() {
 
     var self = this;
-    $('#add-text-btn').click(self.btnAddCustomElement('text'));
-    $('#add-image-btn').click(self.btnAddCustomElement('img'));
-    $('#add-svg-btn').click(self.btnAddCustomElement('svg'));
+    $('#btn-add-text').click(self.btnAddCustomElement('text'));
+    $('#btn-add-image').click(self.btnAddCustomElement('img'));
+    $('#btn-add-svg').click(self.btnAddCustomElement('svg'));
 }
 
 ProductCustomizer.prototype.btnAddCustomElement = function(type) {

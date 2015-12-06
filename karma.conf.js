@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: '.',
 
 
     // frameworks to use
@@ -15,17 +15,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      // 'app/vendor/angular/angular.js',
-      // 'app/vendor/angular-mocks/angular-mocks.js',
-      // 'app/vendor/angular-route/angular-route.min.js',
-      // 'app/vendor/jquery/dist/jquery.js',
-      // 'app/app.js',
-      // 'app/app.test.js',
-      // 'app/signin/signin.js',
-      // 'app/signin/signin.test.js',
-      // 'app/users/users.js',
-      // 'app/users/users.test.js',
-      // 'app/api/api.js'
+      'https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js',
+      'product-customizer/product-customizer.js',
+      'test/product-customizer-test.js',
+      // 'product-customizer/view.js',
+      // 'test/view.test.js',
+      // 'product-customizer/custom-elements.js',
+      // 'test/custom-elements.test.js'
     ],
 
 
@@ -36,12 +32,10 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    // preprocessors: {
-    //     'app/**/*.html': ['ng-html2js']
-    // },
-    // ngHtml2JsPreprocessor: {
-    //     moduleName: 'templates'
-    // },
+    preprocessors: {
+    },
+    ngHtml2JsPreprocessor: {
+    },
 
 
     // test results reporter to use

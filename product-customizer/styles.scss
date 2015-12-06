@@ -1,0 +1,40 @@
+$white: #fff;
+$gray: #faf9f6;
+$light-gray: #E8E8E8;
+$area-boder-color: black;
+
+#product-customizer {
+    background-color: $gray;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border: 1px solid #e9e9e9;
+    height: 670px;
+    background-image: url('http://image3.spreadshirtmedia.net/image-server/v1/productTypes/6/views/2/appearances/231?width=600&amp;height=600&amp;mediaType=webp');
+    background-position: 100px 0;
+    background-repeat: no-repeat;
+}
+
+.nav-main {
+    list-style-type: none;
+    width: 160px;
+    margin: 20px 0 20px 10px;
+    padding-left: 5px;
+    float: left;
+    li {
+        padding: 10px;
+        background-color: $white;
+        border: 1px solid $light-gray;
+        &:hover {
+            background-color: $light-gray;
+            cursor: pointer
+        }
+    }
+}
+
+.custom-element {
+	position: relative;
+}
+
+.area {
+	border: 1px solid $area-boder-color;
+}

@@ -1,4 +1,6 @@
-View = function(productCustomizer, idView) {
+'use strict';
+
+var View = function(productCustomizer, idView) {
 
     this.pPCustom = productCustomizer;
     this.idView = idView;
@@ -38,5 +40,13 @@ View.prototype.loadCustomElements = function() {
 View.prototype.createCustomElement = function(customElementData) {
 
     var self = this;
-    self.customElements.push(new CustomElement(self, customElementData));
+
+    switch (customElementData.type) {
+    case 'area':
+        self.customElements.push(new Area(self, customElementData));
+        break;
+    case 'text':
+        self.customElements.push(new Text(self, customElementData));
+        break;
+    }
 }

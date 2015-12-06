@@ -5,6 +5,7 @@ var gutil = require('gulp-util');
 var browserSync = require('browser-sync');
 var ftp = require('vinyl-ftp');
 var Server = require('karma').Server;
+var sass = require('gulp-sass');
 
 var wFiles = ['./**/*.php', './product-customizer/**/*.css', './product-customizer/**/*.js'];
 
@@ -14,7 +15,7 @@ gulp.task('serve', function() {
     });
 });
 
-gulp.task('rbs', ['ftp'], function() {
+gulp.task('rbs', ['ftp', 'sass'], function() {
     browserSync.reload();
 });
 
@@ -32,11 +33,21 @@ gulp.task('ftp', function() {
         .pipe( conn.dest( '/html/webmaster/' ) );
 });
 
+gulp.task('sass', function () {
+  gulp.src('./product-customizer/styles.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./product-customizer/'));
+});
+
 gulp.task('watch', function() {
     gulp.watch(wFiles, ['ftp', 'rbs']);
+    gulp.watch('./product-customizer/styles.scss', ['sass', 'rbs']);
 });
 
-gulp.task('tdd', function() {
+gulp.task('tdd', function(done) {
+    new Server({
+    configFile: __dirname + '/karma.conf.js'
+    }, done).start();
 });
 
-gulp.task('default', ['watch', 'serve', 'tdd']);
+gulp.task('default', ['watch', 'serve', 'tdd', 'sass']);
