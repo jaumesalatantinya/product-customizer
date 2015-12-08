@@ -1,7 +1,10 @@
 $white: #fff;
 $gray: #faf9f6;
 $light-gray: #E8E8E8;
+$nav-main-border-color: $light-gray;
 $area-boder-color: black;
+$disabled-color: #BBB;
+$disabled-color-backgound: #EEE;
 
 #product-customizer {
     background-color: $gray;
@@ -15,7 +18,7 @@ $area-boder-color: black;
     position: relative;
 }
 
-.nav-main {
+#nav-main {
     position: absolute;
     list-style-type: none;
     width: 160px;
@@ -24,10 +27,15 @@ $area-boder-color: black;
     li {
         padding: 10px;
         background-color: $white;
-        border: 1px solid $light-gray;
+        border: 1px solid $nav-main-border-color;
         &:hover {
             background-color: $light-gray;
             cursor: pointer;
+        }
+        &.disabled{
+            color: $disabled-color;
+            background-color: $disabled-color-backgound;
+            cursor: default;
         }
     }
 }
@@ -64,7 +72,7 @@ $area-boder-color: black;
 
     .modal{
         width:300px;
-        margin: 100px auto;
+        margin: 300px auto;
         background-color: #fff;
         border:1px solid #000;
         padding:15px;

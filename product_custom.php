@@ -93,22 +93,9 @@
                 <div class="list">
                     <div id="product-customizer">
                         <div id="view"></div>
-                        <ul class="nav-main">
-                            <li id="btn-add-view">Afegir vista</li>
-                            <li id="btn-add-area">Afegir area</li>
-                            <li id="btn-add-text">Afegir text</li>
-                            <li id="btn-add-image">Afegir imatge</li>
-                            <li id="btn-add-svg">Afegir la teva imatge</li>
-                            <li id="btn-reset">Reset</li>
-                        </ul>
+                        <ul id="nav-main"></ul>
                         <ul id="nav-views"></ul>
-                        <div class="overlay">
-                            <div class="modal">
-                                <img />
-                                <p></p>
-                                <a>close</a>
-                            </div>
-                        </div>
+                        <div class="overlay"><div class="modal"><img /><p></p><a>close</a></div></div>
                     </div>
                 </div>
             </div>

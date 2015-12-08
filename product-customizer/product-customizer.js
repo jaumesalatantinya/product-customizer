@@ -2,7 +2,6 @@
 
 var ProductCustomizer = function () {
 
-    // var self = this;
     this.idCustom;
     this.idProduct;
     this.isTemplate;
@@ -69,7 +68,6 @@ ProductCustomizer.prototype.getViewsIds = function (idCustom) {
 ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     
     var self = this;
-    // self.view.rootE.empty();
     if (self.viewsIds && self.viewsIds.length > 0 ) {
         if (idView == 'default') { 
             idView = self.viewsIds[0].IDcusvie;
@@ -86,32 +84,11 @@ ProductCustomizer.prototype.drawView = function (idView) {
     var self = this;
     if (idView){
         self.showMsg('LOG', 'Drawing view: ' + idView);
-        if (idView == 'default') { idView = self.viewsIds[0].viewsIds; }
         self.view = new View(self, idView);
         self.view.init();
     }
     else { self.showMsg('ERROR', 'Draw View: No idView passed as param'); }
 }
-
-ProductCustomizer.prototype.addView = function () {
-
-    //TODO CHEK IF idView is null that means that we havent load from to DB    
-    var self = this;
-    self.showMsg('LOG', 'Adding view');
-    // First we create de view in DB ant then we call to loadView
-    // drawAndUpdateProductCustomizer()
-}
-
-ProductCustomizer.prototype.delView = function (idView) {
-
-    var self = this;
-    self.showMsg('LOG', 'Deleting view: '+idView);
-    // ADD view to DB
-    // GET view ID from DB
-    // DRAW new view
-    // update Nav Views
-}
-
 
 ProductCustomizer.prototype.drawNavViews = function () {
 
@@ -123,10 +100,10 @@ ProductCustomizer.prototype.drawNavViews = function () {
         var img = $('<img/>', { src:'product-customizer/thumb.png'} );
         var del = $('<a>del</a>').data('idView', self.viewsIds[i].IDcusvie);
         var li = $('<li>');
-        a.bind('click', function(){
-            self.drawView($(this).data('idView'));
+        a.click( function(){
+            self.drawAndUpdateProductCustomizer($(this).data('idView'));
         });
-        del.bind('click', function(){
+        del.click( function(){
             self.delView($(this).data('idView'));
         });
         a.append(img);
@@ -138,11 +115,50 @@ ProductCustomizer.prototype.drawNavViews = function () {
 ProductCustomizer.prototype.drawNavMain = function() {
 
     var self = this;
-    $('#btn-add-view').click(   function (){ self.addView()} );
-    $('#btn-add-area').click(   function (){ self.addArea()} );
-    $('#btn-add-text').click(   function (){ self.btnAddCustomElement('text')} );
-    $('#btn-add-image').click(  function (){ self.btnAddCustomElement('img')} );
-    $('#btn-add-svg').click(    function (){ self.btnAddCustomElement('svg')} );
+    $('#nav-main').html('\
+    <li id="btn-add-view">Afegir vista</li>\
+    <li id="btn-add-area">Afegir area</li>\
+    <li id="btn-add-text">Afegir text</li>\
+    <li id="btn-add-image">Afegir imatge</li>\
+    <li id="btn-add-svg">Afegir la teva imatge</li>\
+    <li id="btn-reset">Reset</li>');
+    $('#btn-add-view').click(   function (){ self.addView(); });
+    $('#btn-add-area').click(   function (){ self.btnAddCustomElement('area'); });
+    $('#btn-add-text').click(   function (){ self.btnAddCustomElement('text'); });
+    $('#btn-add-image').click(  function (){ self.btnAddCustomElement('img'); });
+    $('#btn-add-svg').click(    function (){ self.btnAddCustomElement('svg'); });
+    self.checkNavMain();
+}
+
+ProductCustomizer.prototype.checkNavMain = function() {
+
+    var self = this;
+    if (self.viewsIds.length == 0){
+        $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset').addClass('disabled').unbind('click');
+    }
+}
+
+ProductCustomizer.prototype.addView = function () {
+
+    //TODO CHEK IF idView is null that means that we havent load from to DB    
+    var self = this;
+    self.showMsg('LOG', 'Adding view');
+    // First we create de view in DB ant then we call to loadView
+    // self.getViewsIds(self.idCustom)
+    //         .done(function(){
+    //             self.drawAndUpdateProductCustomizer('default');
+    //         });
+}
+
+ProductCustomizer.prototype.delView = function (idView) {
+
+    var self = this;
+    self.showMsg('LOG', 'Deleting view: '+idView);
+    // Del view from DB
+    // self.getViewsIds(self.idCustom)
+    //         .done(function(){
+    //             self.drawAndUpdateProductCustomizer('default');
+    //         });
 }
 
 ProductCustomizer.prototype.btnAddCustomElement = function(type) {
