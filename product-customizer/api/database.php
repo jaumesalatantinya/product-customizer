@@ -33,8 +33,13 @@ class Database {
         $query = mysql_query($q, $this->con);
         if($query) {
             $this->numResults = mysql_num_rows($query);
-            while ($row = mysql_fetch_assoc($query)) {
-                array_push($table, $row);
+            if ($this->numResults == 0){
+                return false;
+            }
+            else {
+                while ($row = mysql_fetch_assoc($query)) {
+                    array_push($table, $row);
+                }
             }
         }
         return $table;

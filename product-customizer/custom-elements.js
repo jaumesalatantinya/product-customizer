@@ -4,8 +4,6 @@ var CustomElement = function(view, customElementData) {
 
     this.pView = view;
     this.data = customElementData;
-
-    this.draw();
 }
 
 
@@ -20,7 +18,8 @@ Area.prototype.constructor = Area;
 
 Area.prototype.draw = function(){
     if (this.data){
-        var div = $('<div/>',{
+        this.pView.pPCustom.showMsg('INFO', 'Drawing Area');;
+        var div = $('<div>',{
             class: 'custom-element area'
         })
         .css({
@@ -29,7 +28,7 @@ Area.prototype.draw = function(){
             'left' : this.data.x+'px',
             'top' : this.data.y+'px',
         });
-        this.pView.pPCustom.rootE.append(div);
+        this.pView.rootE.append(div);
     }
 };
 
@@ -44,5 +43,18 @@ Text.prototype = Object.create(CustomElement.prototype);
 Text.prototype.constructor = Text;
 
 Text.prototype.draw = function(){
-
+    if (this.data){
+        this.pView.pPCustom.showMsg('INFO', 'Drawing Text');;
+        var div = $('<div>',{
+            class: 'custom-element text',
+            text: this.data.text
+        })
+        .css({
+            'width' : this.data.width+'px',
+            'height' : this.data.height+'px',
+            'left' : this.data.x+'px',
+            'top' : this.data.y+'px',
+        });
+        this.pView.rootE.append(div);
+    }
 };

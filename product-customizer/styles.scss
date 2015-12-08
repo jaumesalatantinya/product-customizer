@@ -12,27 +12,39 @@ $area-boder-color: black;
     background-image: url('http://image3.spreadshirtmedia.net/image-server/v1/productTypes/6/views/2/appearances/231?width=600&amp;height=600&amp;mediaType=webp');
     background-position: 100px 0;
     background-repeat: no-repeat;
+    position: relative;
 }
 
 .nav-main {
+	position: absolute;
     list-style-type: none;
     width: 160px;
     margin: 20px 0 20px 10px;
     padding-left: 5px;
-    float: left;
     li {
         padding: 10px;
         background-color: $white;
         border: 1px solid $light-gray;
         &:hover {
             background-color: $light-gray;
-            cursor: pointer
+            cursor: pointer;
         }
     }
 }
 
+#nav-views {
+	position: absolute;
+	list-style-type: none;
+	bottom: 15px;
+	right: 35%;
+	li {
+		display: inline;
+		margin-left: 20px;
+	}
+}
+
 .custom-element {
-	position: relative;
+	position: absolute;
 }
 
 .area {

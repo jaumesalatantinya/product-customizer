@@ -26,24 +26,28 @@ class Api {
     public function handleRequest(){
 
         switch ($this->request) {
-            case "get-custom":
-                $this->response = $this->apiRequests->getTemplateCustomization($this->idProd);
+            case 'get-custom-template-id':
+                $this->response = $this->apiRequests->getTemplateId($this->idProd);
                 $this->returnJSONResponse();
                 break;
-            case "get-views-ids":
+            case 'get-custom':
+                $this->response = $this->apiRequests->getCustomization($this->idCus, $this->isAdmin);
+                $this->returnJSONResponse();
+                break;
+            case 'get-views-ids':
                 $this->response = $this->apiRequests->getViewsIds($this->idCus);
                 $this->returnJSONResponse();
                 break;
-            case "get-view":
+            case 'get-view':
                 $this->response = $this->apiRequests->getView($this->idVie);
                 $this->returnJSONResponse();
                 break;
-            case "get-custom-elements":
+            case 'get-custom-elements':
                 $this->response = $this->apiRequests->getCustomElements($this->idVie);
                 $this->returnJSONResponse();
                 break;
             default:
-                echo "API PRODUCT CUSTOMIZER";
+                echo 'API PRODUCT CUSTOMIZER';
         }
     }
 

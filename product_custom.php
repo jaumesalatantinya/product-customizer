@@ -32,7 +32,17 @@
     <script type="text/javascript"> 
         $(document).ready(function(){
             <?php require_once('menu_jquery.php'); ?>
-            new ProductCustomizer({isAdmin:true}); 
+            var idProd = <?=$_GET['IDpro']?>;
+            var productCustomizer = new ProductCustomizer();
+            $.getJSON('product-customizer/api/api.php?request=get-custom-template-id&IDpro='+idProd)
+            .done(function(custom){
+                if (custom){
+                    productCustomizer.idCustom = custom[0].IDcus;
+                    productCustomizer.init();
+                }
+                else { productCustomizer.showMsg('Error', 'No template customization to load'); }
+            })
+            .fail(function(){ productCustomizer.showMsg('Error', 'API No template customization to load'); });
         });
     </script> 
     <script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
@@ -82,15 +92,16 @@
                 </div>
                 <div class="list">
                     <div id="product-customizer">
+                        <div id="view"></div>
                         <ul class="nav-main">
-                            <li id="btn-">Afegir vista</li>
-                            <li id="btn-">Afegir area</li>
+                            <li id="btn-add-view">Afegir vista</li>
+                            <li id="btn-add-area">Afegir area</li>
                             <li id="btn-add-text">Afegir text</li>
                             <li id="btn-add-image">Afegir imatge</li>
                             <li id="btn-add-svg">Afegir la teva imatge</li>
                             <li id="btn-reset">Reset</li>
                         </ul>
-                        <ul class="nav-views"></ul>
+                        <ul id="nav-views"></ul>
                     </div>
                 </div>
             </div>

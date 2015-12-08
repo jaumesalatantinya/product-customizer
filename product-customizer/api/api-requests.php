@@ -13,17 +13,17 @@ class ApiRequests {
         $this->db->connect();
     }
 
+    public function getTemplateId($idProd) {
 
-	public function getTemplateCustomization ($idProd) {
-        
-        $q = 'SELECT * FROM bd_custom WHERE ID_pro =' . $idProd . ' AND Is_Template = 1';
+        $q = 'SELECT IDcus FROM bd_custom WHERE ID_pro =' . $idProd . ' AND Is_Template = 1';
         return $this->db->select($q);
     }
 
 
-    public function getCustomization ($idProd) {
+    public function getCustomization($idCus) {
 
-        return $this->getTemplateCustomization($idProd);
+        $q = 'SELECT * FROM bd_custom WHERE IDcus =' . $idCus;
+        return $this->db->select($q);
     }
 
 
