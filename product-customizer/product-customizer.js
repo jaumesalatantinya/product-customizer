@@ -2,7 +2,7 @@
 
 var ProductCustomizer = function () {
 
-    var self = this;
+    // var self = this;
     this.idCustom;
     this.idProduct;
     this.isTemplate;
@@ -11,6 +11,7 @@ var ProductCustomizer = function () {
     this.view;
     this.currentView;
     this.apiUrl = 'product-customizer/api/api.php?request=';
+    this.mode = 'dev'; //[pro|dev]
 }
 
 ProductCustomizer.prototype.init = function () {
@@ -73,10 +74,10 @@ ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
         if (idView == 'default') { 
             idView = self.viewsIds[0].IDcusvie;
         }
-        self.drawView();
-        self.drawNavViews(idView);
+        self.drawView(idView);
+        self.drawNavViews();
     }
-    else { self.showMsg('INFO', 'Please first add a view'); }
+    else { self.showMsg('INFO', 'Siusplau afegeix una vista'); }
     this.drawNavMain();
 }
 
@@ -152,6 +153,24 @@ ProductCustomizer.prototype.btnAddCustomElement = function(type) {
 
 ProductCustomizer.prototype.showMsg = function(type, msg) {
 
-    // TODO show modal warrning or error
-    console.log(type + ' -> ' + msg)
-}
+    var self = this;
+    if (self.mode == 'dev')
+        console.log(type + ' -> ' + msg);
+    if (type != 'LOG')
+        self.showModal(type, msg);
+};
+
+ProductCustomizer.prototype.showModal = function(type, msg) {
+
+    var self = this;
+    $('.overlay').css('display', 'block');
+    $('.modal p').html(msg);
+    $('.modal a').bind('click', function(){
+        self.closeModal();
+    });
+};
+
+ProductCustomizer.prototype.closeModal = function() {
+
+    $('.overlay').css('display', 'none');
+};

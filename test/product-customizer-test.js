@@ -60,14 +60,31 @@ describe('Product Customizer: ', function () {
 		});
 
 		it('Should return a rejected promise when NO idcustom is passed as parameter', function() {
-			// TODO testing a promise
-			// var d = $.Deferred();
-			// d.reject();
-			// spyOn(productCustomizer, 'getViewsIds').and.returnValue(d.promise());
-			// var p = productCustomizer.getViewsIds();
-			// p.fail ( function(){
-			// 	expect(1).toBe(1);
-			// });
+			var b = false;
+			var d = $.Deferred();
+			d.reject();
+			spyOn(productCustomizer, 'getViewsIds').and.returnValue(d.promise());
+			var p = productCustomizer.getViewsIds();
+			p.fail ( function(){
+				b = true;
+			});
+			expect(b).toBeTruthy();
+		});
+	});
+
+	describe('Draw And Update Product Customizer', function () {
+ 
+		var productCustomizer;
+		beforeEach(function(){
+			productCustomizer = new ProductCustomizer();
+			productCustomizer.idCustom = 1;
+		});
+
+		it('Should call showMsg INFO ADD VIEW', function() {
+			productCustomizer.viewsIds = false;
+			spyOn(productCustomizer, 'showMsg');
+			productCustomizer.drawAndUpdateProductCustomizer();
+			expect(productCustomizer.showMsg).toHaveBeenCalledWith('INFO', 'Siusplau afegeix una vista');
 		});
 	});
 });

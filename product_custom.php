@@ -102,6 +102,13 @@
                             <li id="btn-reset">Reset</li>
                         </ul>
                         <ul id="nav-views"></ul>
+                        <div class="overlay">
+                            <div class="modal">
+                                <img />
+                                <p></p>
+                                <a>close</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
