@@ -46,5 +46,18 @@ class ApiRequests {
         $q = 'SELECT * FROM bd_custom_elements WHERE ID_cusvie =' . $idVie;
         return $this->db->select($q);
     }
+
+
+    public function putView($idCus) {
+
+        $q = 'INSERT INTO bd_custom_views (ID_cus) VALUES (' . $idCus . ')';
+        return $this->db->insert($q);
+    }
+
+    public function delView($idVie) {
+
+        $q = 'DELETE FROM bd_custom_views WHERE IDcusvie =' . $idVie;
+        return $this->db->delete($q);
+    }
 }
 ?>

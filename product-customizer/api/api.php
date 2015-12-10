@@ -46,6 +46,17 @@ class Api {
                 $this->response = $this->apiRequests->getCustomElements($this->idVie);
                 $this->returnJSONResponse();
                 break;
+
+            case 'put-view':
+                $this->response = $this->apiRequests->putView($this->idCus);
+                $this->returnJSONResponse();
+                break;
+
+            case 'del-view':
+                $this->response = $this->apiRequests->delView($this->idVie);
+                $this->returnJSONResponse();
+                break;
+
             default:
                 echo 'API PRODUCT CUSTOMIZER';
         }

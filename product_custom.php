@@ -78,7 +78,7 @@
                 <div class="row">
                     <form ACTION="<?php echo $page; ?>" method="get" id="form" name="form" >          
                         <label>
-                            <a id="fancy" class="fancy" href="file_product_images.php?IDpro=<?php echo $colname_Recordset2; ?>">Añadir imágenes</a>
+                            <a id="fancy" class="fancy show_popup" data-fancybox-type="iframe" href="product-customizer/api/file-uploader-view.php">Añadir imágenes</a>
                         </label>
                         <h2 class="red"><span>Producto:</span> <?php echo $row_Recordset2['Producto_esp']?></h2>
                         <div class="clear"></div>

@@ -74,18 +74,18 @@ describe('Product Customizer: ', function () {
 
 	describe('Draw And Update Product Customizer', function () {
  
-		var productCustomizer;
-		beforeEach(function(){
-			productCustomizer = new ProductCustomizer();
-			productCustomizer.idCustom = 1;
-		});
+		// var productCustomizer;
+		// beforeEach(function(){
+		// 	productCustomizer = new ProductCustomizer();
+		// 	productCustomizer.idCustom = 1;
+		// });
 
-		it('Should call showMsg INFO ADD VIEW', function() {
-			productCustomizer.viewsIds = false;
-			spyOn(productCustomizer, 'showMsg');
-			productCustomizer.drawAndUpdateProductCustomizer();
-			expect(productCustomizer.showMsg).toHaveBeenCalledWith('INFO', 'Siusplau afegeix una vista');
-		});
+		// it('Should call showMsg INFO ADD VIEW', function() {
+		// 	productCustomizer.viewsIds = false;
+		// 	spyOn(productCustomizer, 'showMsg');
+		// 	productCustomizer.drawAndUpdateProductCustomizer();
+		// 	expect(productCustomizer.showMsg).toHaveBeenCalledWith('INFO', 'Siusplau afegeix una vista');
+		// });
 	});
 });
 

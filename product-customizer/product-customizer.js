@@ -1,5 +1,6 @@
 'use strict';
 
+
 var ProductCustomizer = function () {
 
     this.idCustom;
@@ -13,19 +14,18 @@ var ProductCustomizer = function () {
     this.mode = 'dev'; //[pro|dev]
 }
 
+
 ProductCustomizer.prototype.init = function () {
     
     var self = this;
     if (self.idCustom) {
         self.showMsg('LOG', 'Init Customization: ' + self.idCustom);
         self.getCustomizationData(self.idCustom);
-        self.getViewsIds(self.idCustom)
-            .done(function(){
-                self.drawAndUpdateProductCustomizer('default');
-            });
+        self.drawAndUpdateProductCustomizer('default');
     }
     else { self.showMsg('ERROR', 'No id customization to init'); }
 }
+
 
 ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
 
@@ -44,11 +44,31 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
     else { self.showMsg('ERROR', 'loading Customization Data No idCustom passed'); }
 }
 
+
+ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
+    
+    var self = this;
+    self.getViewsIds(self.idCustom)
+        .done(function(){
+            if (self.viewsIds && self.viewsIds.length > 0 ) {
+                if (idView == 'default') { 
+                    idView = self.viewsIds[0].IDcusvie;
+                }
+                self.drawView(idView);
+            }
+            else { self.showMsg('INFO', 'Siusplau afegeix una vista'); }
+            self.drawNavViews();
+            self.drawNavMain();
+        })
+}
+
+
 ProductCustomizer.prototype.getViewsIds = function (idCustom) {
 
     var self = this;
     if (idCustom) {
         self.showMsg('LOG', 'Get Views Ids from customization: ' + idCustom);
+        self.viewsIds = [];
         return $.getJSON(this.apiUrl + 'get-views-ids&IDcus=' + idCustom)
         .done(function(views) {
             if (views && views.length > 0) {
@@ -65,19 +85,6 @@ ProductCustomizer.prototype.getViewsIds = function (idCustom) {
     }
 }
 
-ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
-    
-    var self = this;
-    if (self.viewsIds && self.viewsIds.length > 0 ) {
-        if (idView == 'default') { 
-            idView = self.viewsIds[0].IDcusvie;
-        }
-        self.drawView(idView);
-        self.drawNavViews();
-    }
-    else { self.showMsg('INFO', 'Siusplau afegeix una vista'); }
-    this.drawNavMain();
-}
 
 ProductCustomizer.prototype.drawView = function (idView) {
 
@@ -89,6 +96,7 @@ ProductCustomizer.prototype.drawView = function (idView) {
     }
     else { self.showMsg('ERROR', 'Draw View: No idView passed as param'); }
 }
+
 
 ProductCustomizer.prototype.drawNavViews = function () {
 
@@ -112,60 +120,76 @@ ProductCustomizer.prototype.drawNavViews = function () {
     };
 }
 
+
 ProductCustomizer.prototype.drawNavMain = function() {
 
     var self = this;
     $('#nav-main').html('\
-    <li id="btn-add-view">Afegir vista</li>\
-    <li id="btn-add-area">Afegir area</li>\
-    <li id="btn-add-text">Afegir text</li>\
-    <li id="btn-add-image">Afegir imatge</li>\
-    <li id="btn-add-svg">Afegir la teva imatge</li>\
+    <li id="btn-add-view">Añadir vista</li>\
+    <li id="btn-add-view-img">Añadir o modificar imagen vista</li>\
+    <li id="btn-add-area">Añadir area</li>\
+    <li id="btn-add-text">Añadir text</li>\
+    <li id="btn-add-image">Añadir imatge</li>\
+    <li id="btn-add-svg">Añadir tu imagen</li>\
     <li id="btn-reset">Reset</li>');
-    $('#btn-add-view').click(   function (){ self.addView(); });
-    $('#btn-add-area').click(   function (){ self.btnAddCustomElement('area'); });
-    $('#btn-add-text').click(   function (){ self.btnAddCustomElement('text'); });
-    $('#btn-add-image').click(  function (){ self.btnAddCustomElement('img'); });
-    $('#btn-add-svg').click(    function (){ self.btnAddCustomElement('svg'); });
-    self.checkNavMain();
-}
-
-ProductCustomizer.prototype.checkNavMain = function() {
-
-    var self = this;
+    $('#btn-add-view').click(       function (){ self.addView(); });
+    $('#btn-add-view-img').click(   function (){});
+    $('#btn-add-area').click(       function (){ self.btnAddCustomElement('area'); });
+    $('#btn-add-text').click(       function (){ self.btnAddCustomElement('text'); });
+    $('#btn-add-image').click(      function (){ self.btnAddCustomElement('img'); });
+    $('#btn-add-svg').click(        function (){ self.btnAddCustomElement('svg'); });
     if (self.viewsIds.length == 0){
-        $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset').addClass('disabled').unbind('click');
+        $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img').addClass('disabled').unbind('click');
     }
 }
 
+
 ProductCustomizer.prototype.addView = function () {
 
-    //TODO CHEK IF idView is null that means that we havent load from to DB    
     var self = this;
     self.showMsg('LOG', 'Adding view');
-    // First we create de view in DB ant then we call to loadView
-    // self.getViewsIds(self.idCustom)
-    //         .done(function(){
-    //             self.drawAndUpdateProductCustomizer('default');
-    //         });
+    if (self.idCustom) {
+        $.getJSON(this.apiUrl + 'put-view&IDcus=' + self.idCustom)
+        .done(function(newViewId) {
+            if (newViewId) {
+                self.drawAndUpdateProductCustomizer(newViewId);
+            }
+            else { self.showMsg('ERROR', 'Add View: No new idView'); }
+        })
+        .fail(function() {
+            self.showMsg('ERROR', 'API Add View: getting View ID');
+        });
+    }
+    else { self.showMsg('ERROR', 'Add View no idCustom'); }
 }
+
 
 ProductCustomizer.prototype.delView = function (idView) {
 
     var self = this;
     self.showMsg('LOG', 'Deleting view: '+idView);
-    // Del view from DB
-    // self.getViewsIds(self.idCustom)
-    //         .done(function(){
-    //             self.drawAndUpdateProductCustomizer('default');
-    //         });
+    if (idView) {
+        $.getJSON(this.apiUrl + 'del-view&IDvie=' + idView)
+        .done(function(delresponse) {
+            if (delresponse) {
+                self.drawAndUpdateProductCustomizer('default');
+            }
+            else { self.showMsg('ERROR', 'Add View: No new idView'); }
+        })
+        .fail(function() {
+            self.showMsg('ERROR', 'API Del View');
+        });
+    }
+    else { self.showMsg('ERROR', 'Del View: No idView passed as param to delete'); }
 }
+
 
 ProductCustomizer.prototype.btnAddCustomElement = function(type) {
 
     var self = this;
     self.showMsg('LOG', 'Adding custom element' + type);
 }
+
 
 ProductCustomizer.prototype.showMsg = function(type, msg) {
 
@@ -176,6 +200,7 @@ ProductCustomizer.prototype.showMsg = function(type, msg) {
         self.showModal(type, msg);
 };
 
+
 ProductCustomizer.prototype.showModal = function(type, msg) {
 
     var self = this;
@@ -185,6 +210,7 @@ ProductCustomizer.prototype.showModal = function(type, msg) {
         self.closeModal();
     });
 };
+
 
 ProductCustomizer.prototype.closeModal = function() {
 
