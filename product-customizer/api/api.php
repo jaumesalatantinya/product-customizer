@@ -20,6 +20,7 @@ class Api {
         $this->idProd = $_GET['IDpro'];
         $this->idCus = $_GET['IDcus'];
         $this->idVie = $_GET['IDvie'];
+        $this->file = $_GET['file'];
     }
 
 
@@ -34,8 +35,8 @@ class Api {
                 $this->response = $this->apiRequests->getCustomization($this->idCus, $this->isAdmin);
                 $this->returnJSONResponse();
                 break;
-            case 'get-views-ids':
-                $this->response = $this->apiRequests->getViewsIds($this->idCus);
+            case 'get-views':
+                $this->response = $this->apiRequests->getViews($this->idCus);
                 $this->returnJSONResponse();
                 break;
             case 'get-view':
@@ -49,6 +50,10 @@ class Api {
 
             case 'put-view':
                 $this->response = $this->apiRequests->putView($this->idCus);
+                $this->returnJSONResponse();
+                break;
+            case 'put-img-to-view':
+                $this->response = $this->apiRequests->putImgToView($this->idVie, $this->file);
                 $this->returnJSONResponse();
                 break;
 

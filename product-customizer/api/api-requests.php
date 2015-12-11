@@ -27,9 +27,9 @@ class ApiRequests {
     }
 
 
-    public function getViewsIds($idCus) {
+    public function getViews($idCus) {
 
-        $q = 'SELECT * FROM bd_custom_views WHERE ID_cus =' . $idCus;
+        $q = 'SELECT * FROM bd_custom_views WHERE ID_cus =' . $idCus . ' ORDER BY IDcusvie';
         return $this->db->select($q);
     }
 
@@ -53,6 +53,14 @@ class ApiRequests {
         $q = 'INSERT INTO bd_custom_views (ID_cus) VALUES (' . $idCus . ')';
         return $this->db->insert($q);
     }
+
+
+    public function putImgToView($idVie, $file) {
+
+        $q = 'UPDATE bd_custom_views SET Image="' . $file . '" WHERE IDcusvie=' . $idVie;
+        return $this->db->update($q);
+    }
+
 
     public function delView($idVie) {
 

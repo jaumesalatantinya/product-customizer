@@ -7,10 +7,11 @@ var ProductCustomizer = function () {
     this.idProduct;
     this.isTemplate;
     this.rootE = $('#product-customizer');
-    this.viewsIds = [];
+    this.viewsData = [];
     this.view;
     this.currentView;
     this.apiUrl = 'product-customizer/api/api.php?request=';
+    this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
     this.mode = 'dev'; //[pro|dev]
 }
 
@@ -48,31 +49,34 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
 ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     
     var self = this;
-    self.getViewsIds(self.idCustom)
+    self.getviewsData(self.idCustom)
         .done(function(){
-            if (self.viewsIds && self.viewsIds.length > 0 ) {
+            if (self.viewsData && self.viewsData.length > 0 ) {
                 if (idView == 'default') { 
-                    idView = self.viewsIds[0].IDcusvie;
+                    idView = self.viewsData[0].IDcusvie;
+                }
+                else{
+                    self.currentView = idView;
                 }
                 self.drawView(idView);
             }
-            else { self.showMsg('INFO', 'Siusplau afegeix una vista'); }
+            else { self.showMsg('INFO', 'Por favor añade una vista'); }
             self.drawNavViews();
             self.drawNavMain();
         })
 }
 
 
-ProductCustomizer.prototype.getViewsIds = function (idCustom) {
+ProductCustomizer.prototype.getviewsData = function (idCustom) {
 
     var self = this;
     if (idCustom) {
         self.showMsg('LOG', 'Get Views Ids from customization: ' + idCustom);
-        self.viewsIds = [];
-        return $.getJSON(this.apiUrl + 'get-views-ids&IDcus=' + idCustom)
+        self.viewsData = [];
+        return $.getJSON(this.apiUrl + 'get-views&IDcus=' + idCustom)
         .done(function(views) {
             if (views && views.length > 0) {
-                self.viewsIds = views;
+                self.viewsData = views;
             }
         })
         .fail(function() {
@@ -103,10 +107,10 @@ ProductCustomizer.prototype.drawNavViews = function () {
     var self = this;
     self.showMsg('LOG', 'Drawing Navigation Views');
     $('#nav-views').empty();
-    for (var i = 0; i < self.viewsIds.length; i++) {
-        var a = $('<a>').data('idView', self.viewsIds[i].IDcusvie);
-        var img = $('<img/>', { src:'product-customizer/thumb.png'} );
-        var del = $('<a>del</a>').data('idView', self.viewsIds[i].IDcusvie);
+    for (var i = 0; i < self.viewsData.length; i++) {
+        var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
+        var img = $('<img/>', { 'src': self.imgUrl+self.viewsData[i].Image} );
+        var del = $('<a>del</a>').data('idView', self.viewsData[i].IDcusvie);
         var li = $('<li>');
         a.click( function(){
             self.drawAndUpdateProductCustomizer($(this).data('idView'));
@@ -133,12 +137,12 @@ ProductCustomizer.prototype.drawNavMain = function() {
     <li id="btn-add-svg">Añadir tu imagen</li>\
     <li id="btn-reset">Reset</li>');
     $('#btn-add-view').click(       function (){ self.addView(); });
-    $('#btn-add-view-img').click(   function (){});
+    $('#btn-add-view-img').click(   function (){ self.showUploadForm('view'); });
     $('#btn-add-area').click(       function (){ self.btnAddCustomElement('area'); });
     $('#btn-add-text').click(       function (){ self.btnAddCustomElement('text'); });
     $('#btn-add-image').click(      function (){ self.btnAddCustomElement('img'); });
     $('#btn-add-svg').click(        function (){ self.btnAddCustomElement('svg'); });
-    if (self.viewsIds.length == 0){
+    if (self.viewsData.length == 0){
         $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img').addClass('disabled').unbind('click');
     }
 }
@@ -163,7 +167,6 @@ ProductCustomizer.prototype.addView = function () {
     else { self.showMsg('ERROR', 'Add View no idCustom'); }
 }
 
-
 ProductCustomizer.prototype.delView = function (idView) {
 
     var self = this;
@@ -172,6 +175,8 @@ ProductCustomizer.prototype.delView = function (idView) {
         $.getJSON(this.apiUrl + 'del-view&IDvie=' + idView)
         .done(function(delresponse) {
             if (delresponse) {
+                self.view.rootE.empty();
+                self.view.rootE.css('background-image', 'none');
                 self.drawAndUpdateProductCustomizer('default');
             }
             else { self.showMsg('ERROR', 'Add View: No new idView'); }
@@ -191,6 +196,62 @@ ProductCustomizer.prototype.btnAddCustomElement = function(type) {
 }
 
 
+ProductCustomizer.prototype.showUploadForm = function (type) {
+
+    var self = this;
+    self.showMsg('LOG', 'Show upload form');
+    $('#wrapper-upload-form').show();
+    $('#wrapper-upload-form .modal .btn-close').click( function() {
+        self.close('upload-form');
+    });
+    $('#wrapper-upload-form .modal form #btn-submit').click( function(event) {
+        event.preventDefault();
+        $('#wrapper-upload-form .modal form img.loading').show();
+        self.uploadFile(type);
+    });
+}
+
+ProductCustomizer.prototype.uploadFile = function (type){
+
+    var self = this;
+    self.showMsg('LOG', 'Uploading '+ type +' file image');
+    var fd = new FormData();    
+    fd.append('file-to-upload', document.getElementById('file-to-upload').files[0]);
+    $.ajax({
+        url: 'product-customizer/file-uploader.php',
+        data: fd,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function(response){
+            $('#wrapper-upload-form .modal form img.loading').hide();
+            if (response.status == 'success'){ 
+                self.putImgToView(response.file);
+            }
+            else{
+                self.showMsg('ERROR', response.error);
+            }
+        }
+    });
+}
+
+ProductCustomizer.prototype.putImgToView = function (file) {
+
+    var self = this;
+    $.getJSON(this.apiUrl + 'put-img-to-view&IDvie=' + self.currentView + '&file='+file)
+    .done(function(response) {
+        if (response) {
+            $('#wrapper-upload-form').hide();
+            self.drawAndUpdateProductCustomizer(self.currentView);
+        }
+        else { self.showMsg('ERROR', 'Put Img View: No new idView'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Put Img View');
+    });
+}
+
+
 ProductCustomizer.prototype.showMsg = function(type, msg) {
 
     var self = this;
@@ -204,15 +265,15 @@ ProductCustomizer.prototype.showMsg = function(type, msg) {
 ProductCustomizer.prototype.showModal = function(type, msg) {
 
     var self = this;
-    $('.overlay').css('display', 'block');
+    $('#wrapper-modal').css('display', 'block');
     $('.modal p').html(msg);
-    $('.modal a').bind('click', function(){
-        self.closeModal();
+    $('.modal a').click( function() {
+        self.close('modal');
     });
 };
 
 
-ProductCustomizer.prototype.closeModal = function() {
+ProductCustomizer.prototype.close = function(element) {
 
-    $('.overlay').css('display', 'none');
+    $('#wrapper-'+element).css('display', 'none');
 };

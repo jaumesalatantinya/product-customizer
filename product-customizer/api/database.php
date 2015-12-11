@@ -56,6 +56,17 @@ class Database {
         }
     }
 
+    public function update($q){
+
+        $upd = @mysql_query($q);            
+        if ($upd){
+            return true; 
+        }
+        else{
+            return false; 
+        }
+    }
+
     public function delete($q) {
  
         $del = @mysql_query($q);

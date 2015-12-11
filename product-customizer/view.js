@@ -13,26 +13,35 @@ View.prototype.init = function () {
 
     var self = this;
     self.pPCustom.showMsg('LOG', 'Init View: ' + self.idView);
-    // if (self.view) { 
-    //     self.view.rootE.empty(); 
-    // }
-    //     self.view.loadViewData()
-    //     .done(function() {
-    // self.view.loadCustomElements();
-    //     });   
+    self.loadViewData(self.idView)
+        .done(function() {
+            self.drawAndUpdateView();
+        });   
 }
 
-// View.prototype.loadViewData = function () {
+View.prototype.loadViewData = function (idView) {
 
-//     var self = this;
-//     return $.getJSON(this.pPCustom.apiUrl + 'get-view&IDvie=' + this.idView)
-//     .done(function(view) {
-//         self.image = view[0].Image;
-//     })
-//     .fail(function() {
-//         self.pPCustom.showMsg('Error', 'loading view');
-//     });
-// }
+    var self = this;
+    self.pPCustom.showMsg('LOG', 'Load View Data: ' + self.idView);
+    return $.getJSON(this.pPCustom.apiUrl + 'get-view&IDvie=' + this.idView)
+    .done(function(view) {
+        self.image = view[0].Image;
+    })
+    .fail(function() {
+        self.pPCustom.showMsg('Error', 'loading view');
+    });
+}
+
+View.prototype.drawAndUpdateView = function () {
+
+    var self = this;
+    if (self.view) { 
+        self.rootE.empty(); 
+    }
+    // console.log( self.pPCustom.imgUrl+self.image);
+    self.rootE.css('background-image', 'url('+self.pPCustom.imgUrl+self.image+')');
+    // self.view.loadCustomElements();
+}
 
 // View.prototype.loadCustomElements = function () {
 

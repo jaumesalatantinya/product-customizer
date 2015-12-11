@@ -75,7 +75,7 @@
                     <li></li>
                     <div class="clear"></div>
                 </ul>
-                <div class="row">
+                <!-- <div class="row">
                     <form ACTION="<?php echo $page; ?>" method="get" id="form" name="form" >          
                         <label>
                             <a id="fancy" class="fancy show_popup" data-fancybox-type="iframe" href="product-customizer/api/file-uploader-view.php">Añadir imágenes</a>
@@ -89,13 +89,29 @@
                             <input name="IDpro" id="IDpro" type="hidden" value="<?php echo $row_Recordset2['IDpro']?>" />
                         </label>
                     </form>
-                </div>
+                </div> -->
                 <div class="list">
                     <div id="product-customizer">
                         <div id="view"></div>
                         <ul id="nav-main"></ul>
                         <ul id="nav-views"></ul>
-                        <div class="overlay"><div class="modal"><img /><p></p><a>close</a></div></div>
+                        <div id="wrapper-modal">
+                            <div class="modal">
+                                <img /><p></p><a>close</a>
+                            </div>
+                        </div>
+                        <div id="wrapper-upload-form">
+                            <div class="modal">
+                                <a href="#" class="btn-close">Close</a>
+                                <form method="post" enctype="multipart/form-data" action="">
+                                    <p>Añadir imágenes <span>(JPG - Medidas óptimas: 600x600 píxels)</span></p>
+                                    <span>Seleccionar imagen</span><br/>
+                                    <input id="file-to-upload" name="file-to-upload" type="file">
+                                    <input id ="btn-submit" name="send" type="submit" value="Enviar imágenes">
+                                    <img src="imagesWEB/loading.gif" class="loading" />
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

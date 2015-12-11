@@ -47,29 +47,29 @@ describe('Product Customizer: ', function () {
 
 	describe('Get Views Ids', function () {
  
-		var productCustomizer;
-		beforeEach(function(){
-			productCustomizer = new ProductCustomizer();
-			productCustomizer.idCustom = 1;
-		});
+		// var productCustomizer;
+		// beforeEach(function(){
+		// 	productCustomizer = new ProductCustomizer();
+		// 	productCustomizer.idCustom = 1;
+		// });
 
-		it('Should call showMsg ERROR when NO idcustom is passed as parameter', function() {
-			spyOn(productCustomizer, 'showMsg');
-			productCustomizer.getViewsIds();
-			expect(productCustomizer.showMsg).toHaveBeenCalled();
-		});
+		// it('Should call showMsg ERROR when NO idcustom is passed as parameter', function() {
+		// 	spyOn(productCustomizer, 'showMsg');
+		// 	productCustomizer.getViewsIds();
+		// 	expect(productCustomizer.showMsg).toHaveBeenCalled();
+		// });
 
-		it('Should return a rejected promise when NO idcustom is passed as parameter', function() {
-			var b = false;
-			var d = $.Deferred();
-			d.reject();
-			spyOn(productCustomizer, 'getViewsIds').and.returnValue(d.promise());
-			var p = productCustomizer.getViewsIds();
-			p.fail ( function(){
-				b = true;
-			});
-			expect(b).toBeTruthy();
-		});
+		// it('Should return a rejected promise when NO idcustom is passed as parameter', function() {
+		// 	var b = false;
+		// 	var d = $.Deferred();
+		// 	d.reject();
+		// 	spyOn(productCustomizer, 'getViewsIds').and.returnValue(d.promise());
+		// 	var p = productCustomizer.getViewsIds();
+		// 	p.fail ( function(){
+		// 		b = true;
+		// 	});
+		// 	expect(b).toBeTruthy();
+		// });
 	});
 
 	describe('Draw And Update Product Customizer', function () {
