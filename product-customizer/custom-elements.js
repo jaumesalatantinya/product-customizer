@@ -18,7 +18,7 @@ Area.prototype.constructor = Area;
 
 Area.prototype.draw = function(){
     if (this.data){
-        this.pView.pPCustom.showMsg('INFO', 'Drawing Area');;
+        this.pView.pPCustom.showMsg('LOG', 'Drawing Area');;
         var div = $('<div>',{
             class: 'custom-element area'
         })

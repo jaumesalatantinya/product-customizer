@@ -9,6 +9,7 @@ var View = function (productCustomizer, idView) {
     this.customElements = [];
 }
 
+
 View.prototype.init = function () {
 
     var self = this;
@@ -18,6 +19,7 @@ View.prototype.init = function () {
             self.drawAndUpdateView();
         });   
 }
+
 
 View.prototype.loadViewData = function (idView) {
 
@@ -32,46 +34,49 @@ View.prototype.loadViewData = function (idView) {
     });
 }
 
+
 View.prototype.drawAndUpdateView = function () {
 
     var self = this;
     if (self.view) { 
         self.rootE.empty();
     }
-    // console.log( self.pPCustom.imgUrl+self.image);
     self.rootE.css('background-image', 'url('+self.pPCustom.imgUrl+self.image+')');
-    // self.view.loadCustomElements();
+    self.loadCustomElements(self.idView);
 }
 
-// View.prototype.loadCustomElements = function () {
 
-//     var self = this;
-//     self.pPCustom.showMsg('INFO', 'Loading Custom Elements of view: ' + self.idView );
-//     $.getJSON(this.pPCustom.apiUrl + 'get-custom-elements&IDvie=' + self.idView)
-//     .done(function(customElements) {
-//         for (var i = customElements.length - 1; i >= 0; i--) {
-//             self.loadCustomElement(customElements[i]);
-//         };
-//     })
-//     .fail(function() {
-//         self.pPCustom.showMsg('Error', 'loading custom elements');
-//     });
-// }
+View.prototype.loadCustomElements = function (idView) {
 
-// View.prototype.loadCustomElement = function (customElementData) {
+    var self = this;
+    self.pPCustom.showMsg('LOG', 'Loading Custom Elements of view: ' + idView );
+    $.getJSON(this.pPCustom.apiUrl + 'get-custom-elements&IDvie=' + idView)
+    .done(function(customElements) {
+        for (var i = customElements.length - 1; i >= 0; i--) {
+            self.loadCustomElement(customElements[i]);
+        };
+    })
+    .fail(function() {
+        self.pPCustom.showMsg('ERROR', 'API: Load custom elements');
+    });
+}
 
-//     var self = this;
-//     self.pPCustom.showMsg('INFO', 'Loading Custom Element: ' + customElementData.type );
-//     switch (customElementData.type) {
-//     case 'area':
-//         self.customElements.push(new Area(self, customElementData));
-//         break;
-//     case 'text':
-//         self.customElements.push(new Text(self, customElementData));
-//         break;
-//     }
-//     self.customElements[self.customElements.length-1].draw();
-// }
+
+View.prototype.loadCustomElement = function (customElementData) {
+
+    var self = this;
+    self.pPCustom.showMsg('LOG', 'Load Custom Element: ' + customElementData.type );
+    switch (customElementData.type) {
+    case 'area':
+        self.customElements.push(new Area(self, customElementData));
+        break;
+    case 'text':
+        self.customElements.push(new Text(self, customElementData));
+        break;
+    }
+    self.customElements[self.customElements.length-1].draw();
+}
+
 
 // View.prototype.addCustomElement = function() {
 
