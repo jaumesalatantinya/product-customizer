@@ -45,9 +45,9 @@ gulp.task('watch', function() {
 });
 
 gulp.task('tdd', function(done) {
-    new Server({
-    configFile: __dirname + '/karma.conf.js'
-    }, done).start();
+    // new Server({
+    // configFile: __dirname + '/karma.conf.js'
+    // }, done).start();
 });
 
 gulp.task('default', ['watch', 'serve', 'tdd', 'sass']);

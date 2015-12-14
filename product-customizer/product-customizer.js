@@ -52,13 +52,8 @@ ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     self.getviewsData(self.idCustom)
         .done(function(){
             if (self.viewsData && self.viewsData.length > 0 ) {
-                if (idView == 'default') { 
-                    idView = self.viewsData[0].IDcusvie;
-                }
-                else{
-                    self.currentView = idView;
-                }
-                self.drawView(idView);
+                self.currentView = (idView == 'default') ? self.viewsData[0].IDcusvie : idView;
+                self.drawView(self.currentView);
             }
             else { self.showMsg('INFO', 'Por favor añade una vista'); }
             self.drawNavViews();
@@ -151,11 +146,11 @@ ProductCustomizer.prototype.drawNavMain = function() {
 ProductCustomizer.prototype.addView = function () {
 
     var self = this;
-    self.showMsg('LOG', 'Adding view');
     if (self.idCustom) {
         $.getJSON(this.apiUrl + 'put-view&IDcus=' + self.idCustom)
         .done(function(newViewId) {
             if (newViewId) {
+                self.showMsg('LOG', 'Adding view: ' + newViewId);
                 self.drawAndUpdateProductCustomizer(newViewId);
             }
             else { self.showMsg('ERROR', 'Add View: No new idView'); }

@@ -36,7 +36,7 @@ View.prototype.drawAndUpdateView = function () {
 
     var self = this;
     if (self.view) { 
-        self.rootE.empty(); 
+        self.rootE.empty();
     }
     // console.log( self.pPCustom.imgUrl+self.image);
     self.rootE.css('background-image', 'url('+self.pPCustom.imgUrl+self.image+')');

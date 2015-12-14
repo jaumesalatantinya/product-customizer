@@ -97,7 +97,8 @@
                         <ul id="nav-views"></ul>
                         <div id="wrapper-modal">
                             <div class="modal">
-                                <img /><p></p><a>close</a>
+                                <a>close</a>
+                                <p></p>
                             </div>
                         </div>
                         <div id="wrapper-upload-form">
