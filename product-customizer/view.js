@@ -1,48 +1,57 @@
 'use strict';
 
-var View = function (productCustomizer, idView) {
+var View = function () {
 
-    this.pPCustom = productCustomizer;
+    this.pPCustom;
     this.rootE = $('#view');
-    this.idView = idView;
+    this.idView;
     this.image;
     this.customElements = [];
 }
 
 
-View.prototype.init = function () {
+View.prototype.init = function (productCustomizer, idView) {
 
     var self = this;
+    self.pPCustom = productCustomizer;
+    self.idView = idView;
     self.pPCustom.showMsg('LOG', 'Init View: ' + self.idView);
     self.loadViewData(self.idView)
         .done(function() {
-            self.drawAndUpdateView();
-        });   
+            self.drawView();
+            self.loadCustomElements(self.idView)
+                .done(function(){
+                    self.initCustomElements();
+                })
+        });
 }
 
 
 View.prototype.loadViewData = function (idView) {
 
     var self = this;
-    self.pPCustom.showMsg('LOG', 'Load View Data: ' + self.idView);
-    return $.getJSON(this.pPCustom.apiUrl + 'get-view&IDvie=' + this.idView)
-    .done(function(view) {
-        self.image = view[0].Image;
-    })
-    .fail(function() {
-        self.pPCustom.showMsg('Error', 'loading view');
-    });
+    if (idView){
+        self.pPCustom.showMsg('LOG', 'Load View Data: ' + self.idView);
+        return $.ajax(this.pPCustom.apiUrl + 'get-view&IDvie=' + this.idView)
+        .done(function(view) {
+            self.image = view[0].Image;
+        })
+        .fail(function() {
+            self.pPCustom.showMsg('Error', 'loading view');
+        });
+    }
+    else{
+        self.pPCustom.showMsg('ERROR', 'Load View Data no idView');
+        return $.Deferred().reject();
+    }
 }
 
 
-View.prototype.drawAndUpdateView = function () {
+View.prototype.drawView = function () {
 
     var self = this;
-    if (self.view) { 
-        self.rootE.empty();
-    }
+    self.rootE.empty();
     self.rootE.css('background-image', 'url('+self.pPCustom.imgUrl+self.image+')');
-    self.loadCustomElements(self.idView);
 }
 
 
@@ -50,10 +59,10 @@ View.prototype.loadCustomElements = function (idView) {
 
     var self = this;
     self.pPCustom.showMsg('LOG', 'Loading Custom Elements of view: ' + idView );
-    $.getJSON(this.pPCustom.apiUrl + 'get-custom-elements&IDvie=' + idView)
+    return $.ajax(self.pPCustom.apiUrl + 'get-custom-elements&IDvie=' + idView)
     .done(function(customElements) {
         for (var i = customElements.length - 1; i >= 0; i--) {
-            self.loadCustomElement(customElements[i]);
+            self.addCustomElement(customElements[i]);
         };
     })
     .fail(function() {
@@ -62,10 +71,10 @@ View.prototype.loadCustomElements = function (idView) {
 }
 
 
-View.prototype.loadCustomElement = function (customElementData) {
+View.prototype.addCustomElement = function(customElementData) {
 
     var self = this;
-    self.pPCustom.showMsg('LOG', 'Load Custom Element: ' + customElementData.type );
+    self.pPCustom.showMsg('LOG', 'Add Custom Element: ' + customElementData.type );
     switch (customElementData.type) {
     case 'area':
         self.customElements.push(new Area(self, customElementData));
@@ -74,14 +83,14 @@ View.prototype.loadCustomElement = function (customElementData) {
         self.customElements.push(new Text(self, customElementData));
         break;
     }
-    self.customElements[self.customElements.length-1].draw();
 }
 
 
-// View.prototype.addCustomElement = function() {
+View.prototype.initCustomElements = function () {
 
-//     var self = this;
-//     // FRIST get ID from DB
-//     // Call loadCustomElement
-    
-// }
+    var self = this;
+    for (var i = self.customElements.length - 1; i >= 0; i--) {
+        self.customElements[i].draw();
+        self.customElements[i].binding();
+    };
+}

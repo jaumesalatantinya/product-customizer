@@ -21,6 +21,7 @@ class Api {
         $this->idCus = $_GET['IDcus'];
         $this->idVie = $_GET['IDvie'];
         $this->file = $_GET['file'];
+        $this->idCusele = $_GET['IDcusele'];
     }
 
 
@@ -56,9 +57,22 @@ class Api {
                 $this->response = $this->apiRequests->putImgToView($this->idVie, $this->file);
                 $this->returnJSONResponse();
                 break;
+            case 'put-area':
+                $this->response = $this->apiRequests->putArea($this->idVie);
+                $this->returnJSONResponse();
+                break;
+
+            case 'update-area':
+                $this->response = $this->apiRequests->updateArea($this->idCusele);
+                $this->returnJSONResponse();
+                break;                
 
             case 'del-view':
                 $this->response = $this->apiRequests->delView($this->idVie);
+                $this->returnJSONResponse();
+                break;
+            case 'del-custom-element':
+                $this->response = $this->apiRequests->delCustomElement($this->idCusele);
                 $this->returnJSONResponse();
                 break;
 

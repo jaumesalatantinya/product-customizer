@@ -25,7 +25,9 @@
     <title>Sellos y Rótulos</title>
     <link href="styles/style.css" rel="stylesheet" type="text/css" />
     <link href="product-customizer/styles.css" rel="stylesheet" type="text/css" />
+    <link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
     <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
     <script src="product-customizer/view.js" type="text/javascript"></script>
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
@@ -75,21 +77,6 @@
                     <li></li>
                     <div class="clear"></div>
                 </ul>
-                <!-- <div class="row">
-                    <form ACTION="<?php echo $page; ?>" method="get" id="form" name="form" >          
-                        <label>
-                            <a id="fancy" class="fancy show_popup" data-fancybox-type="iframe" href="product-customizer/api/file-uploader-view.php">Añadir imágenes</a>
-                        </label>
-                        <h2 class="red"><span>Producto:</span> <?php echo $row_Recordset2['Producto_esp']?></h2>
-                        <div class="clear"></div>
-                        <label>
-                            <input name="Order2" id="Order2" type="hidden" value="POS_ima ASC" />
-                        </label>
-                        <label>
-                            <input name="IDpro" id="IDpro" type="hidden" value="<?php echo $row_Recordset2['IDpro']?>" />
-                        </label>
-                    </form>
-                </div> -->
                 <div class="list">
                     <div id="product-customizer">
                         <div id="view"></div>

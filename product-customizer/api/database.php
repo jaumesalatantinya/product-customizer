@@ -77,9 +77,5 @@ class Database {
            return false; 
         }
     }
-    // public function delete()        {   }
-    // public function update()    {   }
-    // public function disconnect()    {   }
-
 }
 ?>

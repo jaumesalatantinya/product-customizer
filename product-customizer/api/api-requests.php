@@ -54,6 +54,13 @@ class ApiRequests {
         return $this->db->insert($q);
     }
 
+    public function putArea($idVie) {
+
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height) VALUES (' . $idVie . ' , "area", 200, 200, 200, 200)';
+        // echo ($q);
+        return $this->db->insert($q);
+    }
+
 
     public function putImgToView($idVie, $file) {
 
@@ -65,6 +72,13 @@ class ApiRequests {
     public function delView($idVie) {
 
         $q = 'DELETE FROM bd_custom_views WHERE IDcusvie =' . $idVie;
+        return $this->db->delete($q);
+    }
+
+
+    public function delCustomElement($idCusele) {
+
+        $q = 'DELETE FROM bd_custom_elements WHERE IDcusele=' . $idCusele;
         return $this->db->delete($q);
     }
 }

@@ -33,7 +33,7 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
     var self = this;
     if (idCustom) {
         self.showMsg('LOG', 'Get Customization Data from customization: ' + idCustom);
-        $.getJSON(this.apiUrl + 'get-custom&IDcus=' + idCustom)
+        $.ajax(this.apiUrl + 'get-custom&IDcus=' + idCustom)
         .done(function(customData) {
             self.idProduct = customData[0].ID_pro;
             self.isTemplate = customData[0].Is_Template;
@@ -68,7 +68,7 @@ ProductCustomizer.prototype.getviewsData = function (idCustom) {
     if (idCustom) {
         self.showMsg('LOG', 'Get Views Ids from customization: ' + idCustom);
         self.viewsData = [];
-        return $.getJSON(this.apiUrl + 'get-views&IDcus=' + idCustom)
+        return $.ajax(this.apiUrl + 'get-views&IDcus=' + idCustom)
         .done(function(views) {
             if (views && views.length > 0) {
                 self.viewsData = views;
@@ -90,8 +90,8 @@ ProductCustomizer.prototype.drawView = function (idView) {
     var self = this;
     if (idView){
         self.showMsg('LOG', 'Drawing view: ' + idView);
-        self.view = new View(self, idView);
-        self.view.init();
+        self.view = new View();
+        self.view.init(self, idView);
     }
     else { self.showMsg('ERROR', 'Draw View: No idView passed as param'); }
 }
@@ -123,23 +123,17 @@ ProductCustomizer.prototype.drawNavViews = function () {
 ProductCustomizer.prototype.drawNavMain = function() {
 
     var self = this;
-    $('#nav-main').html('\
-    <li id="btn-add-view">Añadir vista</li>\
-    <li id="btn-add-view-img">Añadir o modificar imagen vista</li>\
-    <li id="btn-add-area">Añadir area</li>\
-    <li id="btn-add-text">Añadir text</li>\
-    <li id="btn-add-image">Añadir imatge</li>\
-    <li id="btn-add-svg">Añadir tu imagen</li>\
-    <li id="btn-reset">Reset</li>');
-    $('#btn-add-view').click(       function (){ self.addView(); });
-    $('#btn-add-view-img').click(   function (){ self.showUploadForm('view'); });
-    $('#btn-add-area').click(       function (){ self.btnAddCustomElement('area'); });
-    $('#btn-add-text').click(       function (){ self.btnAddCustomElement('text'); });
-    $('#btn-add-image').click(      function (){ self.btnAddCustomElement('img'); });
-    $('#btn-add-svg').click(        function (){ self.btnAddCustomElement('svg'); });
-    if (self.viewsData.length == 0){
-        $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img').addClass('disabled').unbind('click');
-    }
+    $('#nav-main').load('product-customizer/nav-main.html', function() {
+        $('#btn-add-view').click(       function (){ self.addView(); });
+        $('#btn-add-view-img').click(   function (){ self.showUploadForm('view'); });
+        $('#btn-add-area').click(       function (){ self.addArea(); });
+        $('#btn-add-text').click(       function (){ self.btnAddCustomElement('text'); });
+        $('#btn-add-image').click(      function (){ self.btnAddCustomElement('img'); });
+        $('#btn-add-svg').click(        function (){ self.btnAddCustomElement('svg'); });
+        if (self.viewsData.length == 0){
+            $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img').addClass('disabled').unbind('click');
+        }
+    });
 }
 
 
@@ -147,7 +141,7 @@ ProductCustomizer.prototype.addView = function () {
 
     var self = this;
     if (self.idCustom) {
-        $.getJSON(this.apiUrl + 'put-view&IDcus=' + self.idCustom)
+        $.ajax(this.apiUrl + 'put-view&IDcus=' + self.idCustom)
         .done(function(newViewId) {
             if (newViewId) {
                 self.showMsg('LOG', 'Adding view: ' + newViewId);
@@ -167,9 +161,9 @@ ProductCustomizer.prototype.delView = function (idView) {
     var self = this;
     self.showMsg('LOG', 'Deleting view: '+idView);
     if (idView) {
-        $.getJSON(this.apiUrl + 'del-view&IDvie=' + idView)
-        .done(function(delresponse) {
-            if (delresponse) {
+        $.ajax(this.apiUrl + 'del-view&IDvie=' + idView)
+        .done(function(response) {
+            if (response) {
                 self.view.rootE.empty();
                 self.view.rootE.css('background-image', 'none');
                 self.drawAndUpdateProductCustomizer('default');
@@ -180,14 +174,39 @@ ProductCustomizer.prototype.delView = function (idView) {
             self.showMsg('ERROR', 'API Del View');
         });
     }
-    else { self.showMsg('ERROR', 'Del View: No idView passed as param to delete'); }
+    else { self.showMsg('ERROR', 'Del View: No idView passed as param'); }
 }
 
 
-ProductCustomizer.prototype.btnAddCustomElement = function(type) {
+// ProductCustomizer.prototype.btnAddCustomElement = function(type) {
+
+//     var self = this;
+//     self.showMsg('LOG', 'Adding custom element' + type);
+//     switch (type) {
+//     case 'area':
+//         self.addArea();
+//         break;
+//     case 'text':
+//         // self.customElements.push(new Text(self, customElementData));
+//         break;
+//     }
+// }
+
+
+ProductCustomizer.prototype.addArea = function() {
 
     var self = this;
-    self.showMsg('LOG', 'Adding custom element' + type);
+    self.showMsg('LOG', 'Adding Area as custom element to DB');
+    $.ajax(this.apiUrl + 'put-area&IDvie=' + self.currentView)
+    .done(function(response) {
+        if (response) {
+            self.drawAndUpdateProductCustomizer(self.currentView);
+        }
+        else { self.showMsg('ERROR', 'Add Area: No new id custom element area'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Add Area');
+    });
 }
 
 
@@ -233,7 +252,7 @@ ProductCustomizer.prototype.uploadFile = function (type){
 ProductCustomizer.prototype.putImgToView = function (file) {
 
     var self = this;
-    $.getJSON(this.apiUrl + 'put-img-to-view&IDvie=' + self.currentView + '&file='+file)
+    $.ajax(this.apiUrl + 'put-img-to-view&IDvie=' + self.currentView + '&file='+file)
     .done(function(response) {
         if (response) {
             $('#wrapper-upload-form').hide();
