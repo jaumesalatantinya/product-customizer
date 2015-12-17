@@ -57,7 +57,6 @@ class ApiRequests {
     public function putArea($idVie) {
 
         $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height) VALUES (' . $idVie . ' , "area", 200, 200, 200, 200)';
-        // echo ($q);
         return $this->db->insert($q);
     }
 
@@ -65,6 +64,12 @@ class ApiRequests {
     public function putImgToView($idVie, $file) {
 
         $q = 'UPDATE bd_custom_views SET Image="' . $file . '" WHERE IDcusvie=' . $idVie;
+        return $this->db->update($q);
+    }
+
+    public function updateArea($idCusele, $x, $y, $width, $height) {
+
+        $q = 'UPDATE bd_custom_elements SET x="' . $x . '", y="' . $y . '", width="' . $width . '", height="' . $height .'" WHERE IDcusele=' . $idCusele;
         return $this->db->update($q);
     }
 

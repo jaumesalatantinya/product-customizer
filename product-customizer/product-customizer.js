@@ -178,21 +178,6 @@ ProductCustomizer.prototype.delView = function (idView) {
 }
 
 
-// ProductCustomizer.prototype.btnAddCustomElement = function(type) {
-
-//     var self = this;
-//     self.showMsg('LOG', 'Adding custom element' + type);
-//     switch (type) {
-//     case 'area':
-//         self.addArea();
-//         break;
-//     case 'text':
-//         // self.customElements.push(new Text(self, customElementData));
-//         break;
-//     }
-// }
-
-
 ProductCustomizer.prototype.addArea = function() {
 
     var self = this;

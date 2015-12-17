@@ -54,15 +54,15 @@ Area.prototype.draw = function() {
     self.pView.pPCustom.showMsg('LOG', 'Drawing Area id:' + self.data.IDcusele);
     if (self.data){
         self.customE.css({
-            'width' : this.data.width+'px',
-            'height' : this.data.height+'px',
-            'left' : this.data.x+'px',
-            'top' : this.data.y+'px',
+            'width' : self.data.width+'px',
+            'height' : self.data.height+'px',
+            'left' : self.data.x+'px',
+            'top' : self.data.y+'px',
         });
     }
 };
 
-Area.prototype.binding = function() {
+Area.prototype.binding = function () {
 
     var self = this;
     self.customE.find('.del-custom-element').click(function() {
@@ -70,16 +70,42 @@ Area.prototype.binding = function() {
     });
     self.customE.draggable({
         stop: function() {
-            console.log('Stop position left: ' + $(this).position().left + ' top: ' + $(this).position().top);
+            var newAreaData = {
+                IDcusele: self.data.IDcusele,
+                x: $(this).position().left, y: $(this).position().top,
+                width: $(this).width(), height: $(this).height() 
+            };
+            self.update(newAreaData);
         }
     }).resizable({
         stop: function() {
-            console.log('Width: ' + $(this).width() + ' Height: ' + $(this).height());
+            var newAreaData = {
+                IDcusele: self.data.IDcusele,
+                x: $(this).position().left, y: $(this).position().top,
+                width: $(this).width(), height: $(this).height() 
+            };
+            self.update(newAreaData);
         }
     });
 };
 
+Area.prototype.update = function (newAreaData) {
 
+    var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Update Area');
+    $.ajax({
+        url: self.pView.pPCustom.apiUrl + 'update-area',
+        data: newAreaData
+    })
+    .done(function(response) {
+        if (!response) {
+            self.pView.pPCustom.showMsg('ERROR', 'Update Area: API response false');
+        }
+    })
+    .fail(function() {
+        self.pView.pPCustom.showMsg('ERROR', 'API: Update Area');
+    });
+}
 
 
 

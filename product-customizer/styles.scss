@@ -60,7 +60,7 @@ $disabled-color-backgound: #EEE;
 }
 
 .wrapper-custom-element {
-    position: absolute;
+    position: absolute !important;
     cursor: move;
 }
 

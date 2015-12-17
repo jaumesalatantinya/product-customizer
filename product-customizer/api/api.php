@@ -22,6 +22,10 @@ class Api {
         $this->idVie = $_GET['IDvie'];
         $this->file = $_GET['file'];
         $this->idCusele = $_GET['IDcusele'];
+        $this->x = $_GET['x'];
+        $this->y = $_GET['y'];
+        $this->width = $_GET['width'];
+        $this->height = $_GET['height'];
     }
 
 
@@ -63,7 +67,7 @@ class Api {
                 break;
 
             case 'update-area':
-                $this->response = $this->apiRequests->updateArea($this->idCusele);
+                $this->response = $this->apiRequests->updateArea($this->idCusele, $this->x, $this->y, $this->width, $this->height);
                 $this->returnJSONResponse();
                 break;                
 
