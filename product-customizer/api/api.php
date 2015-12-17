@@ -65,6 +65,10 @@ class Api {
                 $this->response = $this->apiRequests->putArea($this->idVie);
                 $this->returnJSONResponse();
                 break;
+            case 'put-text':
+                $this->response = $this->apiRequests->putText($this->idVie);
+                $this->returnJSONResponse();
+                break;
 
             case 'update-area':
                 $this->response = $this->apiRequests->updateArea($this->idCusele, $this->x, $this->y, $this->width, $this->height);

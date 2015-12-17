@@ -126,8 +126,8 @@ ProductCustomizer.prototype.drawNavMain = function() {
     $('#nav-main').load('product-customizer/nav-main.html', function() {
         $('#btn-add-view').click(       function (){ self.addView(); });
         $('#btn-add-view-img').click(   function (){ self.showUploadForm('view'); });
-        $('#btn-add-area').click(       function (){ self.addArea(); });
-        $('#btn-add-text').click(       function (){ self.btnAddCustomElement('text'); });
+        $('#btn-add-area').click(       function (){ self.addArea(self.currentView); });
+        $('#btn-add-text').click(       function (){ self.addText(self.currentView); });
         $('#btn-add-image').click(      function (){ self.btnAddCustomElement('img'); });
         $('#btn-add-svg').click(        function (){ self.btnAddCustomElement('svg'); });
         if (self.viewsData.length == 0){
@@ -178,19 +178,35 @@ ProductCustomizer.prototype.delView = function (idView) {
 }
 
 
-ProductCustomizer.prototype.addArea = function() {
+ProductCustomizer.prototype.addArea = function(idView) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Area as custom element to DB');
-    $.ajax(this.apiUrl + 'put-area&IDvie=' + self.currentView)
+    $.ajax(this.apiUrl + 'put-area&IDvie=' + idView)
     .done(function(response) {
         if (response) {
-            self.drawAndUpdateProductCustomizer(self.currentView);
+            self.drawAndUpdateProductCustomizer(idView);
         }
         else { self.showMsg('ERROR', 'Add Area: No new id custom element area'); }
     })
     .fail(function() {
         self.showMsg('ERROR', 'API Add Area');
+    });
+}
+
+ProductCustomizer.prototype.addText = function(idView) {
+
+    var self = this;
+    self.showMsg('LOG', 'Adding Text as custom element to DB');
+    $.ajax(this.apiUrl + 'put-text&IDvie=' + idView)
+    .done(function(response) {
+        if (response) {
+            self.drawAndUpdateProductCustomizer(idView);
+        }
+        else { self.showMsg('ERROR', 'Add Text: No new id custom element text'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Add Text');
     });
 }
 

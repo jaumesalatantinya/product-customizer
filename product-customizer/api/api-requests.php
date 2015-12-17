@@ -48,6 +48,8 @@ class ApiRequests {
     }
 
 
+
+
     public function putView($idCus) {
 
         $q = 'INSERT INTO bd_custom_views (ID_cus) VALUES (' . $idCus . ')';
@@ -59,6 +61,15 @@ class ApiRequests {
         $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height) VALUES (' . $idVie . ' , "area", 200, 200, 200, 200)';
         return $this->db->insert($q);
     }
+
+    public function putText($idVie) {
+
+        $attr = json_encode('{"family": "arial", "bold": false, "italic": false, "size": 20, "align": "center"}');
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, font_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 200, "Peace in the world", '. $attr .' )';
+        return $this->db->insert($q);
+    }
+
+
 
 
     public function putImgToView($idVie, $file) {
@@ -74,12 +85,13 @@ class ApiRequests {
     }
 
 
+
+
     public function delView($idVie) {
 
         $q = 'DELETE FROM bd_custom_views WHERE IDcusvie =' . $idVie;
         return $this->db->delete($q);
     }
-
 
     public function delCustomElement($idCusele) {
 

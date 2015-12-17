@@ -2,7 +2,8 @@ $white: #fff;
 $gray: #faf9f6;
 $light-gray: #E8E8E8;
 $nav-main-border-color: $light-gray;
-$area-boder-color: black;
+$area-border-color: black;
+$text-border-color: black;
 $nav-views-border-color: black;
 $disabled-color: #BBB;
 $disabled-color-backgound: #EEE;
@@ -91,7 +92,11 @@ $disabled-color-backgound: #EEE;
 }
 
 .area {
-    border: 1px solid $area-boder-color;
+    border: 1px solid $area-border-color;
+}
+
+.text {
+    border: 1px dotted $text-border-color;
 }
 
 #wrapper-modal {

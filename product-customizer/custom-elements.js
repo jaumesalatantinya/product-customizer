@@ -26,6 +26,54 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
     else { self.showMsg('ERROR', 'Del CustomElement: No idCusele passed as param'); }
 }
 
+CustomElement.prototype.binding = function () {
+
+    var self = this;
+    self.customE.find('.del-custom-element').click(function() {
+        self.delCustomElement(self.data.IDcusele);
+    });
+    self.customE.draggable({
+        stop: function() {
+            var newPosSizeData = {
+                IDcusele: self.data.IDcusele,
+                x: $(this).position().left, y: $(this).position().top,
+                width: $(this).width(), height: $(this).height() 
+            };
+            self.update(newPosSizeData);
+        }
+    }).resizable({
+        stop: function() {
+            var newPosSizeData = {
+                IDcusele: self.data.IDcusele,
+                x: $(this).position().left, y: $(this).position().top,
+                width: $(this).width(), height: $(this).height() 
+            };
+            self.update(newPosSizeData);
+        }
+    });
+};
+
+CustomElement.prototype.update = function (newPosSizeData) {
+
+    var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Update Custom Element');
+    $.ajax({
+        url: self.pView.pPCustom.apiUrl + 'update-area',
+        data: newPosSizeData
+    })
+    .done(function(response) {
+        if (response) {
+            // self.draw();
+        }
+        else {
+            self.pView.pPCustom.showMsg('ERROR', 'Update Custom Element: API response false');
+        }
+    })
+    .fail(function() {
+        self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
+    });
+}
+
 
 
 
@@ -62,50 +110,7 @@ Area.prototype.draw = function() {
     }
 };
 
-Area.prototype.binding = function () {
 
-    var self = this;
-    self.customE.find('.del-custom-element').click(function() {
-        self.delCustomElement(self.data.IDcusele);
-    });
-    self.customE.draggable({
-        stop: function() {
-            var newAreaData = {
-                IDcusele: self.data.IDcusele,
-                x: $(this).position().left, y: $(this).position().top,
-                width: $(this).width(), height: $(this).height() 
-            };
-            self.update(newAreaData);
-        }
-    }).resizable({
-        stop: function() {
-            var newAreaData = {
-                IDcusele: self.data.IDcusele,
-                x: $(this).position().left, y: $(this).position().top,
-                width: $(this).width(), height: $(this).height() 
-            };
-            self.update(newAreaData);
-        }
-    });
-};
-
-Area.prototype.update = function (newAreaData) {
-
-    var self = this;
-    self.pView.pPCustom.showMsg('LOG', 'Update Area');
-    $.ajax({
-        url: self.pView.pPCustom.apiUrl + 'update-area',
-        data: newAreaData
-    })
-    .done(function(response) {
-        if (!response) {
-            self.pView.pPCustom.showMsg('ERROR', 'Update Area: API response false');
-        }
-    })
-    .fail(function() {
-        self.pView.pPCustom.showMsg('ERROR', 'API: Update Area');
-    });
-}
 
 
 
@@ -113,7 +118,15 @@ Area.prototype.update = function (newAreaData) {
 
 function Text(view, customElementData) {
 
+    var self = this;
     CustomElement.call(this, view, customElementData);
+    self.pView.pPCustom.showMsg('LOG', 'Add Text id:' + self.data.IDcusele);
+    self.customE = $('<div class="wrapper-custom-element">\
+                        <div class="custom-element text">'+self.data.text+'</div>\
+                        <div class="move-custom-element"></div>\
+                        <div class="del-custom-element"></div>\
+                      </div>');
+    self.pView.rootE.append(self.customE);
 };
 Text.prototype = Object.create(CustomElement.prototype);
 Text.prototype.constructor = Text;
@@ -121,18 +134,22 @@ Text.prototype.constructor = Text;
 Text.prototype.draw = function(){
 
     var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Drawing Area');
     if (self.data){
-        self.pView.pPCustom.showMsg('INFO', 'Drawing Text');
-        var div = $('<div>',{
-            class: 'custom-element text',
-            text: self.data.text
-        })
-        .css({
+        self.customE.css({
             'width' : self.data.width+'px',
             'height' : self.data.height+'px',
             'left' : self.data.x+'px',
             'top' : self.data.y+'px',
         });
-        self.pView.rootE.append(div);
+        self.data.font_attr = JSON.parse(self.data.font_attr);
+        self.customE.find('.text').css({
+            'font-family': self.data.font_attr.family,
+            'font-weight': self.data.font_attr.weight,
+            'font-style': self.data.font_attr.style,
+            'font-size': self.data.font_attr.size,
+            'text-align': self.data.font_attr.align
+        });
     }
 };
+
