@@ -3,6 +3,7 @@ $gray: #faf9f6;
 $light-gray: #E8E8E8;
 $nav-main-border-color: $light-gray;
 $area-border-color: black;
+$area-no-printable-background-color: rgba(255, 0, 0, 0.2);
 $text-border-color: black;
 $nav-views-border-color: black;
 $disabled-color: #BBB;
@@ -114,7 +115,14 @@ $disabled-color-backgound: #EEE;
 
 .area {
     border: 1px solid $area-border-color;
-    // border-radius: 50%;
+}
+
+.area-circle {
+    border-radius: 50%;
+}
+
+.area-no-printable {
+    background-color: $area-no-printable-background-color;
 }
 
 .text {

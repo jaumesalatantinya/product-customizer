@@ -22,10 +22,11 @@ class Api {
         $this->idVie = $_GET['IDvie'];
         $this->file = $_GET['file'];
         $this->idCusele = $_GET['IDcusele'];
-        $this->x = $_GET['x'];
-        $this->y = $_GET['y'];
-        $this->width = $_GET['width'];
-        $this->height = $_GET['height'];
+        // $this->x = $_GET['x'];
+        // $this->y = $_GET['y'];
+        // $this->width = $_GET['width'];
+        // $this->height = $_GET['height'];
+        $this->data = $_POST;
     }
 
 
@@ -78,8 +79,12 @@ class Api {
 
 
 
-            case 'update-custom-element':
-                $this->response = $this->apiRequests->updateCustomElement($this->idCusele, $this->x, $this->y, $this->width, $this->height);
+            case 'update-custom-element-pos-size':
+                $this->response = $this->apiRequests->updateCustomElementPosSize($this->idCusele, $this->data);
+                $this->returnJSONResponse();
+                break;
+            case 'update-area':
+                $this->response = $this->apiRequests->updateArea($this->idCusele, $this->data);
                 $this->returnJSONResponse();
                 break;                
 

@@ -64,14 +64,15 @@ class ApiRequests {
 
     public function putArea($idVie) {
 
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height) VALUES (' . $idVie . ' , "area", 200, 200, 200, 200)';
+        $attr = json_encode('{"shape": "rectangle", "printable": "true"}');
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, area_attr) VALUES (' . $idVie . ' , "area", 200, 200, 200, 200, ' . $attr . ')';
         return $this->db->insert($q);
     }
 
     public function putText($idVie) {
 
         $attr = json_encode('{"family": "arial", "weight": "normal", "style": "normal", "size": 20, "align": "center"}');
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, font_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 200, "Peace in the world", '. $attr .' )';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, font_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 200, "AQUÍ TU TEXTO", '. $attr .' )';
         return $this->db->insert($q);
     }
 
@@ -84,9 +85,15 @@ class ApiRequests {
         return $this->db->update($q);
     }
 
-    public function updateCustomElement($idCusele, $x, $y, $width, $height) {
+    public function updateCustomElementPosSize($idCusele, $data) {
 
-        $q = 'UPDATE bd_custom_elements SET x="' . $x . '", y="' . $y . '", width="' . $width . '", height="' . $height .'" WHERE IDcusele=' . $idCusele;
+        $q = 'UPDATE bd_custom_elements SET x="' . $data['x'] . '", y="' . $data['y'] . '", width="' . $data['width'] . '", height="' . $data['height'] .'" WHERE IDcusele=' . $idCusele;
+        return $this->db->update($q);
+    }
+
+    public function updateArea($idCusele, $data) {
+
+        $q = 'UPDATE bd_custom_elements SET area_attr=\'' . json_encode($data) . '\' WHERE IDcusele=' . $idCusele;
         return $this->db->update($q);
     }
 

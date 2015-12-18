@@ -6,6 +6,7 @@ var CustomElement = function (view, id, customElementData) {
     this.customE = $();
     this.id = id;
     this.data = customElementData;
+    this.data.area_attr = JSON.parse(this.data.area_attr);
 }
 
 CustomElement.prototype.init = function () {
@@ -24,6 +25,7 @@ CustomElement.prototype.loadData = function () {
     .done(function(customElementData) {
         if (customElementData){
             self.data = customElementData[0];
+            self.data.area_attr = JSON.parse(self.data.area_attr);
         }
         else {
             self.pPCustom.showMsg('ERROR', 'API: Load custom elements data return empty');    
@@ -48,11 +50,10 @@ CustomElement.prototype.bindings = function () {
     self.customE.draggable({
         stop: function() {
             var newPosSizeData = {
-                IDcusele: self.data.IDcusele,
                 x: $(this).position().left, y: $(this).position().top,
                 width: $(this).width(), height: $(this).height() 
             };
-            self.update(newPosSizeData).done(function() {
+            self.updatePosSize(newPosSizeData).done(function() {
                 self.loadData();
             });
         }
@@ -66,11 +67,10 @@ CustomElement.prototype.bindings = function () {
         },
         stop: function() {
             var newPosSizeData = {
-                IDcusele: self.data.IDcusele,
                 x: $(this).position().left, y: $(this).position().top,
                 width: $(this).width(), height: $(this).height() 
             };
-            self.update(newPosSizeData).done(function() {
+            self.updatePosSize(newPosSizeData).done(function() {
                 self.loadData();
             });
         }
@@ -86,12 +86,13 @@ CustomElement.prototype.edit = function (newPosSizeData) {
     self.pView.pPCustom.showAuxMenu(self);
 }
 
-CustomElement.prototype.update = function (newPosSizeData) {
+CustomElement.prototype.updatePosSize = function (newPosSizeData) {
 
     var self = this;
     self.pView.pPCustom.showMsg('LOG', 'Update Custom Element');
     return $.ajax({
-        url: self.pView.pPCustom.apiUrl + 'update-custom-element',
+        type: 'POST',
+        url: self.pView.pPCustom.apiUrl + 'update-custom-element-pos-size&IDcusele='+self.data.IDcusele,
         data: newPosSizeData
     })
     .done(function(response) {
@@ -122,6 +123,9 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
     }
     else { self.showMsg('ERROR', 'Del CustomElement: No idCusele passed as param'); }
 }
+
+
+
 
 
 
@@ -161,8 +165,45 @@ Area.prototype.draw = function() {
             'width' : (self.data.width -28)+'px',
             'height' : (self.data.height -28)+'px',
         });
+        if (self.data.area_attr.shape == 'cercle'){
+            self.customE.find('.custom-element').addClass('area-circle');
+        }
+        if (self.data.area_attr.shape == 'rectangle') {
+            self.customE.find('.custom-element').removeClass('area-circle');
+        }
+        if (self.data.area_attr.printable == 'false'){
+            self.customE.find('.custom-element').addClass('area-no-printable');
+        }
+        if (self.data.area_attr.printable == 'true') {
+            self.customE.find('.custom-element').removeClass('area-no-printable');
+        }
     }
 };
+
+
+
+Area.prototype.update = function(change, value) {
+
+    var self = this;
+    self.data.area_attr[change] = value;
+    $.ajax({
+        type: 'POST',
+        url: self.pView.pPCustom.apiUrl + 'update-area&IDcusele=' + self.data.IDcusele,             
+        data: self.data.area_attr
+    })
+    .done(function(response) {
+        self.draw();
+    })
+    .fail(function() {
+        self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
+    });
+}
+
+
+
+
+
+
 
 
 

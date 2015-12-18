@@ -253,7 +253,7 @@ ProductCustomizer.prototype.uploadFile = function (type){
 ProductCustomizer.prototype.putImgToView = function (file) {
 
     var self = this;
-    $.ajax(this.apiUrl + 'put-img-to-view&IDvie=' + self.currentView + '&file='+file)
+    $.ajax(self.apiUrl + 'put-img-to-view&IDvie=' + self.currentView + '&file='+file)
     .done(function(response) {
         if (response) {
             $('#wrapper-upload-form').hide();
@@ -267,19 +267,20 @@ ProductCustomizer.prototype.putImgToView = function (file) {
 }
 
 
-ProductCustomizer.prototype.showAuxMenu = function(customElemntEditing) {
+ProductCustomizer.prototype.showAuxMenu = function(customElementEditing) {
 
     var self = this;
     $('#aux-menu').show();
-    $('#aux-menu').load('product-customizer/aux-menu-'+customElemntEditing.data.type+'.html', function() {
-        $('#btn-rectangle').click( function (){/*HERE*/});
-        $('#btn-circle').click(    function (){console.log('cercle')});
-        $('#btn-area').click(      function (){});
-        $('#btn-no-area').click(   function (){});
+    $('#aux-menu').load('product-customizer/aux-menu-'+customElementEditing.data.type+'.html', function() {
+        $('#btn-rectangle').click(    function (){ customElementEditing.update('shape', 'rectangle'); });
+        $('#btn-circle').click(       function (){ customElementEditing.update('shape', 'cercle');    });
+        $('#btn-printable').click(    function (){ customElementEditing.update('printable', 'true');  });
+        $('#btn-no-printable').click( function (){ customElementEditing.update('printable', 'false'); });
     });
 };
 
-ProductCustomizer.prototype.hideAuxMenu = function(customElemntEditing) {
+
+ProductCustomizer.prototype.hideAuxMenu = function() {
 
     $('#aux-menu').hide();
 };
