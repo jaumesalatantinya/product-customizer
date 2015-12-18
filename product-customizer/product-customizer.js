@@ -10,7 +10,6 @@ var ProductCustomizer = function () {
     this.viewsData = [];
     this.view;
     this.currentView;
-    this.currentCustomElemntEditing;
     this.apiUrl = 'product-customizer/api/api.php?request=';
     this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
     this.mode = 'dev'; //[pro|dev]
@@ -266,6 +265,24 @@ ProductCustomizer.prototype.putImgToView = function (file) {
         self.showMsg('ERROR', 'API Put Img View');
     });
 }
+
+
+ProductCustomizer.prototype.showAuxMenu = function(customElemntEditing) {
+
+    var self = this;
+    $('#aux-menu').show();
+    $('#aux-menu').load('product-customizer/aux-menu-'+customElemntEditing.data.type+'.html', function() {
+        $('#btn-rectangle').click( function (){/*HERE*/});
+        $('#btn-circle').click(    function (){console.log('cercle')});
+        $('#btn-area').click(      function (){});
+        $('#btn-no-area').click(   function (){});
+    });
+};
+
+ProductCustomizer.prototype.hideAuxMenu = function(customElemntEditing) {
+
+    $('#aux-menu').hide();
+};
 
 
 ProductCustomizer.prototype.showMsg = function(type, msg) {

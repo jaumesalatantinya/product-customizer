@@ -41,11 +41,9 @@ CustomElement.prototype.draw = function() {
 CustomElement.prototype.bindings = function () {
 
     var self = this;
-    self.customE.find('.del-custom-element').click(function() {
-        self.delCustomElement(self.data.IDcusele);
-    });
+    
     self.customE.find('.custom-element').click(function(){
-        console.log('editing');
+        self.edit();
     });
     self.customE.draggable({
         stop: function() {
@@ -77,7 +75,16 @@ CustomElement.prototype.bindings = function () {
             });
         }
     });
+    self.customE.find('.del-custom-element').click(function() {
+        self.delCustomElement(self.data.IDcusele);
+    });
 };
+
+CustomElement.prototype.edit = function (newPosSizeData) {
+
+    var self = this;
+    self.pView.pPCustom.showAuxMenu(self);
+}
 
 CustomElement.prototype.update = function (newPosSizeData) {
 

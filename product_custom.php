@@ -88,22 +88,7 @@
                                 <p></p>
                             </div>
                         </div>
-                        <div id="aux-menu">
-                            <select>
-                                <option value="arial">arial</option>
-                                <option value="times">times</option>
-                            </select>
-                            <div class="wrapper-size">
-                                <input type="text" name="fname" value="10">px
-                                <button type="button">+</button>
-                                <button type="button">-</button>
-                            </div>
-                            <button type="button">B</button>
-                            <button type="button">I</button>
-                            <button type="button">L</button>
-                            <button type="button">M</button>
-                            <button type="button">R</button>
-                        </div>
+                        <div id="aux-menu"></div>
                         <div id="wrapper-upload-form">
                             <div class="modal">
                                 <a href="#" class="btn-close">Close</a>
