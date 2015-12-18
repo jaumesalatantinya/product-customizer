@@ -52,6 +52,12 @@ class Api {
                 $this->response = $this->apiRequests->getCustomElements($this->idVie);
                 $this->returnJSONResponse();
                 break;
+            case 'get-custom-element':
+                $this->response = $this->apiRequests->getCustomElement($this->idCusele);
+                $this->returnJSONResponse();
+                break;
+
+
 
             case 'put-view':
                 $this->response = $this->apiRequests->putView($this->idCus);
@@ -70,10 +76,14 @@ class Api {
                 $this->returnJSONResponse();
                 break;
 
-            case 'update-area':
-                $this->response = $this->apiRequests->updateArea($this->idCusele, $this->x, $this->y, $this->width, $this->height);
+
+
+            case 'update-custom-element':
+                $this->response = $this->apiRequests->updateCustomElement($this->idCusele, $this->x, $this->y, $this->width, $this->height);
                 $this->returnJSONResponse();
                 break;                
+
+
 
             case 'del-view':
                 $this->response = $this->apiRequests->delView($this->idVie);

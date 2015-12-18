@@ -47,6 +47,12 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
+    public function getCustomElement($idCusele) {
+
+        $q = 'SELECT * FROM bd_custom_elements WHERE IDcusele =' . $idCusele;
+        return $this->db->select($q);
+    }
+
 
 
 
@@ -64,7 +70,7 @@ class ApiRequests {
 
     public function putText($idVie) {
 
-        $attr = json_encode('{"family": "arial", "bold": false, "italic": false, "size": 20, "align": "center"}');
+        $attr = json_encode('{"family": "arial", "weight": "normal", "style": "normal", "size": 20, "align": "center"}');
         $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, font_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 200, "Peace in the world", '. $attr .' )';
         return $this->db->insert($q);
     }
@@ -78,7 +84,7 @@ class ApiRequests {
         return $this->db->update($q);
     }
 
-    public function updateArea($idCusele, $x, $y, $width, $height) {
+    public function updateCustomElement($idCusele, $x, $y, $width, $height) {
 
         $q = 'UPDATE bd_custom_elements SET x="' . $x . '", y="' . $y . '", width="' . $width . '", height="' . $height .'" WHERE IDcusele=' . $idCusele;
         return $this->db->update($q);

@@ -1,10 +1,100 @@
 'use strict';
 
-var CustomElement = function (view, customElementData) {
+var CustomElement = function (view, id, customElementData) {
 
     this.pView = view;
     this.customE = $();
+    this.id = id;
     this.data = customElementData;
+}
+
+CustomElement.prototype.init = function () {
+
+    var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Init Custom Element');
+    self.draw();
+    self.bindings();
+}
+
+CustomElement.prototype.loadData = function () {
+
+    var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Loading Custom Element Data: ' + self.id);
+    return $.ajax(self.pView.pPCustom.apiUrl + 'get-custom-element&IDcusele=' + self.id)
+    .done(function(customElementData) {
+        if (customElementData){
+            self.data = customElementData[0];
+        }
+        else {
+            self.pPCustom.showMsg('ERROR', 'API: Load custom elements data return empty');    
+        }
+    })
+    .fail(function() {
+        self.pPCustom.showMsg('ERROR', 'API: Load custom elements data return false');
+    });
+}
+
+CustomElement.prototype.draw = function() {
+    //Polymorfism
+}
+
+CustomElement.prototype.bindings = function () {
+
+    var self = this;
+    self.customE.find('.del-custom-element').click(function() {
+        self.delCustomElement(self.data.IDcusele);
+    });
+    self.customE.find('.custom-element').click(function(){
+        console.log('editing');
+    });
+    self.customE.draggable({
+        stop: function() {
+            var newPosSizeData = {
+                IDcusele: self.data.IDcusele,
+                x: $(this).position().left, y: $(this).position().top,
+                width: $(this).width(), height: $(this).height() 
+            };
+            self.update(newPosSizeData).done(function() {
+                self.loadData();
+            });
+        }
+    });
+    self.customE.resizable({
+        resize: function () {
+            self.customE.find('.custom-element').css({
+                'width' : ($(this).width() -28)+'px',
+                'height' : ($(this).height() -28)+'px',
+            });
+        },
+        stop: function() {
+            var newPosSizeData = {
+                IDcusele: self.data.IDcusele,
+                x: $(this).position().left, y: $(this).position().top,
+                width: $(this).width(), height: $(this).height() 
+            };
+            self.update(newPosSizeData).done(function() {
+                self.loadData();
+            });
+        }
+    });
+};
+
+CustomElement.prototype.update = function (newPosSizeData) {
+
+    var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Update Custom Element');
+    return $.ajax({
+        url: self.pView.pPCustom.apiUrl + 'update-custom-element',
+        data: newPosSizeData
+    })
+    .done(function(response) {
+        if (!response) {
+            self.pView.pPCustom.showMsg('ERROR', 'Update Custom Element: API response false');
+        }
+    })
+    .fail(function() {
+        self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
+    });
 }
 
 CustomElement.prototype.delCustomElement = function (idCusele) {
@@ -26,66 +116,18 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
     else { self.showMsg('ERROR', 'Del CustomElement: No idCusele passed as param'); }
 }
 
-CustomElement.prototype.binding = function () {
+
+
+
+
+
+
+
+function Area (view, id, customElementData) {
 
     var self = this;
-    self.customE.find('.del-custom-element').click(function() {
-        self.delCustomElement(self.data.IDcusele);
-    });
-    self.customE.draggable({
-        stop: function() {
-            var newPosSizeData = {
-                IDcusele: self.data.IDcusele,
-                x: $(this).position().left, y: $(this).position().top,
-                width: $(this).width(), height: $(this).height() 
-            };
-            self.update(newPosSizeData);
-        }
-    }).resizable({
-        stop: function() {
-            var newPosSizeData = {
-                IDcusele: self.data.IDcusele,
-                x: $(this).position().left, y: $(this).position().top,
-                width: $(this).width(), height: $(this).height() 
-            };
-            self.update(newPosSizeData);
-        }
-    });
-};
-
-CustomElement.prototype.update = function (newPosSizeData) {
-
-    var self = this;
-    self.pView.pPCustom.showMsg('LOG', 'Update Custom Element');
-    $.ajax({
-        url: self.pView.pPCustom.apiUrl + 'update-area',
-        data: newPosSizeData
-    })
-    .done(function(response) {
-        if (response) {
-            // self.draw();
-        }
-        else {
-            self.pView.pPCustom.showMsg('ERROR', 'Update Custom Element: API response false');
-        }
-    })
-    .fail(function() {
-        self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
-    });
-}
-
-
-
-
-
-
-
-
-function Area (view, customElementData) {
-
-    var self = this;
-    CustomElement.call(self, view, customElementData);
-    self.pView.pPCustom.showMsg('LOG', 'Add Area id:' + self.data.IDcusele);
+    CustomElement.call(self, view, id, customElementData);
+    self.pView.pPCustom.showMsg('LOG', 'Add Area id:' + self.id);
     self.customE = $('<div class="wrapper-custom-element">\
                         <div class="custom-element area"></div>\
                         <div class="move-custom-element"></div>\
@@ -99,6 +141,7 @@ Area.prototype.constructor = Area;
 Area.prototype.draw = function() {
 
     var self = this;
+    // CustomElement.prototype.draw.call(this);
     self.pView.pPCustom.showMsg('LOG', 'Drawing Area id:' + self.data.IDcusele);
     if (self.data){
         self.customE.css({
@@ -106,6 +149,10 @@ Area.prototype.draw = function() {
             'height' : self.data.height+'px',
             'left' : self.data.x+'px',
             'top' : self.data.y+'px',
+        });
+        self.customE.find('.custom-element').css({
+            'width' : (self.data.width -28)+'px',
+            'height' : (self.data.height -28)+'px',
         });
     }
 };
@@ -116,11 +163,13 @@ Area.prototype.draw = function() {
 
 
 
-function Text(view, customElementData) {
+
+
+function Text(view, id, customElementData) {
 
     var self = this;
-    CustomElement.call(this, view, customElementData);
-    self.pView.pPCustom.showMsg('LOG', 'Add Text id:' + self.data.IDcusele);
+    CustomElement.call(this, view, id, customElementData);
+    self.pView.pPCustom.showMsg('LOG', 'Add Text id:' + self.id);
     self.customE = $('<div class="wrapper-custom-element">\
                         <div class="custom-element text">'+self.data.text+'</div>\
                         <div class="move-custom-element"></div>\
@@ -149,6 +198,10 @@ Text.prototype.draw = function(){
             'font-style': self.data.font_attr.style,
             'font-size': self.data.font_attr.size,
             'text-align': self.data.font_attr.align
+        });
+        self.customE.find('.custom-element').css({
+            'width' : (self.data.width -28)+'px',
+            'height' : (self.data.height -28)+'px',
         });
     }
 };

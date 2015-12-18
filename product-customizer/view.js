@@ -19,7 +19,7 @@ View.prototype.init = function (productCustomizer, idView) {
     self.loadViewData(self.idView)
         .done(function() {
             self.drawView();
-            self.loadCustomElements(self.idView)
+            self.loadCustomElementsData(self.idView)
                 .done(function(){
                     self.initCustomElements();
                 })
@@ -55,18 +55,18 @@ View.prototype.drawView = function () {
 }
 
 
-View.prototype.loadCustomElements = function (idView) {
+View.prototype.loadCustomElementsData = function (idView) {
 
     var self = this;
-    self.pPCustom.showMsg('LOG', 'Loading Custom Elements of view: ' + idView );
+    self.pPCustom.showMsg('LOG', 'Loading Custom Elements Data of view: ' + idView );
     return $.ajax(self.pPCustom.apiUrl + 'get-custom-elements&IDvie=' + idView)
-    .done(function(customElements) {
-        for (var i = customElements.length - 1; i >= 0; i--) {
-            self.addCustomElement(customElements[i]);
+    .done(function(customElementsData) {
+        for (var i = customElementsData.length - 1; i >= 0; i--) {
+            self.addCustomElement(customElementsData[i]);
         };
     })
     .fail(function() {
-        self.pPCustom.showMsg('ERROR', 'API: Load custom elements');
+        self.pPCustom.showMsg('ERROR', 'API: Load custom elements data');
     });
 }
 
@@ -77,10 +77,10 @@ View.prototype.addCustomElement = function(customElementData) {
     self.pPCustom.showMsg('LOG', 'Add Custom Element: ' + customElementData.type );
     switch (customElementData.type) {
     case 'area':
-        self.customElements.push(new Area(self, customElementData));
+        self.customElements.push(new Area(self, customElementData.IDcusele, customElementData));
         break;
     case 'text':
-        self.customElements.push(new Text(self, customElementData));
+        self.customElements.push(new Text(self, customElementData.IDcusele, customElementData));
         break;
     }
 }
@@ -90,7 +90,6 @@ View.prototype.initCustomElements = function () {
 
     var self = this;
     for (var i = self.customElements.length - 1; i >= 0; i--) {
-        self.customElements[i].draw();
-        self.customElements[i].binding();
+        self.customElements[i].init();
     };
 }

@@ -10,6 +10,7 @@ var ProductCustomizer = function () {
     this.viewsData = [];
     this.view;
     this.currentView;
+    this.currentCustomElemntEditing;
     this.apiUrl = 'product-customizer/api/api.php?request=';
     this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
     this.mode = 'dev'; //[pro|dev]
