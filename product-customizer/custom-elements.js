@@ -255,48 +255,36 @@ Text.prototype.bindings = function () {
     var self = this;
     CustomElement.prototype.bindings.call(this);
     self.customE.find('.text').change( function (){
-        self.data.text = $(this).val();
-        $.ajax({
-            type: 'POST',
-            url: self.pView.pPCustom.apiUrl + 'update-text&IDcusele=' + self.data.IDcusele, 
-            data: {text:$(this).val()}
-        })
-        .done(function(response) {
-            self.draw();
-        })
-        .fail(function() {
-            self.pView.pPCustom.showMsg('ERROR', 'API: Update Text value');
-        });
+        self.changeText($(this).val()); 
     });
+}
+
+Text.prototype.changeText = function (value){
+
+    var self = this;
+    self.data.text = value;
+    self.updateData('text', {text: value});
 }
 
 Text.prototype.changeAttr = function (change, value) {
 
     var self = this;
     if (change == 'weight' && value == 'toggle'){
-        self.data.text_attr[change] = (self.data.text_attr[change] == 'normal') ? 'bold': 'normal';
+        value = (self.data.text_attr[change] == 'normal') ? 'bold': 'normal';
     }
     if (change == 'style' && value == 'toggle'){
-        self.data.text_attr[change] = (self.data.text_attr[change] == 'normal') ? 'italic': 'normal';
+        value = (self.data.text_attr[change] == 'normal') ? 'italic': 'normal';
     }
-    if (change == 'align'){
-        self.data.text_attr[change] = value;
-    }
-    if (change == 'size'){
-        self.data.text_attr[change] = value;
-    }
-    if (change == 'family'){
-        self.data.text_attr[change] = value;
-    }
-    self.updateAttrData(self.data.text_attr);
+    self.data.text_attr[change] = value;
+    self.updateData('text-attr', self.data.text_attr);
 }
 
-Text.prototype.updateAttrData = function (newData) {
+Text.prototype.updateData = function (type, newData) {
 
     var self = this;
     $.ajax({
         type: 'POST',
-        url: self.pView.pPCustom.apiUrl + 'update-text-attr&IDcusele=' + self.data.IDcusele, 
+        url: self.pView.pPCustom.apiUrl + 'update-' + type + '&IDcusele=' + self.data.IDcusele, 
         data: newData
     })
     .done(function(response) {
