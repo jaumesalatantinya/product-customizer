@@ -61,7 +61,7 @@ View.prototype.loadCustomElementsData = function (idView) {
     self.pPCustom.showMsg('LOG', 'Loading Custom Elements Data of view: ' + idView );
     return $.ajax(self.pPCustom.apiUrl + 'get-custom-elements&IDvie=' + idView)
     .done(function(customElementsData) {
-        for (var i = customElementsData.length - 1; i >= 0; i--) {
+        for (var i = 0; i < customElementsData.length; i++) {
             self.addCustomElement(customElementsData[i]);
         };
     })
@@ -77,10 +77,10 @@ View.prototype.addCustomElement = function(customElementData) {
     self.pPCustom.showMsg('LOG', 'Add Custom Element: ' + customElementData.type );
     switch (customElementData.type) {
     case 'area':
-        self.customElements.push(new Area(self, customElementData.IDcusele, customElementData));
+        self.customElements.push(new Area(self, customElementData.IDcusele));
         break;
     case 'text':
-        self.customElements.push(new Text(self, customElementData.IDcusele, customElementData));
+        self.customElements.push(new Text(self, customElementData.IDcusele));
         break;
     }
 }
@@ -89,7 +89,7 @@ View.prototype.addCustomElement = function(customElementData) {
 View.prototype.initCustomElements = function () {
 
     var self = this;
-    for (var i = self.customElements.length - 1; i >= 0; i--) {
+    for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].init();
     };
 }

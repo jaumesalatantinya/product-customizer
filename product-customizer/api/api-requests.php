@@ -97,6 +97,12 @@ class ApiRequests {
         return $this->db->update($q);
     }
 
+    public function updateText($idCusele, $data) {
+
+        $q = 'UPDATE bd_custom_elements SET font_attr=\'' . json_encode($data) . '\' WHERE IDcusele=' . $idCusele;
+        return $this->db->update($q);
+    }
+
 
 
 
