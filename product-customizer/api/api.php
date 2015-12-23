@@ -86,7 +86,12 @@ class Api {
             case 'update-text':
                 $this->response = $this->apiRequests->updateText($this->idCusele, $this->data);
                 $this->returnJSONResponse();
-                break;                
+                break; 
+            case 'update-text-attr':
+                $this->response = $this->apiRequests->updateTextAttr($this->idCusele, $this->data);
+                $this->returnJSONResponse();
+                break;
+                          
 
 
 

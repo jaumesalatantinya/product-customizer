@@ -72,7 +72,7 @@ class ApiRequests {
     public function putText($idVie) {
 
         $attr = json_encode('{"family": "arial", "weight": "normal", "style": "normal", "size": 20, "align": "center"}');
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, font_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 200, "AQUÍ TU TEXTO", '. $attr .' )';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, text_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 200, "TEXTO", '. $attr .' )';
         return $this->db->insert($q);
     }
 
@@ -99,9 +99,16 @@ class ApiRequests {
 
     public function updateText($idCusele, $data) {
 
-        $q = 'UPDATE bd_custom_elements SET font_attr=\'' . json_encode($data) . '\' WHERE IDcusele=' . $idCusele;
+        $q = 'UPDATE bd_custom_elements SET text=\'' . $data['text'] . '\' WHERE IDcusele=' . $idCusele;
         return $this->db->update($q);
     }
+
+    public function updateTextAttr($idCusele, $data) {
+
+        $q = 'UPDATE bd_custom_elements SET text_attr=\'' . json_encode($data) . '\' WHERE IDcusele=' . $idCusele;
+        return $this->db->update($q);
+    }
+
 
 
 

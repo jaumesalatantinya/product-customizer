@@ -279,12 +279,13 @@ ProductCustomizer.prototype.showAuxMenu = function(customElementEditing) {
             $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
         }
         if (customElementEditing.data.type == 'text'){
-            $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');     });
-            $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');      });
-            $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');        });
-            $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');      });
-            $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');       });
-            $('#inp-size').focusout(       function (){ console.log ($(this).val()); customElementEditing.changeAttr('size', $(this).val()); });
+            $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');      });
+            $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');       });
+            $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');         });
+            $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');       });
+            $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
+            $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
+            $('#sel-family').change(       function (){ customElementEditing.changeAttr('family', $(this).val()); });
         }
     });
 };

@@ -27,7 +27,7 @@ CustomElement.prototype.loadData = function () {
         if (customElementData){
             self.data = customElementData[0];
             if (self.data.area_attr) self.data.area_attr = JSON.parse(self.data.area_attr);
-            if (self.data.font_attr) self.data.font_attr = JSON.parse(self.data.font_attr);
+            if (self.data.text_attr) self.data.text_attr = JSON.parse(self.data.text_attr);
         }
         else {
             self.pPCustom.showMsg('ERROR', 'API: Load custom elements data return empty');    
@@ -224,7 +224,7 @@ function Text(view, id) {
     CustomElement.call(this, view, id);
     self.pView.pPCustom.showMsg('LOG', 'Add Text id:' + self.id);
     self.customE = $('<div class="wrapper-custom-element">\
-                        <div class="custom-element text"></div>\
+                        <textarea class="custom-element text"></textarea>\
                         <div class="move-custom-element"></div>\
                         <div class="del-custom-element"></div>\
                       </div>');
@@ -239,41 +239,64 @@ Text.prototype.draw = function(){
     self.pView.pPCustom.showMsg('LOG', 'Drawing Text: ' + self.id);
     CustomElement.prototype.draw.call(this);
     if (self.data){
-        self.customE.find('.text').html(self.data.text);
+        self.customE.find('.text').val(self.data.text);
         self.customE.find('.text').css({
-            'font-family': self.data.font_attr.family,
-            'font-weight': self.data.font_attr.weight,
-            'font-style': self.data.font_attr.style,
-            'font-size': self.data.font_attr.size + 'px',
-            'text-align': self.data.font_attr.align
+            'font-family': self.data.text_attr.family,
+            'font-weight': self.data.text_attr.weight,
+            'font-style': self.data.text_attr.style,
+            'font-size': self.data.text_attr.size + 'px',
+            'text-align': self.data.text_attr.align
         });
     }
 };
+
+Text.prototype.bindings = function () {
+
+    var self = this;
+    CustomElement.prototype.bindings.call(this);
+    self.customE.find('.text').change( function (){
+        self.data.text = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url: self.pView.pPCustom.apiUrl + 'update-text&IDcusele=' + self.data.IDcusele, 
+            data: {text:$(this).val()}
+        })
+        .done(function(response) {
+            self.draw();
+        })
+        .fail(function() {
+            self.pView.pPCustom.showMsg('ERROR', 'API: Update Text value');
+        });
+    });
+}
 
 Text.prototype.changeAttr = function (change, value) {
 
     var self = this;
     if (change == 'weight' && value == 'toggle'){
-        self.data.font_attr[change] = (self.data.font_attr[change] == 'normal') ? 'bold': 'normal';
+        self.data.text_attr[change] = (self.data.text_attr[change] == 'normal') ? 'bold': 'normal';
     }
     if (change == 'style' && value == 'toggle'){
-        self.data.font_attr[change] = (self.data.font_attr[change] == 'normal') ? 'italic': 'normal';
+        self.data.text_attr[change] = (self.data.text_attr[change] == 'normal') ? 'italic': 'normal';
     }
     if (change == 'align'){
-        self.data.font_attr[change] = value;
+        self.data.text_attr[change] = value;
     }
     if (change == 'size'){
-        self.data.font_attr[change] = value;
+        self.data.text_attr[change] = value;
     }
-    self.updateData(self.data.font_attr);
+    if (change == 'family'){
+        self.data.text_attr[change] = value;
+    }
+    self.updateAttrData(self.data.text_attr);
 }
 
-Text.prototype.updateData = function (newData) {
+Text.prototype.updateAttrData = function (newData) {
 
     var self = this;
     $.ajax({
         type: 'POST',
-        url: self.pView.pPCustom.apiUrl + 'update-text&IDcusele=' + self.data.IDcusele, 
+        url: self.pView.pPCustom.apiUrl + 'update-text-attr&IDcusele=' + self.data.IDcusele, 
         data: newData
     })
     .done(function(response) {
