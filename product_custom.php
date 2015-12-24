@@ -89,18 +89,7 @@
                             </div>
                         </div>
                         <div id="aux-menu"></div>
-                        <div id="wrapper-upload-form">
-                            <div class="modal">
-                                <a href="#" class="btn-close">Close</a>
-                                <form method="post" enctype="multipart/form-data" action="">
-                                    <p>Añadir imágenes <span>(JPG - Medidas óptimas: 600x600 píxels)</span></p>
-                                    <span>Seleccionar imagen</span><br/>
-                                    <input id="file-to-upload" name="file-to-upload" type="file">
-                                    <input id ="btn-submit" name="send" type="submit" value="Enviar imágenes">
-                                    <img src="imagesWEB/loading.gif" class="loading" />
-                                </form>
-                            </div>
-                        </div>
+                        <div id="wrapper-upload-form"></div>
                     </div>
                 </div>
             </div>

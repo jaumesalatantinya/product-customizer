@@ -117,24 +117,24 @@ ProductCustomizer.prototype.drawNavViews = function () {
         li.append(del, a)
         $('#nav-views').append(li);
     };
-}
+};
 
 
 ProductCustomizer.prototype.drawNavMain = function() {
 
     var self = this;
     $('#nav-main').load('product-customizer/nav-main.html', function() {
-        $('#btn-add-view').click(       function (){ self.addView(); });
-        $('#btn-add-view-img').click(   function (){ self.showUploadForm('view'); });
-        $('#btn-add-area').click(       function (){ self.addArea(self.currentView); });
-        $('#btn-add-text').click(       function (){ self.addText(self.currentView); });
-        $('#btn-add-image').click(      function (){ self.btnAddCustomElement('img'); });
-        $('#btn-add-svg').click(        function (){ self.btnAddCustomElement('svg'); });
-        if (self.viewsData.length == 0){
+        $('#btn-add-view').click(     function () { self.addView();                  });
+        $('#btn-add-view-img').click( function () { self.showUploadForm('view');     });
+        $('#btn-add-area').click(     function () { self.addArea(self.currentView);  });
+        $('#btn-add-text').click(     function () { self.addText(self.currentView);  });
+        $('#btn-add-svg').click(      function () { self.btnAddCustomElement('img'); });
+        $('#btn-add-img').click(      function () { self.addImg(self.currentView);   });
+        if (self.viewsData.length == 0) {
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img').addClass('disabled').unbind('click');
         }
     });
-}
+};
 
 
 ProductCustomizer.prototype.addView = function () {
@@ -154,7 +154,8 @@ ProductCustomizer.prototype.addView = function () {
         });
     }
     else { self.showMsg('ERROR', 'Add View no idCustom'); }
-}
+};
+
 
 ProductCustomizer.prototype.delView = function (idView) {
 
@@ -175,7 +176,7 @@ ProductCustomizer.prototype.delView = function (idView) {
         });
     }
     else { self.showMsg('ERROR', 'Del View: No idView passed as param'); }
-}
+};
 
 
 ProductCustomizer.prototype.addArea = function(idView) {
@@ -192,7 +193,8 @@ ProductCustomizer.prototype.addArea = function(idView) {
     .fail(function() {
         self.showMsg('ERROR', 'API Add Area');
     });
-}
+};
+
 
 ProductCustomizer.prototype.addText = function(idView) {
 
@@ -208,7 +210,24 @@ ProductCustomizer.prototype.addText = function(idView) {
     .fail(function() {
         self.showMsg('ERROR', 'API Add Text');
     });
-}
+};
+
+ProductCustomizer.prototype.addImg = function(idView) {
+
+    var self = this;
+    self.showMsg('LOG', 'Adding Img as custom element to DB');
+    $.ajax(this.apiUrl + 'put-img&IDvie=' + idView)
+    .done(function(response) {
+        if (response) {
+            self.drawAndUpdateProductCustomizer(idView);
+            // self.showUploadForm('img');
+        }
+        else { self.showMsg('ERROR', 'Add Img: No new id custom element img'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Add Img');
+    });
+};
 
 
 ProductCustomizer.prototype.showUploadForm = function (type) {
@@ -216,15 +235,18 @@ ProductCustomizer.prototype.showUploadForm = function (type) {
     var self = this;
     self.showMsg('LOG', 'Show upload form');
     $('#wrapper-upload-form').show();
-    $('#wrapper-upload-form .modal .btn-close').click( function() {
-        self.close('upload-form');
+    $('#wrapper-upload-form').load('product-customizer/upload-form.html', function() {
+        $('#wrapper-upload-form .modal .btn-close').click( function() {
+            self.close('upload-form');
+        });
+        $('#wrapper-upload-form .modal form #btn-submit').click( function(event) {
+            event.preventDefault();
+            $('#wrapper-upload-form .modal form img.loading').show();
+            self.uploadFile(type);
+        });
     });
-    $('#wrapper-upload-form .modal form #btn-submit').click( function(event) {
-        event.preventDefault();
-        $('#wrapper-upload-form .modal form img.loading').show();
-        self.uploadFile(type);
-    });
-}
+};
+
 
 ProductCustomizer.prototype.uploadFile = function (type){
 
@@ -240,15 +262,19 @@ ProductCustomizer.prototype.uploadFile = function (type){
         type: 'POST',
         success: function(response){
             $('#wrapper-upload-form .modal form img.loading').hide();
-            if (response.status == 'success'){ 
-                self.putImgToView(response.file);
+            if (response.status == 'success'){
+                if (type == 'view')
+                    self.putImgToView(response.file);
+                if (type == 'img')
+                    self.putImgToCustomElement(response.file);
             }
             else{
                 self.showMsg('ERROR', response.error);
             }
         }
     });
-}
+};
+
 
 ProductCustomizer.prototype.putImgToView = function (file) {
 
@@ -264,7 +290,7 @@ ProductCustomizer.prototype.putImgToView = function (file) {
     .fail(function() {
         self.showMsg('ERROR', 'API Put Img View');
     });
-}
+};
 
 
 ProductCustomizer.prototype.showAuxMenu = function(customElementEditing) {

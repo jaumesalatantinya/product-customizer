@@ -72,6 +72,10 @@ class Api {
                 $this->response = $this->apiRequests->putText($this->idVie);
                 $this->returnJSONResponse();
                 break;
+            case 'put-img':
+                $this->response = $this->apiRequests->putImg($this->idVie);
+                $this->returnJSONResponse();
+                break;
 
 
 

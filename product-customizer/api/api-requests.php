@@ -76,6 +76,12 @@ class ApiRequests {
         return $this->db->insert($q);
     }
 
+    public function putImg($idVie) {
+
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, img) VALUES (' . $idVie . ', "img", 200, 200, 200, 200, "tmp-img.jpg")';
+        return $this->db->insert($q);
+    }
+
 
 
 

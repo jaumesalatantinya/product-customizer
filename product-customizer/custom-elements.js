@@ -295,3 +295,59 @@ Text.prototype.updateData = function (type, newData) {
     });
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function Img(view, id) {
+
+    var self = this;
+    CustomElement.call(this, view, id);
+    self.pView.pPCustom.showMsg('LOG', 'Add img id:' + self.id);
+    self.customE = $('<div class="wrapper-custom-element">\
+                        <div class="custom-element img">\
+                            <img src="" />\
+                        </div>\
+                        <div class="move-custom-element"></div>\
+                        <div class="del-custom-element"></div>\
+                      </div>');
+    self.pView.rootE.append(self.customE);
+};
+Img.prototype = Object.create(CustomElement.prototype);
+Img.prototype.constructor = Img;
+
+Img.prototype.draw = function(){
+
+    var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Drawing Img: ' + self.id);
+    CustomElement.prototype.draw.call(this);
+
+    if (self.data){
+        self.customE.find('.img img').attr("src", self.pView.pPCustom.imgUrl+self.data.img)
+    }
+};

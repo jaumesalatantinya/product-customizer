@@ -129,6 +129,9 @@ $disabled-color-backgound: #EEE;
     border: 1px dotted $text-border-color;
     background-color: transparent;
 }
+.img img{
+    width: 100%;
+}
 
 #wrapper-modal {
     display: none;

@@ -7,7 +7,7 @@ var View = function () {
     this.idView;
     this.image;
     this.customElements = [];
-}
+};
 
 
 View.prototype.init = function (productCustomizer, idView) {
@@ -24,7 +24,7 @@ View.prototype.init = function (productCustomizer, idView) {
                     self.initCustomElements();
                 })
         });
-}
+};
 
 
 View.prototype.loadViewData = function (idView) {
@@ -44,7 +44,7 @@ View.prototype.loadViewData = function (idView) {
         self.pPCustom.showMsg('ERROR', 'Load View Data no idView');
         return $.Deferred().reject();
     }
-}
+};
 
 
 View.prototype.drawView = function () {
@@ -52,7 +52,7 @@ View.prototype.drawView = function () {
     var self = this;
     self.rootE.empty();
     self.rootE.css('background-image', 'url('+self.pPCustom.imgUrl+self.image+')');
-}
+};
 
 
 View.prototype.loadCustomElementsData = function (idView) {
@@ -68,7 +68,7 @@ View.prototype.loadCustomElementsData = function (idView) {
     .fail(function() {
         self.pPCustom.showMsg('ERROR', 'API: Load custom elements data');
     });
-}
+};
 
 
 View.prototype.addCustomElement = function(customElementData) {
@@ -82,8 +82,13 @@ View.prototype.addCustomElement = function(customElementData) {
     case 'text':
         self.customElements.push(new Text(self, customElementData.IDcusele));
         break;
+    case 'svg':
+        break;
+    case 'img':
+        self.customElements.push(new Img(self, customElementData.IDcusele));
+        break;
     }
-}
+};
 
 
 View.prototype.initCustomElements = function () {
@@ -92,4 +97,4 @@ View.prototype.initCustomElements = function () {
     for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].init();
     };
-}
+};
