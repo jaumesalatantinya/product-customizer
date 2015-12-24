@@ -126,7 +126,7 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
         $.ajax(self.pView.pPCustom.apiUrl + 'del-custom-element&IDcusele=' + idCusele)
         .done(function(response) {
             if (response) {
-                self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentView);
+                self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentViewId);
             }
             else { self.pView.pPCustom.showMsg('ERROR', 'Del Cutom Element: API response false'); }
         })

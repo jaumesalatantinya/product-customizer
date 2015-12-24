@@ -64,6 +64,10 @@ class Api {
                 $this->response = $this->apiRequests->putImgToView($this->idVie, $this->file);
                 $this->returnJSONResponse();
                 break;
+            case 'put-img-to-img':
+                $this->response = $this->apiRequests->putImgToImg($this->idCusele, $this->file);
+                $this->returnJSONResponse();
+                break;
             case 'put-area':
                 $this->response = $this->apiRequests->putArea($this->idVie);
                 $this->returnJSONResponse();

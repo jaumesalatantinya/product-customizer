@@ -9,7 +9,8 @@ var ProductCustomizer = function () {
     this.rootE = $('#product-customizer');
     this.viewsData = [];
     this.view;
-    this.currentView;
+    this.currentViewId;
+    this.currentImgCustomElementId;
     this.apiUrl = 'product-customizer/api/api.php?request=';
     this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
     this.mode = 'dev'; //[pro|dev]
@@ -52,8 +53,8 @@ ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     self.getviewsData(self.idCustom)
         .done(function(){
             if (self.viewsData && self.viewsData.length > 0 ) {
-                self.currentView = (idView == 'default') ? self.viewsData[0].IDcusvie : idView;
-                self.drawView(self.currentView);
+                self.currentViewId = (idView == 'default') ? self.viewsData[0].IDcusvie : idView;
+                self.drawView(self.currentViewId);
             }
             else { self.showMsg('INFO', 'Por favor añade una vista'); }
             self.drawNavViews();
@@ -126,10 +127,10 @@ ProductCustomizer.prototype.drawNavMain = function() {
     $('#nav-main').load('product-customizer/nav-main.html', function() {
         $('#btn-add-view').click(     function () { self.addView();                  });
         $('#btn-add-view-img').click( function () { self.showUploadForm('view');     });
-        $('#btn-add-area').click(     function () { self.addArea(self.currentView);  });
-        $('#btn-add-text').click(     function () { self.addText(self.currentView);  });
+        $('#btn-add-area').click(     function () { self.addArea(self.currentViewId);  });
+        $('#btn-add-text').click(     function () { self.addText(self.currentViewId);  });
         $('#btn-add-svg').click(      function () { self.btnAddCustomElement('img'); });
-        $('#btn-add-img').click(      function () { self.addImg(self.currentView);   });
+        $('#btn-add-img').click(      function () { self.addImg(self.currentViewId);   });
         if (self.viewsData.length == 0) {
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img').addClass('disabled').unbind('click');
         }
@@ -219,8 +220,9 @@ ProductCustomizer.prototype.addImg = function(idView) {
     $.ajax(this.apiUrl + 'put-img&IDvie=' + idView)
     .done(function(response) {
         if (response) {
+            self.currentImgCustomElementId = response;
             self.drawAndUpdateProductCustomizer(idView);
-            // self.showUploadForm('img');
+            self.showUploadForm('img');
         }
         else { self.showMsg('ERROR', 'Add Img: No new id custom element img'); }
     })
@@ -255,7 +257,7 @@ ProductCustomizer.prototype.uploadFile = function (type){
     var fd = new FormData();    
     fd.append('file-to-upload', document.getElementById('file-to-upload').files[0]);
     $.ajax({
-        url: 'product-customizer/file-uploader.php',
+        url: 'product-customizer/file-uploader.php?type=' + type,
         data: fd,
         processData: false,
         contentType: false,
@@ -266,7 +268,7 @@ ProductCustomizer.prototype.uploadFile = function (type){
                 if (type == 'view')
                     self.putImgToView(response.file);
                 if (type == 'img')
-                    self.putImgToCustomElement(response.file);
+                    self.putImgToImgCustomElement(response.file);
             }
             else{
                 self.showMsg('ERROR', response.error);
@@ -279,11 +281,28 @@ ProductCustomizer.prototype.uploadFile = function (type){
 ProductCustomizer.prototype.putImgToView = function (file) {
 
     var self = this;
-    $.ajax(self.apiUrl + 'put-img-to-view&IDvie=' + self.currentView + '&file='+file)
+    $.ajax(self.apiUrl + 'put-img-to-view&IDvie=' + self.currentViewId + '&file='+file)
     .done(function(response) {
         if (response) {
             $('#wrapper-upload-form').hide();
-            self.drawAndUpdateProductCustomizer(self.currentView);
+            self.drawAndUpdateProductCustomizer(self.currentViewId);
+        }
+        else { self.showMsg('ERROR', 'Put Img View: No new idView'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Put Img View');
+    });
+};
+
+
+ProductCustomizer.prototype.putImgToImgCustomElement = function (file) {
+
+    var self = this;
+    $.ajax(self.apiUrl + 'put-img-to-img&IDcusele=' + self.currentImgCustomElementId + '&file='+file)
+    .done(function(response) {
+        if (response) {
+            $('#wrapper-upload-form').hide();
+            self.drawAndUpdateProductCustomizer(self.currentViewId);
         }
         else { self.showMsg('ERROR', 'Put Img View: No new idView'); }
     })

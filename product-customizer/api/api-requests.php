@@ -91,6 +91,12 @@ class ApiRequests {
         return $this->db->update($q);
     }
 
+    public function putImgToImg($idCusele, $file) {
+
+        $q = 'UPDATE bd_custom_elements SET img="' . $file . '" WHERE IDcusele=' . $idCusele;
+        return $this->db->update($q);
+    }
+
     public function updateCustomElementPosSize($idCusele, $data) {
 
         $q = 'UPDATE bd_custom_elements SET x="' . $data['x'] . '", y="' . $data['y'] . '", width="' . $data['width'] . '", height="' . $data['height'] .'" WHERE IDcusele=' . $idCusele;

@@ -1,4 +1,6 @@
 <?php
+
+	$type = $_GET['type'];
 	header('Content-Type: application/json');
 	$error;
 	$target_dir = '../../img/custom/';
@@ -7,9 +9,7 @@
 	$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
     $size = getimagesize($_FILES['file-to-upload']['tmp_name']);
-    if($size !== false && $size[0] == 600 && $size[1] == 600 ) {
-        $uploadOk = 1;
-    } else {
+    if($type == 'view' && ($size == false || $size[0] != 600 || $size[1] != 600) ) {
         $error = 'La imagen debe de ser 600x600 o está vacia';
         $uploadOk = 0;
     }
