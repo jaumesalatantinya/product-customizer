@@ -7,6 +7,8 @@ class ApiRequests {
 	private $db;
 
 
+
+
 	public function __construct() {
 
         $this->db = new Database();
@@ -56,6 +58,7 @@ class ApiRequests {
 
 
 
+
     public function putView($idCus) {
 
         $q = 'INSERT INTO bd_custom_views (ID_cus) VALUES (' . $idCus . ')';
@@ -81,6 +84,7 @@ class ApiRequests {
         $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, img) VALUES (' . $idVie . ', "img", 200, 200, 200, 200, "tmp-img.jpg")';
         return $this->db->insert($q);
     }
+
 
 
 
