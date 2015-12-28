@@ -50,6 +50,7 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
 ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     
     var self = this;
+    self.hideAuxMenu();
     self.getviewsData(self.idCustom)
         .done(function(){
             if (self.viewsData && self.viewsData.length > 0 ) {
@@ -103,10 +104,11 @@ ProductCustomizer.prototype.drawNavViews = function () {
     var self = this;
     self.showMsg('LOG', 'Drawing Navigation Views');
     $('#nav-views').empty();
+    $('#nav-views').css('right', (300 - (self.viewsData.length*30)) + 'px');
     for (var i = 0; i < self.viewsData.length; i++) {
         var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
         var img = $('<img/>', { 'src': self.imgUrl+self.viewsData[i].Image} );
-        var del = $('<a>del</a>').data('idView', self.viewsData[i].IDcusvie);
+        var del = $('<a class="btn-fancy-close" style="display: inline;"></a>').data('idView', self.viewsData[i].IDcusvie);
         var li = $('<li>');
         a.click( function(){
             self.drawAndUpdateProductCustomizer($(this).data('idView'));
@@ -132,7 +134,7 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-add-svg').click(      function () { self.btnAddCustomElement('img'); });
         $('#btn-add-img').click(      function () { self.addImg(self.currentViewId);   });
         if (self.viewsData.length == 0) {
-            $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img').addClass('disabled').unbind('click');
+            $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').addClass('disabled').unbind('click');
         }
     });
 };

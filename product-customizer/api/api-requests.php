@@ -131,8 +131,9 @@ class ApiRequests {
 
     public function delView($idVie) {
 
-        $q = 'DELETE FROM bd_custom_views WHERE IDcusvie =' . $idVie;
-        return $this->db->delete($q);
+        $qView = 'DELETE FROM bd_custom_views WHERE IDcusvie =' . $idVie;
+        $qElement = 'DELETE FROM bd_custom_elements WHERE ID_cusvie ='. $idVie;
+        return ( $this->db->delete($qView) && $this->db->delete($qElement) );
     }
 
     public function delCustomElement($idCusele) {
