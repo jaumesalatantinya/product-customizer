@@ -10,7 +10,6 @@ var ProductCustomizer = function () {
     this.viewsData = [];
     this.view;
     this.currentViewId;
-    this.currentImgCustomElementId;
     this.apiUrl = 'product-customizer/api/api.php?request=';
     this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
     this.fonts = [];
@@ -151,12 +150,12 @@ ProductCustomizer.prototype.drawNavMain = function() {
 
     var self = this;
     $('#nav-main').load('product-customizer/nav-main.html', function() {
-        $('#btn-add-view').click(     function () { self.addView();                  });
-        $('#btn-add-view-img').click( function () { self.showUploadForm('view');     });
-        $('#btn-add-area').click(     function () { self.addArea(self.currentViewId);  });
-        $('#btn-add-text').click(     function () { self.addText(self.currentViewId);  });
-        $('#btn-add-svg').click(      function () { self.btnAddCustomElement('img'); });
-        $('#btn-add-img').click(      function () { self.addImg(self.currentViewId);   });
+        $('#btn-add-view').click(     function () { self.addView();                   });
+        $('#btn-add-view-img').click( function () { self.showUploadForm('view');      });
+        $('#btn-add-area').click(     function () { self.addArea(self.currentViewId); });
+        $('#btn-add-text').click(     function () { self.addText(self.currentViewId); });
+        $('#btn-add-svg').click(      function () {  });
+        $('#btn-add-img').click(      function () { self.showUploadForm('img');  });
         if (self.viewsData.length == 0) {
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').addClass('disabled').unbind('click');
         }
@@ -239,16 +238,14 @@ ProductCustomizer.prototype.addText = function(idView) {
     });
 };
 
-ProductCustomizer.prototype.addImg = function(idView) {
+ProductCustomizer.prototype.addImg = function(idView, file) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Img as custom element to DB');
-    $.ajax(this.apiUrl + 'put-img&IDvie=' + idView)
+    $.ajax(this.apiUrl + 'put-img&IDvie=' + idView + '&file=' + file)
     .done(function(response) {
         if (response) {
-            self.currentImgCustomElementId = response;
             self.drawAndUpdateProductCustomizer(idView);
-            self.showUploadForm('img');
         }
         else { self.showMsg('ERROR', 'Add Img: No new id custom element img'); }
     })
@@ -291,10 +288,11 @@ ProductCustomizer.prototype.uploadFile = function (type){
         success: function(response){
             $('#wrapper-upload-form .modal form img.loading').hide();
             if (response.status == 'success'){
+                $('#wrapper-upload-form').hide();
                 if (type == 'view')
                     self.putImgToView(response.file);
                 if (type == 'img')
-                    self.putImgToImgCustomElement(response.file);
+                    self.addImg(self.currentViewId, response.file);
             }
             else{
                 self.showMsg('ERROR', response.error);
@@ -310,24 +308,6 @@ ProductCustomizer.prototype.putImgToView = function (file) {
     $.ajax(self.apiUrl + 'put-img-to-view&IDvie=' + self.currentViewId + '&file='+file)
     .done(function(response) {
         if (response) {
-            $('#wrapper-upload-form').hide();
-            self.drawAndUpdateProductCustomizer(self.currentViewId);
-        }
-        else { self.showMsg('ERROR', 'Put Img View: No new idView'); }
-    })
-    .fail(function() {
-        self.showMsg('ERROR', 'API Put Img View');
-    });
-};
-
-
-ProductCustomizer.prototype.putImgToImgCustomElement = function (file) {
-
-    var self = this;
-    $.ajax(self.apiUrl + 'put-img-to-img&IDcusele=' + self.currentImgCustomElementId + '&file='+file)
-    .done(function(response) {
-        if (response) {
-            $('#wrapper-upload-form').hide();
             self.drawAndUpdateProductCustomizer(self.currentViewId);
         }
         else { self.showMsg('ERROR', 'Put Img View: No new idView'); }

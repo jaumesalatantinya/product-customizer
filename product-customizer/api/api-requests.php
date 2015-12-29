@@ -85,9 +85,9 @@ class ApiRequests {
         return $this->db->insert($q);
     }
 
-    public function putImg($idVie) {
+    public function putImg($idVie, $file) {
 
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, img) VALUES (' . $idVie . ', "img", 200, 200, 200, 200, "tmp-img.jpg")';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, img) VALUES (' . $idVie . ', "img", 200, 200, 200, 200, "' . $file . '")';
         return $this->db->insert($q);
     }
 
@@ -98,12 +98,6 @@ class ApiRequests {
     public function putImgToView($idVie, $file) {
 
         $q = 'UPDATE bd_custom_views SET Image="' . $file . '" WHERE IDcusvie=' . $idVie;
-        return $this->db->update($q);
-    }
-
-    public function putImgToImg($idCusele, $file) {
-
-        $q = 'UPDATE bd_custom_elements SET img="' . $file . '" WHERE IDcusele=' . $idCusele;
         return $this->db->update($q);
     }
 
