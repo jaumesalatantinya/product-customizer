@@ -55,6 +55,12 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
+    public function getFonts() {
+
+        $q = 'SELECT * FROM bd_custom_fonts';
+        return $this->db->select($q);
+    }
+
 
 
 

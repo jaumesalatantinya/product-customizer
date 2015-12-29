@@ -53,6 +53,10 @@ class Api {
                 $this->response = $this->apiRequests->getCustomElement($this->idCusele);
                 $this->returnJSONResponse();
                 break;
+            case 'get-fonts':
+                $this->response = $this->apiRequests->getFonts();
+                $this->returnJSONResponse();
+                break;
 
 
 

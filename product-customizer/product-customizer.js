@@ -13,8 +13,9 @@ var ProductCustomizer = function () {
     this.currentImgCustomElementId;
     this.apiUrl = 'product-customizer/api/api.php?request=';
     this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
+    this.fonts = [];
     this.mode = 'dev'; //[pro|dev]
-}
+};
 
 
 ProductCustomizer.prototype.init = function () {
@@ -23,10 +24,11 @@ ProductCustomizer.prototype.init = function () {
     if (self.idCustom) {
         self.showMsg('LOG', 'Init Customization: ' + self.idCustom);
         self.getCustomizationData(self.idCustom);
+        self.getFonts();
         self.drawAndUpdateProductCustomizer('default');
     }
     else { self.showMsg('ERROR', 'No id customization to init'); }
-}
+};
 
 
 ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
@@ -44,7 +46,21 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
         });
     }
     else { self.showMsg('ERROR', 'loading Customization Data No idCustom passed'); }
-}
+};
+
+
+ProductCustomizer.prototype.getFonts = function () {
+
+    var self = this;
+    self.showMsg('LOG', 'Get fonts');
+    $.ajax(this.apiUrl + 'get-fonts')
+    .done(function(fonts) {
+        self.fonts = fonts;
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'Getting fonts');
+    });
+};
 
 
 ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
@@ -333,8 +349,35 @@ ProductCustomizer.prototype.showAuxMenu = function(customElementEditing) {
             $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
             $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
             $('#sel-family').change(       function (){ customElementEditing.changeAttr('family', $(this).val()); });
+            self.loadAuxMenuTextData(customElementEditing);
         }
     });
+};
+
+
+ProductCustomizer.prototype.loadAuxMenuTextData = function(customElementTextEditing) {
+
+    var self = this;
+    var text_attr = customElementTextEditing.data.text_attr;
+    $('#inp-size').val(text_attr.size);
+    self.populateFontsToSel(text_attr.family);
+};
+
+
+ProductCustomizer.prototype.populateFontsToSel = function(currentFont) {
+
+    var self = this;
+    if (self.fonts.length > 0){
+        self.fonts.forEach(function(val) {
+            var option = $("<option></option>");
+            option.attr('value',val.Font);
+            option.text(val.Font);
+            if (currentFont == val.Font)
+                option.attr('selected', 'selected');
+            $('#sel-family').append(option);
+        });
+    }
+    else { self.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
 };
 
 
