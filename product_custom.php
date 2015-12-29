@@ -28,6 +28,7 @@
     <link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
     <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
     <script src="product-customizer/view.js" type="text/javascript"></script>
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>

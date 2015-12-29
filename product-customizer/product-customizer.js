@@ -24,7 +24,7 @@ ProductCustomizer.prototype.init = function () {
     if (self.idCustom) {
         self.showMsg('LOG', 'Init Customization: ' + self.idCustom);
         self.getCustomizationData(self.idCustom);
-        self.getFonts();
+        self.loadFonts();
         self.drawAndUpdateProductCustomizer('default');
     }
     else { self.showMsg('ERROR', 'No id customization to init'); }
@@ -49,13 +49,21 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
 };
 
 
-ProductCustomizer.prototype.getFonts = function () {
+ProductCustomizer.prototype.loadFonts = function () {
 
     var self = this;
     self.showMsg('LOG', 'Get fonts');
     $.ajax(this.apiUrl + 'get-fonts')
     .done(function(fonts) {
         self.fonts = fonts;
+        var fontFamilies = self.fonts.map(function(font){
+            return font.Font;
+        });
+        WebFont.load({
+            google: {
+                families: fontFamilies
+            }
+        });
     })
     .fail(function() {
         self.showMsg('ERROR', 'Getting fonts');
