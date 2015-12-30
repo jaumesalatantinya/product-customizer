@@ -81,7 +81,7 @@ class ApiRequests {
     public function putText($idVie) {
 
         $attr = json_encode('{"family": "arial", "weight": "normal", "style": "normal", "size": 20, "align": "center"}');
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, text_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 200, "TEXTO", '. $attr .' )';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, text_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 100, "TEXTO", '. $attr .' )';
         return $this->db->insert($q);
     }
 

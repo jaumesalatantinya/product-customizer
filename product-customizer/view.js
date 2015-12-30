@@ -61,9 +61,10 @@ View.prototype.bindingsView = function () {
 
     var self = this;
     self.rootE.click(function(){
-        self.currentElementEditing.mode = 'draw';
+        if (self.currentElementEditing)
+            self.currentElementEditing.mode = 'draw';
         self.currentElementEditing = undefined;
-        self.hideAuxMenu();
+        self.updateView();
     });
 };
 
@@ -110,6 +111,18 @@ View.prototype.initCustomElements = function () {
     for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].init();
     };
+};
+
+
+View.prototype.updateView = function() {
+
+    var self = this;
+    //getAreas
+    for (var i = 0; i < self.customElements.length; i++) {
+        // self.customElements[i].isOutSidePrintableArea = self.isOutOfPrintableArea(areas)
+        self.customElements[i].draw();
+    };
+    (self.currentElementEditing) ? self.showAuxMenu(self.currentElementEditing) : self.hideAuxMenu();
 };
 
 
@@ -162,7 +175,6 @@ View.prototype.populateFontsToSel = function(currentFont) {
     }
     else { self.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
 };
-
 
 View.prototype.hideAuxMenu = function() {
 

@@ -60,8 +60,6 @@ CustomElement.prototype.draw = function() {
     else {
         self.customE.find('.custom-element').removeClass('custom-element-edit');
         self.customE.find('.move-custom-element, .del-custom-element, .ui-resizable-handle').hide();
-        $('div.ui-resizable-handle').hide();
-        // self.customE.find('.ui-icon').removeClass('ui-icon');
     }
 };
 
@@ -71,8 +69,12 @@ CustomElement.prototype.bindings = function () {
     
     self.customE.find('.custom-element').click(function(e){
         e.stopPropagation();
-        self.edit();
-        self.draw();
+        if (self.pView.currentElementEditing) {
+            self.pView.currentElementEditing.mode = 'draw';
+        }
+        self.mode = 'edit';
+        self.pView.currentElementEditing = self;
+        self.pView.updateView();
     });
     self.customE.draggable({
         stop: function() {
@@ -81,15 +83,17 @@ CustomElement.prototype.bindings = function () {
                 width: $(this).width(), height: $(this).height() 
             };
             self.updatePosSizeData(newPosSizeData).done(function() {
-                self.loadData();
+                self.loadData().done(function() {
+                    self.pView.updateView();
+                });
             });
         }
     });
     self.customE.resizable({
         resize: function () {
             self.customE.find('.custom-element').css({
-                'width' : ($(this).width() -28)+'px',
-                'height' : ($(this).height() -28)+'px',
+                'width' : ($(this).width() - 30)+'px',
+                'height' : ($(this).height() - 30)+'px',
             });
         },
         stop: function() {
@@ -98,7 +102,9 @@ CustomElement.prototype.bindings = function () {
                 width: $(this).width(), height: $(this).height() 
             };
             self.updatePosSizeData(newPosSizeData).done(function() {
-                self.loadData();
+                self.loadData().done(function() {
+                    self.pView.updateView();
+                });
             });
         }
     });
@@ -107,16 +113,6 @@ CustomElement.prototype.bindings = function () {
             self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentViewId);
         });
     });
-};
-
-CustomElement.prototype.edit = function (newPosSizeData) {
-
-    var self = this;
-    if (self.pView.currentElementEditing)
-        self.pView.currentElementEditing.mode = 'draw';
-    self.mode = 'edit';
-    self.pView.currentElementEditing = self;
-    self.pView.showAuxMenu(self);
 };
 
 CustomElement.prototype.updatePosSizeData = function (newPosSizeData) {

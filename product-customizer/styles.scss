@@ -93,10 +93,10 @@ $disabled-color-backgound: #EEE;
 
 .wrapper-custom-element {
     position: absolute !important;
-    cursor: move;
 }
 
 .move-custom-element {
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -107,6 +107,7 @@ $disabled-color-backgound: #EEE;
 }
 
 .del-custom-element {
+    display: none;
     position: absolute;
     top: 0;
     right: 0;
@@ -141,6 +142,7 @@ $disabled-color-backgound: #EEE;
 .text {
     border: 1px dotted transparent;
     background-color: transparent;
+    resize: none;
 }
 
 .img {
