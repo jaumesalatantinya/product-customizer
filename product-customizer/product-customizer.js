@@ -156,9 +156,10 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-add-text').click(     function () { self.addText(self.currentViewId); });
         $('#btn-add-svg').click(      function () {  });
         $('#btn-add-img').click(      function () { self.showUploadForm('img');  });
-        if (self.viewsData.length == 0) {
+        if (self.viewsData.length == 0)
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').addClass('disabled').unbind('click');
-        }
+        if (self.isTemplate == "true")
+            $('#btn-reset').addClass('disabled').unbind('click');
     });
 };
 

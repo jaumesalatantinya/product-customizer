@@ -17,7 +17,7 @@ class ApiRequests {
 
     public function getTemplateId($idProd) {
 
-        $q = 'SELECT IDcus FROM bd_custom WHERE ID_pro =' . $idProd . ' AND Is_Template = 1';
+        $q = 'SELECT IDcus FROM bd_custom WHERE ID_pro =' . $idProd . ' AND Is_Template = "true"';
         return $this->db->select($q);
     }
 

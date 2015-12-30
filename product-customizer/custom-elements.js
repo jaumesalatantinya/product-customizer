@@ -6,7 +6,7 @@ var CustomElement = function (view, id) {
     this.customE = $();
     this.id = id;
     this.data;
-}
+};
 
 CustomElement.prototype.init = function () {
 
@@ -16,7 +16,7 @@ CustomElement.prototype.init = function () {
         self.draw();
         self.bindings();
     });
-}
+};
 
 CustomElement.prototype.loadData = function () {
 
@@ -36,7 +36,7 @@ CustomElement.prototype.loadData = function () {
     .fail(function() {
         self.pPCustom.showMsg('ERROR', 'API: Load custom elements data return false');
     });
-}
+};
 
 CustomElement.prototype.draw = function() {
 
@@ -51,7 +51,7 @@ CustomElement.prototype.draw = function() {
         'width' : (self.data.width -28)+'px',
         'height' : (self.data.height -28)+'px',
     });
-}
+};
 
 CustomElement.prototype.bindings = function () {
 
@@ -97,7 +97,7 @@ CustomElement.prototype.edit = function (newPosSizeData) {
 
     var self = this;
     self.pView.pPCustom.showAuxMenu(self);
-}
+};
 
 CustomElement.prototype.updatePosSizeData = function (newPosSizeData) {
 
@@ -116,7 +116,7 @@ CustomElement.prototype.updatePosSizeData = function (newPosSizeData) {
     .fail(function() {
         self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
     });
-}
+};
 
 CustomElement.prototype.delCustomElement = function (idCusele) {
 
@@ -135,7 +135,7 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
         });
     }
     else { self.showMsg('ERROR', 'Del CustomElement: No idCusele passed as param'); }
-}
+};
 
 
 
@@ -186,7 +186,7 @@ Area.prototype.changeAttr = function (change, value) {
     var self = this;
     self.data.area_attr[change] = value;
     self.updateData(self.data.area_attr);
-}
+};
 
 Area.prototype.updateData = function (newData) {
 
@@ -202,11 +202,7 @@ Area.prototype.updateData = function (newData) {
     .fail(function() {
         self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
     });
-}
-
-
-
-
+};
 
 
 
@@ -257,14 +253,14 @@ Text.prototype.bindings = function () {
     self.customE.find('.text').change( function (){
         self.changeText($(this).val()); 
     });
-}
+};
 
 Text.prototype.changeText = function (value){
 
     var self = this;
     self.data.text = value;
     self.updateData('text', {text: value});
-}
+};
 
 Text.prototype.changeAttr = function (change, value) {
 
@@ -277,7 +273,7 @@ Text.prototype.changeAttr = function (change, value) {
     }
     self.data.text_attr[change] = value;
     self.updateData('text-attr', self.data.text_attr);
-}
+};
 
 Text.prototype.updateData = function (type, newData) {
 
@@ -293,13 +289,7 @@ Text.prototype.updateData = function (type, newData) {
     .fail(function() {
         self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
     });
-}
-
-
-
-
-
-
+};
 
 
 
