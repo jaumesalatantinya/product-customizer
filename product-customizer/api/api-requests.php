@@ -57,7 +57,7 @@ class ApiRequests {
 
     public function getFonts() {
 
-        $q = 'SELECT * FROM bd_custom_fonts';
+        $q = 'SELECT * FROM bd_custom_fonts ORDER BY Font ASC';
         return $this->db->select($q);
     }
 
