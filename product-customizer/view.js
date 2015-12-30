@@ -97,6 +97,7 @@ View.prototype.addCustomElement = function(customElementData) {
         self.customElements.push(new Text(self, customElementData.IDcusele));
         break;
     case 'svg':
+        self.customElements.push(new Svg(self, customElementData.IDcusele));
         break;
     case 'img':
         self.customElements.push(new Img(self, customElementData.IDcusele));

@@ -91,6 +91,7 @@
                         </div>
                         <div id="aux-menu"></div>
                         <div id="wrapper-upload-form"></div>
+                        <div id="wrapper-svg-picker"></div>
                     </div>
                 </div>
             </div>

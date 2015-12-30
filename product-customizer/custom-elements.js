@@ -319,8 +319,33 @@ Text.prototype.updateData = function (type, newData) {
 
 
 
+function Svg(view, id) {
 
+    var self = this;
+    CustomElement.call(this, view, id);
+    self.pView.pPCustom.showMsg('LOG', 'Add svg id:' + self.id);
+    self.customE = $('<div class="wrapper-custom-element">\
+                        <div class="custom-element svg">\
+                            <img src="" />\
+                        </div>\
+                        <div class="move-custom-element"></div>\
+                        <div class="del-custom-element"></div>\
+                      </div>');
+    self.pView.rootE.append(self.customE);
+};
+Svg.prototype = Object.create(CustomElement.prototype);
+Svg.prototype.constructor = Svg;
 
+Svg.prototype.draw = function(){
+
+    var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Drawing Svg: ' + self.id);
+    CustomElement.prototype.draw.call(this);
+
+    if (self.data){
+        self.customE.find('.svg img').attr("src", self.pView.pPCustom.svgUrl+self.data.Svg_file)
+    }
+};
 
 
 
@@ -356,6 +381,6 @@ Img.prototype.draw = function(){
     CustomElement.prototype.draw.call(this);
 
     if (self.data){
-        self.customE.find('.img img').attr("src", self.pView.pPCustom.imgUrl+self.data.img)
+        self.customE.find('.img img').attr("src", self.pView.pPCustom.imgUrl+self.data.Img_file)
     }
 };

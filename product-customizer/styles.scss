@@ -145,7 +145,7 @@ $disabled-color-backgound: #EEE;
     resize: none;
 }
 
-.img {
+.img, .svg {
     border: 1px dotted transparent;
 }
 
@@ -200,6 +200,49 @@ $disabled-color-backgound: #EEE;
             img.loading {
                 display: none;
             }
+        }
+    }
+}
+
+#wrapper-svg-picker {
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width:100%;
+    height:100%;
+    text-align:center;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    .modal {
+        background-color: white;
+        margin: 150px auto;
+        width: 600px;
+        form {
+            img.loading {
+                display: none;
+            }
+        }
+    }
+    ul {
+        list-style-type: none;
+    }
+    ul li {
+        display: block;
+        border: 1px solid $light-gray;
+        width: 60px;
+        height: 60px;
+        float: left;
+        padding: 15px;
+        cursor: pointer;
+        &:hover {
+            background-color: $nav-main-border-color;
+            cursor: pointer;
+        }
+        img {
+            width: 60px;
+            height: 60px;
         }
     }
 }

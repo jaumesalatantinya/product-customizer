@@ -12,7 +12,9 @@ var ProductCustomizer = function () {
     this.currentViewId;
     this.apiUrl = 'product-customizer/api/api.php?request=';
     this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
+    this.svgUrl = 'http://www.sellosyrotulos.com/img/customSVG/'
     this.fonts = [];
+    this.svgs = [];
     this.mode = 'dev'; //[pro|dev]
 };
 
@@ -24,6 +26,7 @@ ProductCustomizer.prototype.init = function () {
         self.showMsg('LOG', 'Init Customization: ' + self.idCustom);
         self.getCustomizationData(self.idCustom);
         self.loadFonts();
+        self.loadSvgs();
         self.drawAndUpdateProductCustomizer('default');
     }
     else { self.showMsg('ERROR', 'No id customization to init'); }
@@ -65,7 +68,21 @@ ProductCustomizer.prototype.loadFonts = function () {
         });
     })
     .fail(function() {
-        self.showMsg('ERROR', 'Getting fonts');
+        self.showMsg('ERROR', 'Getting Fonts');
+    });
+};
+
+
+ProductCustomizer.prototype.loadSvgs = function () {
+
+    var self = this;
+    self.showMsg('LOG', 'Get Svgs');
+    $.ajax(this.apiUrl + 'get-svgs')
+    .done(function(svgs) {
+        self.svgs = svgs;
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'Getting Svgs');
     });
 };
 
@@ -129,7 +146,7 @@ ProductCustomizer.prototype.drawNavViews = function () {
     $('#nav-views').css('right', (300 - (self.viewsData.length*30)) + 'px');
     for (var i = 0; i < self.viewsData.length; i++) {
         var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
-        var img = $('<img/>', { 'src': self.imgUrl+self.viewsData[i].Image} );
+        var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );
         var del = $('<a class="btn-fancy-close" style="display: inline;"></a>').data('idView', self.viewsData[i].IDcusvie);
         var li = $('<li>');
         a.click( function(){
@@ -141,7 +158,7 @@ ProductCustomizer.prototype.drawNavViews = function () {
         a.append(img);
         li.append(del, a)
         $('#nav-views').append(li);
-    };
+    }
 };
 
 
@@ -153,8 +170,8 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-add-view-img').click( function () { self.showUploadForm('view');      });
         $('#btn-add-area').click(     function () { self.addArea(self.currentViewId); });
         $('#btn-add-text').click(     function () { self.addText(self.currentViewId); });
-        $('#btn-add-svg').click(      function () {  });
-        $('#btn-add-img').click(      function () { self.showUploadForm('img');  });
+        $('#btn-add-svg').click(      function () { self.showSvgPicker();             });
+        $('#btn-add-img').click(      function () { self.showUploadForm('img');       });
         if (self.viewsData.length == 0)
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').addClass('disabled').unbind('click');
         if (self.isTemplate == "true")
@@ -254,6 +271,22 @@ ProductCustomizer.prototype.addImg = function(idView, file) {
     });
 };
 
+ProductCustomizer.prototype.addSvg = function(idView, idSvg) {
+
+    var self = this;
+    self.showMsg('LOG', 'Adding Svg as custom element to DB');
+    $.ajax(this.apiUrl + 'put-svg&IDvie=' + idView + '&IDcussvg=' + idSvg)
+    .done(function(response) {
+        if (response) {
+            self.drawAndUpdateProductCustomizer(idView);
+        }
+        else { self.showMsg('ERROR', 'Add Svg: No new id custom element svg'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Add Svg');
+    });
+};
+
 
 ProductCustomizer.prototype.showUploadForm = function (type) {
 
@@ -314,6 +347,28 @@ ProductCustomizer.prototype.putImgToView = function (file) {
     })
     .fail(function() {
         self.showMsg('ERROR', 'API Put Img View');
+    });
+};
+
+
+ProductCustomizer.prototype.showSvgPicker = function () {
+
+    var self = this;
+    self.showMsg('LOG', 'Picking Svg');
+    $('#wrapper-svg-picker').load('product-customizer/svg-picker.html', function() {
+        $('#wrapper-svg-picker').show();
+        $('#wrapper-svg-picker .modal .btn-close').click( function() {
+            self.close('svg-picker');
+        });
+        for (var i = 0; i < self.svgs.length; i++) {
+            var img = $('<img />', { 'src': self.svgUrl+self.svgs[i].Svg_file} );
+            var li = $('<li>').data('idSvg', self.svgs[i].IDcussvg);
+            li.click( function(){
+                self.addSvg(self.currentViewId, $(this).data('idSvg'));
+                $('#wrapper-svg-picker').hide();
+            });
+            $('#ul-svgs').append(li.append(img));
+        }
     });
 };
 

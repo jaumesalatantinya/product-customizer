@@ -22,6 +22,7 @@ class Api {
         $this->idVie = $_GET['IDvie'];
         $this->file = $_GET['file'];
         $this->idCusele = $_GET['IDcusele'];
+        $this->idSvg = $_GET['IDcussvg'];
         $this->data = $_POST;
     }
 
@@ -57,6 +58,10 @@ class Api {
                 $this->response = $this->apiRequests->getFonts();
                 $this->returnJSONResponse();
                 break;
+            case 'get-svgs':
+                $this->response = $this->apiRequests->getSvgs();
+                $this->returnJSONResponse();
+                break;
 
 
 
@@ -78,6 +83,10 @@ class Api {
                 break;
             case 'put-img':
                 $this->response = $this->apiRequests->putImg($this->idVie, $this->file);
+                $this->returnJSONResponse();
+                break;
+            case 'put-svg':
+                $this->response = $this->apiRequests->putSvg($this->idVie, $this->idSvg);
                 $this->returnJSONResponse();
                 break;
 

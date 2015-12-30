@@ -45,19 +45,25 @@ class ApiRequests {
 
     public function getCustomElements($idVie) {
 
-        $q = 'SELECT * FROM bd_custom_elements WHERE ID_cusvie =' . $idVie;
+        $q = 'SELECT * FROM bd_custom_elements LEFT JOIN bd_custom_svg ON bd_custom_elements.ID_cussvg = bd_custom_svg.IDcussvg WHERE ID_cusvie =' . $idVie;
         return $this->db->select($q);
     }
 
     public function getCustomElement($idCusele) {
 
-        $q = 'SELECT * FROM bd_custom_elements WHERE IDcusele =' . $idCusele;
+        $q = 'SELECT * FROM bd_custom_elements LEFT JOIN bd_custom_svg ON bd_custom_elements.ID_cussvg = bd_custom_svg.IDcussvg WHERE IDcusele =' . $idCusele;
         return $this->db->select($q);
     }
 
     public function getFonts() {
 
         $q = 'SELECT * FROM bd_custom_fonts ORDER BY Font ASC';
+        return $this->db->select($q);
+    }
+
+    public function getSvgs() {
+
+        $q = 'SELECT * FROM bd_custom_svg';
         return $this->db->select($q);
     }
 
@@ -87,7 +93,13 @@ class ApiRequests {
 
     public function putImg($idVie, $file) {
 
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, img) VALUES (' . $idVie . ', "img", 200, 200, 200, 200, "' . $file . '")';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Img_file) VALUES (' . $idVie . ', "img", 200, 200, 200, 200, "' . $file . '")';
+        return $this->db->insert($q);
+    }
+
+    public function putSvg($idVie, $idSvg) {
+
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, ID_cussvg) VALUES (' . $idVie . ', "svg", 200, 200, 200, 300, "' . $idSvg . '")';
         return $this->db->insert($q);
     }
 
