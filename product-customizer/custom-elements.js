@@ -5,6 +5,8 @@ var CustomElement = function (view, id) {
     this.pView = view;
     this.customE = $();
     this.id = id;
+    this.mode = 'draw';
+    this.isOutSidePrintableArea;
     this.data;
 };
 
@@ -48,17 +50,29 @@ CustomElement.prototype.draw = function() {
         'top' : self.data.y+'px',
     });
     self.customE.find('.custom-element').css({
-        'width' : (self.data.width -28)+'px',
-        'height' : (self.data.height -28)+'px',
+        'width' : (self.data.width -30)+'px',
+        'height' : (self.data.height -30)+'px',
     });
+    if (self.mode == 'edit') {
+        self.customE.find('.custom-element').addClass('custom-element-edit');
+        self.customE.find('.move-custom-element, .del-custom-element, .ui-resizable-handle').show();
+    }
+    else {
+        self.customE.find('.custom-element').removeClass('custom-element-edit');
+        self.customE.find('.move-custom-element, .del-custom-element, .ui-resizable-handle').hide();
+        $('div.ui-resizable-handle').hide();
+        // self.customE.find('.ui-icon').removeClass('ui-icon');
+    }
 };
 
 CustomElement.prototype.bindings = function () {
 
     var self = this;
     
-    self.customE.find('.custom-element').click(function(){
+    self.customE.find('.custom-element').click(function(e){
+        e.stopPropagation();
         self.edit();
+        self.draw();
     });
     self.customE.draggable({
         stop: function() {
@@ -89,14 +103,20 @@ CustomElement.prototype.bindings = function () {
         }
     });
     self.customE.find('.del-custom-element').click(function() {
-        self.delCustomElement(self.data.IDcusele);
+        self.delCustomElement(self.data.IDcusele).done(function(){
+            self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentViewId);
+        });
     });
 };
 
 CustomElement.prototype.edit = function (newPosSizeData) {
 
     var self = this;
-    self.pView.pPCustom.showAuxMenu(self);
+    if (self.pView.currentElementEditing)
+        self.pView.currentElementEditing.mode = 'draw';
+    self.mode = 'edit';
+    self.pView.currentElementEditing = self;
+    self.pView.showAuxMenu(self);
 };
 
 CustomElement.prototype.updatePosSizeData = function (newPosSizeData) {
@@ -123,18 +143,20 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
     var self = this;
     self.pView.pPCustom.showMsg('LOG', 'Del Cutom Element: ' + idCusele);
     if (idCusele) {
-        $.ajax(self.pView.pPCustom.apiUrl + 'del-custom-element&IDcusele=' + idCusele)
+        return $.ajax(self.pView.pPCustom.apiUrl + 'del-custom-element&IDcusele=' + idCusele)
         .done(function(response) {
-            if (response) {
-                self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentViewId);
+            if (!response) {
+                self.pView.pPCustom.showMsg('ERROR', 'Del Cutom Element: API response false');
             }
-            else { self.pView.pPCustom.showMsg('ERROR', 'Del Cutom Element: API response false'); }
         })
         .fail(function() {
             self.pPCustom.showMsg('ERROR', 'API: Deleting custom elements');
         });
     }
-    else { self.showMsg('ERROR', 'Del CustomElement: No idCusele passed as param'); }
+    else { 
+        self.showMsg('ERROR', 'Del CustomElement: No idCusele passed as param');
+        return $.Deferred().reject();
+    }
 };
 
 

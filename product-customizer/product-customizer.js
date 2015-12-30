@@ -73,7 +73,6 @@ ProductCustomizer.prototype.loadFonts = function () {
 ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     
     var self = this;
-    self.hideAuxMenu();
     self.getviewsData(self.idCustom)
         .done(function(){
             if (self.viewsData && self.viewsData.length > 0 ) {
@@ -316,63 +315,6 @@ ProductCustomizer.prototype.putImgToView = function (file) {
     .fail(function() {
         self.showMsg('ERROR', 'API Put Img View');
     });
-};
-
-
-ProductCustomizer.prototype.showAuxMenu = function(customElementEditing) {
-
-    var self = this;
-    $('#aux-menu').show();
-    $('#aux-menu').load('product-customizer/aux-menu-'+customElementEditing.data.type+'.html', function() {
-        if (customElementEditing.data.type == 'area') {
-            $('#btn-rectangle').click(    function (){ customElementEditing.changeAttr('shape', 'rectangle'); });
-            $('#btn-circle').click(       function (){ customElementEditing.changeAttr('shape', 'cercle');    });
-            $('#btn-printable').click(    function (){ customElementEditing.changeAttr('printable', 'true');  });
-            $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
-        }
-        if (customElementEditing.data.type == 'text'){
-            $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');      });
-            $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');       });
-            $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');         });
-            $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');       });
-            $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
-            $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
-            $('#sel-family').change(       function (){ customElementEditing.changeAttr('family', $(this).val()); });
-            self.loadAuxMenuTextData(customElementEditing);
-        }
-    });
-};
-
-
-ProductCustomizer.prototype.loadAuxMenuTextData = function(customElementTextEditing) {
-
-    var self = this;
-    var text_attr = customElementTextEditing.data.text_attr;
-    $('#inp-size').val(text_attr.size);
-    self.populateFontsToSel(text_attr.family);
-};
-
-
-ProductCustomizer.prototype.populateFontsToSel = function(currentFont) {
-
-    var self = this;
-    if (self.fonts.length > 0){
-        self.fonts.forEach(function(val) {
-            var option = $("<option></option>");
-            option.attr('value',val.Font);
-            option.text(val.Font);
-            if (currentFont == val.Font)
-                option.attr('selected', 'selected');
-            $('#sel-family').append(option);
-        });
-    }
-    else { self.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
-};
-
-
-ProductCustomizer.prototype.hideAuxMenu = function() {
-
-    $('#aux-menu').hide();
 };
 
 

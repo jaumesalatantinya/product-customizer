@@ -7,6 +7,7 @@ var View = function () {
     this.idView;
     this.image;
     this.customElements = [];
+    this.currentElementEditing;
 };
 
 
@@ -14,11 +15,13 @@ View.prototype.init = function (productCustomizer, idView) {
 
     var self = this;
     self.pPCustom = productCustomizer;
-    self.idView = idView;
     self.pPCustom.showMsg('LOG', 'Init View: ' + self.idView);
+    self.idView = idView;
+    self.hideAuxMenu();
     self.loadViewData(self.idView)
         .done(function() {
             self.drawView();
+            self.bindingsView();
             self.loadCustomElementsData(self.idView)
                 .done(function(){
                     self.initCustomElements();
@@ -52,6 +55,16 @@ View.prototype.drawView = function () {
     var self = this;
     self.rootE.empty();
     self.rootE.css('background-image', 'url('+self.pPCustom.imgUrl+self.image+')');
+};
+
+View.prototype.bindingsView = function () {
+
+    var self = this;
+    self.rootE.click(function(){
+        self.currentElementEditing.mode = 'draw';
+        self.currentElementEditing = undefined;
+        self.hideAuxMenu();
+    });
 };
 
 
@@ -97,4 +110,61 @@ View.prototype.initCustomElements = function () {
     for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].init();
     };
+};
+
+
+View.prototype.showAuxMenu = function(customElementEditing) {
+
+    var self = this;
+    $('#aux-menu').show();
+    $('#aux-menu').load('product-customizer/aux-menu-'+customElementEditing.data.type+'.html', function() {
+        if (customElementEditing.data.type == 'area') {
+            $('#btn-rectangle').click(    function (){ customElementEditing.changeAttr('shape', 'rectangle'); });
+            $('#btn-circle').click(       function (){ customElementEditing.changeAttr('shape', 'cercle');    });
+            $('#btn-printable').click(    function (){ customElementEditing.changeAttr('printable', 'true');  });
+            $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
+        }
+        if (customElementEditing.data.type == 'text'){
+            $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');      });
+            $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');       });
+            $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');         });
+            $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');       });
+            $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
+            $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
+            $('#sel-family').change(       function (){ customElementEditing.changeAttr('family', $(this).val()); });
+            self.loadAuxMenuTextData(customElementEditing);
+        }
+    });
+};
+
+
+View.prototype.loadAuxMenuTextData = function(customElementTextEditing) {
+
+    var self = this;
+    var text_attr = customElementTextEditing.data.text_attr;
+    $('#inp-size').val(text_attr.size);
+    self.populateFontsToSel(text_attr.family);
+};
+
+
+View.prototype.populateFontsToSel = function(currentFont) {
+
+    var self = this;
+    if (self.pPCustom.fonts.length > 0){
+        self.pPCustom.fonts.forEach(function(val) {
+            var option = $("<option></option>");
+            option.attr('value',val.Font);
+            option.text(val.Font);
+            if (currentFont == val.Font)
+                option.attr('selected', 'selected');
+            $('#sel-family').append(option);
+        });
+    }
+    else { self.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
+};
+
+
+View.prototype.hideAuxMenu = function() {
+
+    $('#aux-menu').hide();
 };

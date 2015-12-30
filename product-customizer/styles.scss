@@ -2,7 +2,8 @@ $white: #fff;
 $gray: #faf9f6;
 $light-gray: #E8E8E8;
 $nav-main-border-color: $light-gray;
-$area-border-color: black;
+$area-border-color: $gray;
+$border-color-edit: black;
 $area-no-printable-background-color: rgba(255, 0, 0, 0.2);
 $text-border-color: black;
 $nav-views-border-color: black;
@@ -121,6 +122,10 @@ $disabled-color-backgound: #EEE;
     left: 14px; 
 }
 
+.custom-element-edit {
+    border: 1px solid $border-color-edit !important;
+}
+
 .area {
     border: 1px solid $area-border-color;
 }
@@ -134,9 +139,14 @@ $disabled-color-backgound: #EEE;
 }
 
 .text {
-    border: 1px dotted $text-border-color;
+    border: 1px dotted transparent;
     background-color: transparent;
 }
+
+.img {
+    border: 1px dotted transparent;
+}
+
 .img img{
     width: 100%;
 }
