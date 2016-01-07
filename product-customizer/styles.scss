@@ -9,6 +9,8 @@ $text-border-color: black;
 $nav-views-border-color: black;
 $disabled-color: #BBB;
 $disabled-color-backgound: #EEE;
+$toast-color: white;
+$toast-background-color: red;
 
 #product-customizer {
     background-color: $gray;
@@ -20,6 +22,22 @@ $disabled-color-backgound: #EEE;
     background-repeat: no-repeat;
     position: relative;
     margin-top: 20px;
+}
+
+#toast {
+    display: none;
+    position: absolute;
+    width: 300px;
+    right: 100px;
+    color: $toast-color;
+    background-color: $toast-background-color;
+}
+
+#view {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    right: 0;
 }
 
 #nav-main {
@@ -95,36 +113,46 @@ $disabled-color-backgound: #EEE;
     position: absolute !important;
 }
 
-.move-custom-element {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 14px;
-    height: 14px;
-    background-color: blue;
-    cursor: move;
-}
-
-.del-custom-element {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 14px;
-    height: 14px;
-    background-color: red;
-    cursor: not-allowed;
-}
-
 .custom-element {
     position: absolute;
     top: 14px;
     left: 14px; 
 }
 
+.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element {
+    display: none;
+    position: absolute;
+    width: 14px;
+    height: 14px;
+}
+
+.btn-move-custom-element {
+    top: 0;
+    left: 0;
+    background-color: blue;
+    cursor: move;
+}
+
+.btn-del-custom-element {
+    top: 0;
+    right: 0;
+    background-color: red;
+    cursor: not-allowed;
+}
+
+.btn-to-front-custom-element {
+    bottom: 0;
+    left: 0;
+    background-color: yellow;
+    cursor: alias;
+}
+
 .custom-element-edit {
     border: 1px solid $border-color-edit !important;
+}
+
+.custom-element-bad-position {
+    border: 1px solid red !important;
 }
 
 .area {
@@ -153,8 +181,7 @@ $disabled-color-backgound: #EEE;
     width: 100%;
 }
 
-#wrapper-modal {
-    display: none;
+.overlay {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -163,9 +190,11 @@ $disabled-color-backgound: #EEE;
     text-align:center;
     z-index: 2000;
     background-color: rgba(0, 0, 0, 0.2);
+}
 
-    .modal{
-        width:300px;
+#wrapper-msg-modal {
+    .modal {
+        width: 300px;
         margin: 300px auto;
         background-color: #fff;
         border:1px solid #000;
@@ -174,24 +203,7 @@ $disabled-color-backgound: #EEE;
     }
 }
 
-#view {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    right: 0px;
-}
-
 #wrapper-upload-form {
-    display: none;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width:100%;
-    height:100%;
-    text-align:center;
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.2);
-
     .modal {
         background-color: white;
         margin: 150px auto;
@@ -205,16 +217,6 @@ $disabled-color-backgound: #EEE;
 }
 
 #wrapper-svg-picker {
-    display: none;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width:100%;
-    height:100%;
-    text-align:center;
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.2);
-
     .modal {
         background-color: white;
         margin: 150px auto;

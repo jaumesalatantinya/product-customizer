@@ -243,7 +243,7 @@ ProductCustomizer.prototype.addText = function(idView) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Text as custom element to DB');
-    $.ajax(this.apiUrl + 'put-text&IDvie=' + idView)
+    $.ajax(this.apiUrl + 'put-text&IDvie=' + idView + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
             self.drawAndUpdateProductCustomizer(idView);
@@ -259,7 +259,7 @@ ProductCustomizer.prototype.addImg = function(idView, file) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Img as custom element to DB');
-    $.ajax(this.apiUrl + 'put-img&IDvie=' + idView + '&file=' + file)
+    $.ajax(this.apiUrl + 'put-img&IDvie=' + idView + '&file=' + file + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
             self.drawAndUpdateProductCustomizer(idView);
@@ -275,7 +275,7 @@ ProductCustomizer.prototype.addSvg = function(idView, idSvg) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Svg as custom element to DB');
-    $.ajax(this.apiUrl + 'put-svg&IDvie=' + idView + '&IDcussvg=' + idSvg)
+    $.ajax(this.apiUrl + 'put-svg&IDvie=' + idView + '&IDcussvg=' + idSvg + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
             self.drawAndUpdateProductCustomizer(idView);
@@ -292,7 +292,6 @@ ProductCustomizer.prototype.showUploadForm = function (type) {
 
     var self = this;
     self.showMsg('LOG', 'Show upload form');
-    $('#wrapper-upload-form').show();
     $('#wrapper-upload-form').load('product-customizer/upload-form.html', function() {
         $('#wrapper-upload-form .modal .btn-close').click( function() {
             self.close('upload-form');
@@ -356,7 +355,6 @@ ProductCustomizer.prototype.showSvgPicker = function () {
     var self = this;
     self.showMsg('LOG', 'Picking Svg');
     $('#wrapper-svg-picker').load('product-customizer/svg-picker.html', function() {
-        $('#wrapper-svg-picker').show();
         $('#wrapper-svg-picker .modal .btn-close').click( function() {
             self.close('svg-picker');
         });
@@ -379,22 +377,23 @@ ProductCustomizer.prototype.showMsg = function(type, msg) {
     if (self.mode == 'dev')
         console.log(type + ' -> ' + msg);
     if (type != 'LOG')
-        self.showModal(type, msg);
+        self.showMsgModal(type, msg);
 };
 
 
-ProductCustomizer.prototype.showModal = function(type, msg) {
+ProductCustomizer.prototype.showMsgModal = function(type, msg) {
 
     var self = this;
-    $('#wrapper-modal').css('display', 'block');
-    $('.modal p').html(msg);
-    $('.modal a').click( function() {
-        self.close('modal');
+    $('#wrapper-msg-modal').load('product-customizer/msg-modal.html', function() {
+        $('.modal p').html(msg);
+        $('.modal a').click( function() {
+            self.close('msg-modal');
+        });
     });
 };
 
 
 ProductCustomizer.prototype.close = function(element) {
 
-    $('#wrapper-'+element).css('display', 'none');
+    $('#wrapper-'+element).empty();
 };

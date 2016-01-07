@@ -20,10 +20,11 @@ class Api {
         $this->idProd = $_GET['IDpro'];
         $this->idCus = $_GET['IDcus'];
         $this->idVie = $_GET['IDvie'];
-        $this->file = $_GET['file'];
         $this->idCusele = $_GET['IDcusele'];
         $this->idSvg = $_GET['IDcussvg'];
         $this->data = $_POST;
+        $this->file = $_GET['file'];
+        $this->zindex = $_GET['Zindex'];
     }
 
 
@@ -78,15 +79,15 @@ class Api {
                 $this->returnJSONResponse();
                 break;
             case 'put-text':
-                $this->response = $this->apiRequests->putText($this->idVie);
+                $this->response = $this->apiRequests->putText($this->idVie, $this->zindex);
                 $this->returnJSONResponse();
                 break;
             case 'put-img':
-                $this->response = $this->apiRequests->putImg($this->idVie, $this->file);
+                $this->response = $this->apiRequests->putImg($this->idVie, $this->file, $this->zindex);
                 $this->returnJSONResponse();
                 break;
             case 'put-svg':
-                $this->response = $this->apiRequests->putSvg($this->idVie, $this->idSvg);
+                $this->response = $this->apiRequests->putSvg($this->idVie, $this->idSvg, $this->zindex);
                 $this->returnJSONResponse();
                 break;
 
@@ -94,6 +95,10 @@ class Api {
 
             case 'update-custom-element-pos-size':
                 $this->response = $this->apiRequests->updateCustomElementPosSize($this->idCusele, $this->data);
+                $this->returnJSONResponse();
+                break;
+            case 'update-custom-element-zindex':
+                $this->response = $this->apiRequests->updateCustomElementZindex($this->idCusele, $this->zindex);
                 $this->returnJSONResponse();
                 break;
             case 'update-area':

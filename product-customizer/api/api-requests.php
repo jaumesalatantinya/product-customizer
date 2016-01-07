@@ -80,26 +80,26 @@ class ApiRequests {
     public function putArea($idVie) {
 
         $attr = json_encode('{"shape": "rectangle", "printable": "true"}');
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, area_attr) VALUES (' . $idVie . ' , "area", 200, 200, 200, 200, ' . $attr . ')';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, area_attr) VALUES (' . $idVie . ' , "area", 200, 200, 200, 200, 0, ' . $attr . ')';
         return $this->db->insert($q);
     }
 
-    public function putText($idVie) {
+    public function putText($idVie, $zindex) {
 
         $attr = json_encode('{"family": "arial", "weight": "normal", "style": "normal", "size": 20, "align": "center"}');
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, text, text_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 100, "TEXTO", '. $attr .' )';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, text, text_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 100, ' . $zindex . ' , "TEXTO", '. $attr .' )';
         return $this->db->insert($q);
     }
 
-    public function putImg($idVie, $file) {
+    public function putImg($idVie, $file, $zindex) {
 
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Img_file) VALUES (' . $idVie . ', "img", 200, 200, 200, 200, "' . $file . '")';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, Img_file) VALUES (' . $idVie . ', "img", 200, 200, 200, 200, ' . $zindex . ', "' . $file . '")';
         return $this->db->insert($q);
     }
 
-    public function putSvg($idVie, $idSvg) {
+    public function putSvg($idVie, $idSvg, $zindex) {
 
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, ID_cussvg) VALUES (' . $idVie . ', "svg", 200, 200, 200, 300, "' . $idSvg . '")';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, ID_cussvg) VALUES (' . $idVie . ', "svg", 200, 200, 200, 300, ' . $zindex . ', "' . $idSvg . '")';
         return $this->db->insert($q);
     }
 
@@ -116,6 +116,12 @@ class ApiRequests {
     public function updateCustomElementPosSize($idCusele, $data) {
 
         $q = 'UPDATE bd_custom_elements SET x="' . $data['x'] . '", y="' . $data['y'] . '", width="' . $data['width'] . '", height="' . $data['height'] .'" WHERE IDcusele=' . $idCusele;
+        return $this->db->update($q);
+    }
+
+    public function updateCustomElementZindex($idCusele, $zindex) {
+
+        $q = 'UPDATE bd_custom_elements SET Zindex=' . $zindex . ' WHERE IDcusele=' . $idCusele;
         return $this->db->update($q);
     }
 

@@ -6,7 +6,7 @@ var CustomElement = function (view, id) {
     this.customE = $();
     this.id = id;
     this.mode = 'draw';
-    this.isOutSidePrintableArea;
+    this.isInCorrectPosition;
     this.data;
 };
 
@@ -43,11 +43,13 @@ CustomElement.prototype.loadData = function () {
 CustomElement.prototype.draw = function() {
 
     var self = this;
+    var isIn
     self.customE.css({
         'width' : self.data.width+'px',
         'height' : self.data.height+'px',
         'left' : self.data.x+'px',
         'top' : self.data.y+'px',
+        'z-index' : self.data.Zindex
     });
     self.customE.find('.custom-element').css({
         'width' : (self.data.width -30)+'px',
@@ -55,11 +57,17 @@ CustomElement.prototype.draw = function() {
     });
     if (self.mode == 'edit') {
         self.customE.find('.custom-element').addClass('custom-element-edit');
-        self.customE.find('.move-custom-element, .del-custom-element, .ui-resizable-handle').show();
+        self.customE.find('.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element, .ui-resizable-handle').show();
     }
     else {
         self.customE.find('.custom-element').removeClass('custom-element-edit');
-        self.customE.find('.move-custom-element, .del-custom-element, .ui-resizable-handle').hide();
+        self.customE.find('.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element, .ui-resizable-handle').hide();
+    }
+    if (self.data.type != 'area') { 
+        if (self.isInCorrectPosition)
+            self.customE.find('.custom-element').removeClass('custom-element-bad-position');
+        else
+            self.customE.find('.custom-element').addClass('custom-element-bad-position');
     }
 };
 
@@ -75,6 +83,13 @@ CustomElement.prototype.bindings = function () {
         self.mode = 'edit';
         self.pView.currentElementEditing = self;
         self.pView.updateView();
+    });
+    self.customE.find('.btn-to-front-custom-element').click(function (){
+        self.bringToFrontCustomElement().done(function(){
+            self.loadData().done(function() {
+                self.pView.updateView();
+            });
+        });
     });
     self.customE.draggable({
         stop: function() {
@@ -108,8 +123,9 @@ CustomElement.prototype.bindings = function () {
             });
         }
     });
-    self.customE.find('.del-custom-element').click(function() {
+    self.customE.find('.btn-del-custom-element').click(function() {
         self.delCustomElement(self.data.IDcusele).done(function(){
+            // self.pView.updateView();
             self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentViewId);
         });
     });
@@ -121,7 +137,7 @@ CustomElement.prototype.updatePosSizeData = function (newPosSizeData) {
     self.pView.pPCustom.showMsg('LOG', 'Update Custom Element');
     return $.ajax({
         type: 'POST',
-        url: self.pView.pPCustom.apiUrl + 'update-custom-element-pos-size&IDcusele='+self.data.IDcusele,
+        url: self.pView.pPCustom.apiUrl + 'update-custom-element-pos-size&IDcusele=' + self.data.IDcusele,
         data: newPosSizeData
     })
     .done(function(response) {
@@ -155,6 +171,21 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
     }
 };
 
+CustomElement.prototype.bringToFrontCustomElement = function () {
+
+    var self = this;
+    self.pView.pPCustom.showMsg('LOG', 'Bring to front Cutom Element: ' + self.data.IDcusele);
+    return $.ajax(self.pView.pPCustom.apiUrl + 'update-custom-element-zindex&IDcusele=' + self.data.IDcusele + '&Zindex=' + self.pView.getHighestZindex())
+    .done(function(response) {
+        if (!response) {
+            self.pView.pPCustom.showMsg('ERROR', 'Bring to front Cutom Element: API response false');
+        }
+    })
+    .fail(function() {
+        self.pPCustom.showMsg('ERROR', 'API: Bring to front custom element');
+    });
+};
+
 
 
 
@@ -172,8 +203,8 @@ function Area (view, id) {
     self.pView.pPCustom.showMsg('LOG', 'Add Area id:' + self.id);
     self.customE = $('<div class="wrapper-custom-element">\
                         <div class="custom-element area"></div>\
-                        <div class="move-custom-element"></div>\
-                        <div class="del-custom-element"></div>\
+                        <div class="btn-move-custom-element"></div>\
+                        <div class="btn-del-custom-element"></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 };
@@ -185,7 +216,7 @@ Area.prototype.draw = function() {
     var self = this;
     self.pView.pPCustom.showMsg('LOG', 'Drawing Area id: ' + self.data.IDcusele);
     CustomElement.prototype.draw.call(this);
-    if (self.data.area_attr.shape == 'cercle'){
+    if (self.data.area_attr.shape == 'ellipse'){
         self.customE.find('.custom-element').addClass('area-circle');
     }
     if (self.data.area_attr.shape == 'rectangle') {
@@ -222,6 +253,27 @@ Area.prototype.updateData = function (newData) {
     });
 };
 
+Area.prototype.contains = function (element) {
+
+    var self = this;
+    var isContained = false;
+    // console.log(self.customE.position().left);
+    if (self.data.area_attr.shape == 'rectangle'){
+        var a = {x:0, y:0, w: 0, h:0}, r = {x:0, y:0, w: 0, h:0};
+        a.x = self.customE.position().left;     a.w = self.customE.width(); 
+        a.y = self.customE.position().top;      a.h = self.customE.height();
+        r.x = element.customE.position().left;  r.w = element.customE.width();
+        r.y = element.customE.position().top;   r.h = element.customE.height();
+        // var R1x, R1w, R1y, R1h; //area
+        // var R2x, R2w, R2y, R2h; //element
+        // if ( (R2.x+R2.w) < (R1.x+R1.w) && (R2.x) > (R1.x) && (R2.y) > (R1.y) && (R2.y+R2.h) < (R1.y+R1.h)
+        if ( ((r.x+r.w) < (a.x+a.w)) && (r.x > a.x) && (r.y > a.y) && ((r.y+r.h) < (a.y+a.h)) )
+            isContained = true;
+    }
+    // if area.shape == ellipse 
+    return isContained;
+};
+
 
 
 
@@ -239,8 +291,9 @@ function Text(view, id) {
     self.pView.pPCustom.showMsg('LOG', 'Add Text id:' + self.id);
     self.customE = $('<div class="wrapper-custom-element">\
                         <textarea class="custom-element text"></textarea>\
-                        <div class="move-custom-element"></div>\
-                        <div class="del-custom-element"></div>\
+                        <div class="btn-move-custom-element"></div>\
+                        <div class="btn-del-custom-element"></div>\
+                        <div class="btn-to-front-custom-element"></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 };
@@ -328,8 +381,9 @@ function Svg(view, id) {
                         <div class="custom-element svg">\
                             <img src="" />\
                         </div>\
-                        <div class="move-custom-element"></div>\
-                        <div class="del-custom-element"></div>\
+                        <div class="btn-move-custom-element"></div>\
+                        <div class="btn-del-custom-element"></div>\
+                        <div class="btn-to-front-custom-element"></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 };
@@ -366,8 +420,9 @@ function Img(view, id) {
                         <div class="custom-element img">\
                             <img src="" />\
                         </div>\
-                        <div class="move-custom-element"></div>\
-                        <div class="del-custom-element"></div>\
+                        <div class="btn-move-custom-element"></div>\
+                        <div class="btn-del-custom-element"></div>\
+                        <div class="btn-to-front-custom-element"></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 };

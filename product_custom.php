@@ -81,15 +81,11 @@
                 <div class="list">
                     <div id="product-customizer">
                         <div id="view"></div>
+                        <div id="toast">El diseño está fuera del area de impresión</div>
                         <ul id="nav-main"></ul>
                         <ul id="nav-views"></ul>
-                        <div id="wrapper-modal">
-                            <div class="modal">
-                                <a>close</a>
-                                <p></p>
-                            </div>
-                        </div>
                         <div id="aux-menu"></div>
+                        <div id="wrapper-msg-modal"></div>
                         <div id="wrapper-upload-form"></div>
                         <div id="wrapper-svg-picker"></div>
                     </div>

@@ -118,12 +118,57 @@ View.prototype.initCustomElements = function () {
 View.prototype.updateView = function() {
 
     var self = this;
-    //getAreas
+    var isInsidePrintableArea;
+    var isInsideNoPrintableArea;
+    // Detect Area elemnt colision
     for (var i = 0; i < self.customElements.length; i++) {
-        // self.customElements[i].isOutSidePrintableArea = self.isOutOfPrintableArea(areas)
+        self.customElements[i].isInCorrectPosition = false;
+    };
+    self.customElements.forEach(function(area){
+        if (area.data.type == 'area'){
+            self.customElements.forEach(function(element){
+                if (element.data.type != 'area'){
+                    isInsidePrintableArea = false;
+                    isInsideNoPrintableArea = false;
+                    if (area.data.area_attr.printable && area.contains(element))
+                        isInsidePrintableArea = true;
+                    if (!area.data.area_attr.printable && area.contains(element))
+                        isInsideNoPrintableArea = true;
+                    if (isInsidePrintableArea)
+                        element.isInCorrectPosition = true || element.isInCorrectPosition;
+                    if (isInsideNoPrintableArea || (!isInsidePrintableArea && !isInsideNoPrintableArea))
+                        element.isInCorrectPosition = false || element.isInCorrectPosition;
+                }
+            });
+        }
+    });
+    // Draw
+    for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].draw();
     };
+    // Menu aux Management
     (self.currentElementEditing) ? self.showAuxMenu(self.currentElementEditing) : self.hideAuxMenu();
+    // toast Management
+    $('#toast').hide();
+    var showToast = false;
+    for (var i = 0; i < self.customElements.length; i++) {
+        if (self.customElements[i].data.type != 'area' && !self.customElements[i].isInCorrectPosition){
+            showToast = true;
+        }
+    };
+    if (showToast)
+        $('#toast').show();
+};
+
+View.prototype.getHighestZindex = function() {
+
+    var self = this;
+    var highestZIndex = 0;
+    for (var i = 0; i < self.customElements.length; i++) {
+        if (self.customElements[i].data.Zindex > highestZIndex)
+            highestZIndex = self.customElements[i].data.Zindex;
+    };
+    return parseInt(highestZIndex) + 1;
 };
 
 
@@ -134,7 +179,7 @@ View.prototype.showAuxMenu = function(customElementEditing) {
     $('#aux-menu').load('product-customizer/aux-menu-'+customElementEditing.data.type+'.html', function() {
         if (customElementEditing.data.type == 'area') {
             $('#btn-rectangle').click(    function (){ customElementEditing.changeAttr('shape', 'rectangle'); });
-            $('#btn-circle').click(       function (){ customElementEditing.changeAttr('shape', 'cercle');    });
+            $('#btn-circle').click(       function (){ customElementEditing.changeAttr('shape', 'ellipse');   });
             $('#btn-printable').click(    function (){ customElementEditing.changeAttr('printable', 'true');  });
             $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
         }
