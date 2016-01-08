@@ -17,6 +17,7 @@ CustomElement.prototype.init = function () {
     self.loadData().done(function(){
         self.draw();
         self.bindings();
+        // self.pView.updateViewAndCustomElements();
     });
 };
 
@@ -82,12 +83,12 @@ CustomElement.prototype.bindings = function () {
         }
         self.mode = 'edit';
         self.pView.currentElementEditing = self;
-        self.pView.updateView();
+        self.pView.updateViewAndCustomElements();
     });
     self.customE.find('.btn-to-front-custom-element').click(function (){
         self.bringToFrontCustomElement().done(function(){
             self.loadData().done(function() {
-                self.pView.updateView();
+                self.pView.updateViewAndCustomElements();
             });
         });
     });
@@ -99,7 +100,7 @@ CustomElement.prototype.bindings = function () {
             };
             self.updatePosSizeData(newPosSizeData).done(function() {
                 self.loadData().done(function() {
-                    self.pView.updateView();
+                    self.pView.updateViewAndCustomElements();
                 });
             });
         }
@@ -118,14 +119,14 @@ CustomElement.prototype.bindings = function () {
             };
             self.updatePosSizeData(newPosSizeData).done(function() {
                 self.loadData().done(function() {
-                    self.pView.updateView();
+                    self.pView.updateViewAndCustomElements();
                 });
             });
         }
     });
     self.customE.find('.btn-del-custom-element').click(function() {
         self.delCustomElement(self.data.IDcusele).done(function(){
-            // self.pView.updateView();
+            // self.pView.updateViewAndCustomElements();
             self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentViewId);
         });
     });
@@ -257,16 +258,12 @@ Area.prototype.contains = function (element) {
 
     var self = this;
     var isContained = false;
-    // console.log(self.customE.position().left);
     if (self.data.area_attr.shape == 'rectangle'){
         var a = {x:0, y:0, w: 0, h:0}, r = {x:0, y:0, w: 0, h:0};
         a.x = self.customE.position().left;     a.w = self.customE.width(); 
         a.y = self.customE.position().top;      a.h = self.customE.height();
         r.x = element.customE.position().left;  r.w = element.customE.width();
         r.y = element.customE.position().top;   r.h = element.customE.height();
-        // var R1x, R1w, R1y, R1h; //area
-        // var R2x, R2w, R2y, R2h; //element
-        // if ( (R2.x+R2.w) < (R1.x+R1.w) && (R2.x) > (R1.x) && (R2.y) > (R1.y) && (R2.y+R2.h) < (R1.y+R1.h)
         if ( ((r.x+r.w) < (a.x+a.w)) && (r.x > a.x) && (r.y > a.y) && ((r.y+r.h) < (a.y+a.h)) )
             isContained = true;
     }

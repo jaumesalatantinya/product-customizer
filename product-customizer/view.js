@@ -17,7 +17,7 @@ View.prototype.init = function (productCustomizer, idView) {
     self.pPCustom = productCustomizer;
     self.pPCustom.showMsg('LOG', 'Init View: ' + self.idView);
     self.idView = idView;
-    self.hideAuxMenu();
+    // self.hideAuxMenu();
     self.loadViewData(self.idView)
         .done(function() {
             self.drawView();
@@ -64,10 +64,9 @@ View.prototype.bindingsView = function () {
         if (self.currentElementEditing)
             self.currentElementEditing.mode = 'draw';
         self.currentElementEditing = undefined;
-        self.updateView();
+        self.updateViewAndCustomElements();
     });
 };
-
 
 View.prototype.loadCustomElementsData = function (idView) {
 
@@ -115,15 +114,25 @@ View.prototype.initCustomElements = function () {
 };
 
 
-View.prototype.updateView = function() {
+View.prototype.updateViewAndCustomElements = function() {
+
+    var self = this;
+    self.manageColisions();
+    self.drawCustomElements();
+    self.manageAuxMenu();
+    self.manageToast();
+};
+
+View.prototype.manageColisions = function() {
 
     var self = this;
     var isInsidePrintableArea;
     var isInsideNoPrintableArea;
-    // Detect Area elemnt colision
+
     for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].isInCorrectPosition = false;
     };
+
     self.customElements.forEach(function(area){
         if (area.data.type == 'area'){
             self.customElements.forEach(function(element){
@@ -142,19 +151,33 @@ View.prototype.updateView = function() {
             });
         }
     });
-    // Draw
+};
+
+View.prototype.drawCustomElements = function() {
+
+    var self = this;
     for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].draw();
     };
-    // Menu aux Management
-    (self.currentElementEditing) ? self.showAuxMenu(self.currentElementEditing) : self.hideAuxMenu();
-    // toast Management
+};
+
+View.prototype.manageAuxMenu = function() {
+
+    var self = this;
+    if (self.currentElementEditing)
+        self.showAuxMenu(self.currentElementEditing)
+    else
+        self.hideAuxMenu();
+};
+
+View.prototype.manageToast = function() {
+
+    var self = this;
     $('#toast').hide();
     var showToast = false;
     for (var i = 0; i < self.customElements.length; i++) {
-        if (self.customElements[i].data.type != 'area' && !self.customElements[i].isInCorrectPosition){
+        if (self.customElements[i].data.type != 'area' && !self.customElements[i].isInCorrectPosition)
             showToast = true;
-        }
     };
     if (showToast)
         $('#toast').show();
