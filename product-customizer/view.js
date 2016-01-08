@@ -125,13 +125,13 @@ View.prototype.initCustomElements = function () {
 View.prototype.updateViewAndCustomElements = function() {
 
     var self = this;
-    self.manageColisions();
+    self.manageCollisions();
     self.drawCustomElements();
     self.manageAuxMenu();
     self.manageToast();
 };
 
-View.prototype.manageColisions = function() {
+View.prototype.manageCollisions = function() {
 
     var self = this;
 
