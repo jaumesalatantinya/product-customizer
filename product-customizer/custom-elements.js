@@ -58,8 +58,8 @@ CustomElement.prototype.draw = function() {
         'z-index' : self.data.Zindex
     });
     self.customE.find('.custom-element').css({
-        'width' : (self.data.width -30)+'px',
-        'height' : (self.data.height -30)+'px',
+        'width' : (self.data.width - 30)+'px',
+        'height' : (self.data.height - 30)+'px',
     });
     if (self.mode == 'edit') {
         self.customE.find('.custom-element').addClass('custom-element-edit');
@@ -238,6 +238,7 @@ Area.prototype.changeAttr = function (change, value) {
     var self = this;
     self.data.area_attr[change] = value;
     self.updateData(self.data.area_attr);
+    self.pView.updateViewAndCustomElements();
 };
 
 Area.prototype.updateData = function (newData) {
@@ -249,10 +250,8 @@ Area.prototype.updateData = function (newData) {
         data: newData
     })
     .done(function(response) {
-        self.draw();
-    })
-    .fail(function() {
-        self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
+        if (!response) 
+            self.pView.pPCustom.showMsg('ERROR', 'API: Update Area');
     });
 };
 
@@ -277,10 +276,10 @@ Area.prototype.contains = function (element) {
     return isContained;
 };
 
-Area.prototype.intersetcs = function (element) {
+Area.prototype.intersects = function (element) {
 
     var self = this;
-    var intersetcs = false;
+    var intersects = false;
     if (self.data.area_attr.shape == 'rectangle'){
         var a = {x1:0, x2:0, y1: 0, y2:0}, r = {x1:0, x2:0, y1: 0, y2:0};
         a.x1 = self.customE.position().left+15;    a.x2 = a.x1 + (self.customE.width()-30); 
@@ -288,14 +287,14 @@ Area.prototype.intersetcs = function (element) {
         r.x1 = element.customE.position().left+15; r.x2 = r.x1 + (element.customE.width()-30);
         r.y1 = element.customE.position().top+15;  r.y2 = r.y1 + (element.customE.height()-30);
         if (a.x1 < r.x2 && a.x2 > r.x1 && a.y1 < r.y2 && a.y2 > r.y1)
-            intersetcs = true;
+            intersects = true;
     }
     if (self.data.area_attr.shape == 'ellipse') {
         var r = self.ellipseCalc(element);
         if (r[0] <= 1 || r[1] <= 1 || r[2] <= 1 || r[3] <= 1)
-            intersetcs = true;
+            intersects = true;
     } 
-    return intersetcs;
+    return intersects;
 };
 
 Area.prototype.ellipseCalc = function (element){
@@ -375,6 +374,7 @@ Text.prototype.changeText = function (value){
     var self = this;
     self.data.text = value;
     self.updateData('text', {text: value});
+    self.pView.updateViewAndCustomElements();
 };
 
 Text.prototype.changeAttr = function (change, value) {
@@ -388,6 +388,7 @@ Text.prototype.changeAttr = function (change, value) {
     }
     self.data.text_attr[change] = value;
     self.updateData('text-attr', self.data.text_attr);
+    self.pView.updateViewAndCustomElements();
 };
 
 Text.prototype.updateData = function (type, newData) {
@@ -399,10 +400,8 @@ Text.prototype.updateData = function (type, newData) {
         data: newData
     })
     .done(function(response) {
-        self.draw();
-    })
-    .fail(function() {
-        self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
+        if (!response)
+            self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
     });
 };
 

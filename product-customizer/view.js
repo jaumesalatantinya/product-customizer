@@ -59,6 +59,7 @@ View.prototype.drawView = function () {
     self.rootE.css('background-image', 'url('+self.pPCustom.imgUrl+self.image+')');
 };
 
+
 View.prototype.bindingsView = function () {
 
     var self = this;
@@ -69,6 +70,7 @@ View.prototype.bindingsView = function () {
         self.updateViewAndCustomElements();
     });
 };
+
 
 View.prototype.loadCustomElementsData = function (idView) {
 
@@ -131,6 +133,7 @@ View.prototype.updateViewAndCustomElements = function() {
     self.manageToast();
 };
 
+
 View.prototype.manageCollisions = function() {
 
     var self = this;
@@ -151,7 +154,7 @@ View.prototype.manageCollisions = function() {
                     if (area.data.area_attr.printable == 'false') {
                         if (area.contains(element))
                             element.isInsideNoPrintableArea = true;
-                        if (area.intersetcs(element))
+                        if (area.intersects(element))
                             element.intersectsWithNoPrintableArea = true
                     }
                 }
@@ -170,6 +173,7 @@ View.prototype.manageCollisions = function() {
     };
 };
 
+
 View.prototype.drawCustomElements = function() {
 
     var self = this;
@@ -178,13 +182,14 @@ View.prototype.drawCustomElements = function() {
     };
 };
 
+
 View.prototype.manageAuxMenu = function() {
 
     var self = this;
     if (self.currentElementEditing)
         self.showAndLoadAuxMenu(self.currentElementEditing)
     else
-        self.hideAuxMenu();
+        $('#aux-menu').hide();
 };
 
 View.prototype.manageToast = function() {
@@ -198,17 +203,6 @@ View.prototype.manageToast = function() {
     };
     if (showToast)
         $('#toast').show();
-};
-
-View.prototype.getHighestZindex = function() {
-
-    var self = this;
-    var highestZIndex = 0;
-    for (var i = 0; i < self.customElements.length; i++) {
-        if (self.customElements[i].data.Zindex > highestZIndex)
-            highestZIndex = self.customElements[i].data.Zindex;
-    };
-    return parseInt(highestZIndex) + 1;
 };
 
 
@@ -264,7 +258,14 @@ View.prototype.populateFontsToSel = function(currentFont) {
     else { self.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
 };
 
-View.prototype.hideAuxMenu = function() {
 
-    $('#aux-menu').hide();
+View.prototype.getHighestZindex = function() {
+
+    var self = this;
+    var highestZIndex = 0;
+    for (var i = 0; i < self.customElements.length; i++) {
+        if (self.customElements[i].data.Zindex > highestZIndex)
+            highestZIndex = self.customElements[i].data.Zindex;
+    };
+    return parseInt(highestZIndex) + 1;
 };
