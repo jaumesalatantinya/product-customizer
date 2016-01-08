@@ -17,14 +17,16 @@ View.prototype.init = function (productCustomizer, idView) {
     self.pPCustom = productCustomizer;
     self.pPCustom.showMsg('LOG', 'Init View: ' + self.idView);
     self.idView = idView;
-    // self.hideAuxMenu();
     self.loadViewData(self.idView)
         .done(function() {
             self.drawView();
             self.bindingsView();
             self.loadCustomElementsData(self.idView)
                 .done(function(){
-                    self.initCustomElements();
+                    self.initCustomElements()
+                        .then(function(){
+                            self.updateViewAndCustomElements();
+                        });
                 })
         });
 };
@@ -108,9 +110,15 @@ View.prototype.addCustomElement = function(customElementData) {
 View.prototype.initCustomElements = function () {
 
     var self = this;
-    for (var i = 0; i < self.customElements.length; i++) {
-        self.customElements[i].init();
-    };
+    var promises = [];
+    return new Promise (function (resolve, reject) {
+        for (var i = 0; i < self.customElements.length; i++) {
+            promises.push(self.customElements[i].init());
+        };
+        Promise.all(promises).then(function(promise){
+            resolve();
+        })
+    });
 };
 
 
@@ -126,31 +134,41 @@ View.prototype.updateViewAndCustomElements = function() {
 View.prototype.manageColisions = function() {
 
     var self = this;
-    var isInsidePrintableArea;
-    var isInsideNoPrintableArea;
 
     for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].isInCorrectPosition = false;
+        self.customElements[i].isInsidePrintableArea = false;
+        self.customElements[i].isInsideNoPrintableArea = false;
+        self.customElements[i].intersectsWithNoPrintableArea = false;
     };
-
     self.customElements.forEach(function(area){
         if (area.data.type == 'area'){
             self.customElements.forEach(function(element){
                 if (element.data.type != 'area'){
-                    isInsidePrintableArea = false;
-                    isInsideNoPrintableArea = false;
-                    if (area.data.area_attr.printable && area.contains(element))
-                        isInsidePrintableArea = true;
-                    if (!area.data.area_attr.printable && area.contains(element))
-                        isInsideNoPrintableArea = true;
-                    if (isInsidePrintableArea)
-                        element.isInCorrectPosition = true || element.isInCorrectPosition;
-                    if (isInsideNoPrintableArea || (!isInsidePrintableArea && !isInsideNoPrintableArea))
-                        element.isInCorrectPosition = false || element.isInCorrectPosition;
+                    if (area.data.area_attr.printable == 'true') {
+                        if (area.contains(element))
+                            element.isInsidePrintableArea = true;
+                    }
+                    if (area.data.area_attr.printable == 'false') {
+                        if (area.contains(element))
+                            element.isInsideNoPrintableArea = true;
+                        if (area.intersetcs(element))
+                            element.intersectsWithNoPrintableArea = true
+                    }
                 }
             });
         }
     });
+    for (var i = 0; i < self.customElements.length; i++) {
+        if (self.customElements[i].data.type != 'area') {
+            if (self.customElements[i].isInsidePrintableArea)
+                self.customElements[i].isInCorrectPosition = true;
+            if (!self.customElements[i].isInsidePrintableArea && !self.customElements[i].isInsideNoPrintableArea)
+                self.customElements[i].isInCorrectPosition = false;
+            if (self.customElements[i].isInsideNoPrintableArea || self.customElements[i].intersectsWithNoPrintableArea)
+                self.customElements[i].isInCorrectPosition = false;
+        }
+    };
 };
 
 View.prototype.drawCustomElements = function() {

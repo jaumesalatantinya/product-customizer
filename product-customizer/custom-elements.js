@@ -7,6 +7,9 @@ var CustomElement = function (view, id) {
     this.id = id;
     this.mode = 'draw';
     this.isInCorrectPosition;
+    this.isInsidePrintableArea;
+    this.isInsideNoPrintableArea;
+    this.intersectsWithNoPrintableArea;
     this.data;
 };
 
@@ -14,10 +17,12 @@ CustomElement.prototype.init = function () {
 
     var self = this;
     self.pView.pPCustom.showMsg('LOG', 'Init Custom Element: ' +self.id);
-    self.loadData().done(function(){
-        self.draw();
-        self.bindings();
-        // self.pView.updateViewAndCustomElements();
+    return new Promise (function(resolve, reject) {
+        self.loadData().done(function(){
+            self.draw();
+            self.bindings();
+            resolve();
+        });
     });
 };
 
@@ -64,12 +69,10 @@ CustomElement.prototype.draw = function() {
         self.customE.find('.custom-element').removeClass('custom-element-edit');
         self.customE.find('.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element, .ui-resizable-handle').hide();
     }
-    if (self.data.type != 'area') { 
-        if (self.isInCorrectPosition)
-            self.customE.find('.custom-element').removeClass('custom-element-bad-position');
-        else
-            self.customE.find('.custom-element').addClass('custom-element-bad-position');
-    }
+    if (self.data.type != 'area' && self.isInCorrectPosition)
+        self.customE.find('.custom-element').removeClass('custom-element-bad-position');
+    if (self.data.type != 'area' && !self.isInCorrectPosition)
+        self.customE.find('.custom-element').addClass('custom-element-bad-position');
 };
 
 CustomElement.prototype.bindings = function () {
@@ -78,19 +81,8 @@ CustomElement.prototype.bindings = function () {
     
     self.customE.find('.custom-element').click(function(e){
         e.stopPropagation();
-        if (self.pView.currentElementEditing) {
-            self.pView.currentElementEditing.mode = 'draw';
-        }
-        self.mode = 'edit';
-        self.pView.currentElementEditing = self;
+        self.editCustomElement();
         self.pView.updateViewAndCustomElements();
-    });
-    self.customE.find('.btn-to-front-custom-element').click(function (){
-        self.bringToFrontCustomElement().done(function(){
-            self.loadData().done(function() {
-                self.pView.updateViewAndCustomElements();
-            });
-        });
     });
     self.customE.draggable({
         stop: function() {
@@ -98,11 +90,8 @@ CustomElement.prototype.bindings = function () {
                 x: $(this).position().left, y: $(this).position().top,
                 width: $(this).width(), height: $(this).height() 
             };
-            self.updatePosSizeData(newPosSizeData).done(function() {
-                self.loadData().done(function() {
-                    self.pView.updateViewAndCustomElements();
-                });
-            });
+            self.updatePosSizeData(newPosSizeData);
+            self.pView.updateViewAndCustomElements();
         }
     });
     self.customE.resizable({
@@ -117,26 +106,37 @@ CustomElement.prototype.bindings = function () {
                 x: $(this).position().left, y: $(this).position().top,
                 width: $(this).width(), height: $(this).height() 
             };
-            self.updatePosSizeData(newPosSizeData).done(function() {
-                self.loadData().done(function() {
-                    self.pView.updateViewAndCustomElements();
-                });
-            });
+            self.updatePosSizeData(newPosSizeData);
+            self.pView.updateViewAndCustomElements();
         }
     });
     self.customE.find('.btn-del-custom-element').click(function() {
         self.delCustomElement(self.data.IDcusele).done(function(){
-            // self.pView.updateViewAndCustomElements();
-            self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentViewId);
+            self.pView.updateViewAndCustomElements();
         });
     });
+    self.customE.find('.btn-to-front-custom-element').click(function (){
+        self.bringToFrontCustomElement();
+        self.pView.updateViewAndCustomElements();
+    });
+};
+
+CustomElement.prototype.editCustomElement = function (newPosSizeData) {
+
+    var self = this;
+    if (self.pView.currentElementEditing)
+        self.pView.currentElementEditing.mode = 'draw';
+    self.mode = 'edit';
+    self.pView.currentElementEditing = self;
 };
 
 CustomElement.prototype.updatePosSizeData = function (newPosSizeData) {
 
     var self = this;
     self.pView.pPCustom.showMsg('LOG', 'Update Custom Element');
-    return $.ajax({
+    self.data.x = newPosSizeData.x; self.data.y = newPosSizeData.y;
+    self.data.width = newPosSizeData.width; self.data.height = newPosSizeData.height;
+    $.ajax({
         type: 'POST',
         url: self.pView.pPCustom.apiUrl + 'update-custom-element-pos-size&IDcusele=' + self.data.IDcusele,
         data: newPosSizeData
@@ -176,7 +176,9 @@ CustomElement.prototype.bringToFrontCustomElement = function () {
 
     var self = this;
     self.pView.pPCustom.showMsg('LOG', 'Bring to front Cutom Element: ' + self.data.IDcusele);
-    return $.ajax(self.pView.pPCustom.apiUrl + 'update-custom-element-zindex&IDcusele=' + self.data.IDcusele + '&Zindex=' + self.pView.getHighestZindex())
+    var highestZindex = self.pView.getHighestZindex();
+    self.data.Zindex = highestZindex;
+    $.ajax(self.pView.pPCustom.apiUrl + 'update-custom-element-zindex&IDcusele=' + self.data.IDcusele + '&Zindex=' + highestZindex)
     .done(function(response) {
         if (!response) {
             self.pView.pPCustom.showMsg('ERROR', 'Bring to front Cutom Element: API response false');
@@ -269,6 +271,23 @@ Area.prototype.contains = function (element) {
     }
     // if area.shape == ellipse 
     return isContained;
+};
+
+Area.prototype.intersetcs = function (element) {
+
+    var self = this;
+    var intersetcs = false;
+    if (self.data.area_attr.shape == 'rectangle'){
+        var a = {x1:0, x2:0, y1: 0, y2:0}, r = {x1:0, x2:0, y1: 0, y2:0};
+        a.x1 = self.customE.position().left;    a.x2 = a.x1 + self.customE.width(); 
+        a.y1 = self.customE.position().top;     a.y2 = a.y1 + self.customE.height();
+        r.x1 = element.customE.position().left; r.x2 = r.x1 + element.customE.width();
+        r.y1 = element.customE.position().top;  r.y2 = r.y1 + element.customE.height();
+        if (a.x1 < r.x2 && a.x2 > r.x1 && a.y1 < r.y2 && a.y2 > r.y1)
+            intersetcs = true;
+    }
+    // if area.shape == ellipse 
+    return intersetcs;
 };
 
 
