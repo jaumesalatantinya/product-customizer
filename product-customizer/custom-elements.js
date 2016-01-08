@@ -112,7 +112,7 @@ CustomElement.prototype.bindings = function () {
     });
     self.customE.find('.btn-del-custom-element').click(function() {
         self.delCustomElement(self.data.IDcusele).done(function(){
-            self.pView.updateViewAndCustomElements();
+            self.pView.pPCustom.drawAndUpdateProductCustomizer(self.pView.pPCustom.currentViewId);
         });
     });
     self.customE.find('.btn-to-front-custom-element').click(function (){
@@ -260,16 +260,20 @@ Area.prototype.contains = function (element) {
 
     var self = this;
     var isContained = false;
-    if (self.data.area_attr.shape == 'rectangle'){
+    if (self.data.area_attr.shape == 'rectangle') {
         var a = {x:0, y:0, w: 0, h:0}, r = {x:0, y:0, w: 0, h:0};
-        a.x = self.customE.position().left;     a.w = self.customE.width(); 
-        a.y = self.customE.position().top;      a.h = self.customE.height();
-        r.x = element.customE.position().left;  r.w = element.customE.width();
-        r.y = element.customE.position().top;   r.h = element.customE.height();
+        a.x = self.customE.position().left + 15;     a.w = self.customE.width() - 30; 
+        a.y = self.customE.position().top + 15;      a.h = self.customE.height() - 30;
+        r.x = element.customE.position().left + 15;  r.w = element.customE.width() - 30;
+        r.y = element.customE.position().top + 15;   r.h = element.customE.height() - 30;
         if ( ((r.x+r.w) < (a.x+a.w)) && (r.x > a.x) && (r.y > a.y) && ((r.y+r.h) < (a.y+a.h)) )
             isContained = true;
     }
-    // if area.shape == ellipse 
+    if (self.data.area_attr.shape == 'ellipse') {
+        var r = self.ellipseCalc(element);
+        if (r[0] <= 1 && r[1] <= 1 && r[2] <= 1 && r[3] <= 1)
+            isContained = true;
+    }
     return isContained;
 };
 
@@ -279,17 +283,41 @@ Area.prototype.intersetcs = function (element) {
     var intersetcs = false;
     if (self.data.area_attr.shape == 'rectangle'){
         var a = {x1:0, x2:0, y1: 0, y2:0}, r = {x1:0, x2:0, y1: 0, y2:0};
-        a.x1 = self.customE.position().left;    a.x2 = a.x1 + self.customE.width(); 
-        a.y1 = self.customE.position().top;     a.y2 = a.y1 + self.customE.height();
-        r.x1 = element.customE.position().left; r.x2 = r.x1 + element.customE.width();
-        r.y1 = element.customE.position().top;  r.y2 = r.y1 + element.customE.height();
+        a.x1 = self.customE.position().left+15;    a.x2 = a.x1 + (self.customE.width()-30); 
+        a.y1 = self.customE.position().top+15;     a.y2 = a.y1 + (self.customE.height()-30);
+        r.x1 = element.customE.position().left+15; r.x2 = r.x1 + (element.customE.width()-30);
+        r.y1 = element.customE.position().top+15;  r.y2 = r.y1 + (element.customE.height()-30);
         if (a.x1 < r.x2 && a.x2 > r.x1 && a.y1 < r.y2 && a.y2 > r.y1)
             intersetcs = true;
     }
-    // if area.shape == ellipse 
+    if (self.data.area_attr.shape == 'ellipse') {
+        var r = self.ellipseCalc(element);
+        if (r[0] <= 1 || r[1] <= 1 || r[2] <= 1 || r[3] <= 1)
+            intersetcs = true;
+    } 
     return intersetcs;
 };
 
+Area.prototype.ellipseCalc = function (element){
+
+    var self = this;
+    var x = [   element.customE.position().left+15,
+                (element.customE.position().left+15) + (element.customE.width()-30),
+                (element.customE.position().left+15) + (element.customE.width()-30),
+                element.customE.position().left+15 ];
+    var y = [   element.customE.position().top+15,
+                element.customE.position().top+15,
+                (element.customE.position().top+15) + (element.customE.height()-30), 
+                (element.customE.position().top+15) + (element.customE.height()-30) ];
+    var a = (self.customE.width()-30) / 2;
+    var b = (self.customE.height()-30) / 2;
+    var h = (self.customE.position().left+15) + a;
+    var k = (self.customE.position().top+15) + b;
+    var r = x.map(function(obj,i){
+        return ( (Math.pow(x[i]-h,2)/Math.pow(a,2)) + (Math.pow(y[i]-k,2)/Math.pow(b,2)) );
+    });
+    return r;
+};
 
 
 

@@ -134,7 +134,6 @@ View.prototype.updateViewAndCustomElements = function() {
 View.prototype.manageCollisions = function() {
 
     var self = this;
-
     for (var i = 0; i < self.customElements.length; i++) {
         self.customElements[i].isInCorrectPosition = false;
         self.customElements[i].isInsidePrintableArea = false;
@@ -183,7 +182,7 @@ View.prototype.manageAuxMenu = function() {
 
     var self = this;
     if (self.currentElementEditing)
-        self.showAuxMenu(self.currentElementEditing)
+        self.showAndLoadAuxMenu(self.currentElementEditing)
     else
         self.hideAuxMenu();
 };
@@ -213,28 +212,30 @@ View.prototype.getHighestZindex = function() {
 };
 
 
-View.prototype.showAuxMenu = function(customElementEditing) {
+View.prototype.showAndLoadAuxMenu = function(customElementEditing) {
 
     var self = this;
-    $('#aux-menu').show();
-    $('#aux-menu').load('product-customizer/aux-menu-'+customElementEditing.data.type+'.html', function() {
-        if (customElementEditing.data.type == 'area') {
-            $('#btn-rectangle').click(    function (){ customElementEditing.changeAttr('shape', 'rectangle'); });
-            $('#btn-circle').click(       function (){ customElementEditing.changeAttr('shape', 'ellipse');   });
-            $('#btn-printable').click(    function (){ customElementEditing.changeAttr('printable', 'true');  });
-            $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
-        }
-        if (customElementEditing.data.type == 'text'){
-            $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');      });
-            $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');       });
-            $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');         });
-            $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');       });
-            $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
-            $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
-            $('#sel-family').change(       function (){ customElementEditing.changeAttr('family', $(this).val()); });
-            self.loadAuxMenuTextData(customElementEditing);
-        }
-    });
+    if (customElementEditing.data.type == 'area' || customElementEditing.data.type == 'text') {
+        $('#aux-menu').show();
+        $('#aux-menu').load('product-customizer/aux-menu-'+customElementEditing.data.type+'.html', function() {
+            if (customElementEditing.data.type == 'area') {
+                $('#btn-rectangle').click(    function (){ customElementEditing.changeAttr('shape', 'rectangle'); });
+                $('#btn-circle').click(       function (){ customElementEditing.changeAttr('shape', 'ellipse');   });
+                $('#btn-printable').click(    function (){ customElementEditing.changeAttr('printable', 'true');  });
+                $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
+            }
+            if (customElementEditing.data.type == 'text'){
+                $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');      });
+                $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');       });
+                $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');         });
+                $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');       });
+                $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
+                $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
+                $('#sel-family').change(       function (){ customElementEditing.changeAttr('family', $(this).val()); });
+                self.loadAuxMenuTextData(customElementEditing);
+            }
+        });
+    }
 };
 
 
