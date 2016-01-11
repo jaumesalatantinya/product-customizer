@@ -86,7 +86,7 @@ class ApiRequests {
 
     public function putText($idVie, $zindex) {
 
-        $attr = json_encode('{"family": "arial", "weight": "normal", "style": "normal", "size": 20, "align": "center"}');
+        $attr = json_encode('{"family": "arial", "weight": "normal", "style": "normal", "size": 20, "align": "center", "color": "000000"}');
         $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, text, text_attr) VALUES (' . $idVie . ', "text", 200, 200, 200, 100, ' . $zindex . ' , "TEXTO", '. $attr .' )';
         return $this->db->insert($q);
     }
@@ -147,15 +147,22 @@ class ApiRequests {
 
 
 
-    public function delView($idVie) {
+    public function delView($idVie, $imgPath) {
 
+        $unlinkResponse = true;
+        $img = $this->db->select('SELECT Image FROM bd_custom_views')[0]['Image'];
         $qView = 'DELETE FROM bd_custom_views WHERE IDcusvie =' . $idVie;
         $qElement = 'DELETE FROM bd_custom_elements WHERE ID_cusvie ='. $idVie;
-        return ( $this->db->delete($qView) && $this->db->delete($qElement) );
+        if ( $img != 'default.jpg' && file_exists(realpath($imgPath . $img)) ) { 
+            $unlinkResponse = unlink (realpath($imgPath . $img));
+        }
+        return ( $this->db->delete($qView) && $this->db->delete($qElement) && $unlinkResponse );
     }
 
-    public function delCustomElement($idCusele) {
+    public function delCustomElement($idCusele, $imgPath) {
 
+        $imgFile = $this->db->select('SELECT Img_file FROM bd_custom_elements')[0]['Img_file'];
+        unlink (realpath($imgPath . $imgFile));
         $q = 'DELETE FROM bd_custom_elements WHERE IDcusele=' . $idCusele;
         return $this->db->delete($q);
     }

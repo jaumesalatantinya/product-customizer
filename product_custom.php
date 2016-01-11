@@ -24,11 +24,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Sellos y Rótulos</title>
     <link href="styles/style.css" rel="stylesheet" type="text/css" />
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="product-customizer/vendor/colorpicker/jquery.colorpicker.css" rel="stylesheet" type="text/css" />
     <link href="product-customizer/styles.css" rel="stylesheet" type="text/css" />
-    <link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script src="product-customizer/vendor/colorpicker/jquery.colorpicker.js"></script>
     <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
     <script src="product-customizer/view.js" type="text/javascript"></script>
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
@@ -78,6 +80,12 @@
                     <li></li>
                     <div class="clear"></div>
                 </ul>
+                <div class="row">
+                    <form ACTION="">
+                        <h2 class="red"><span>Producto:</span> <?php echo $row_Recordset2['Producto_esp']?></h2>
+                        <div class="clear"></div>
+                    </form>
+                </div>
                 <div class="list">
                     <div id="product-customizer">
                         <div id="view"></div>

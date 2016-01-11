@@ -163,11 +163,11 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
             }
         })
         .fail(function() {
-            self.pPCustom.showMsg('ERROR', 'API: Deleting custom elements');
+            self.pView.pPCustom.showMsg('ERROR', 'API: Deleting custom elements');
         });
     }
     else { 
-        self.showMsg('ERROR', 'Del CustomElement: No idCusele passed as param');
+        self.pView.pPCustom.showMsg('ERROR', 'Del CustomElement: No idCusele passed as param');
         return $.Deferred().reject();
     }
 };
@@ -355,7 +355,8 @@ Text.prototype.draw = function(){
             'font-weight': self.data.text_attr.weight,
             'font-style': self.data.text_attr.style,
             'font-size': self.data.text_attr.size + 'px',
-            'text-align': self.data.text_attr.align
+            'text-align': self.data.text_attr.align,
+            'color': '#'+self.data.text_attr.color
         });
     }
 };

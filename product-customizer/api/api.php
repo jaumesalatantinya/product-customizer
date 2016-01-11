@@ -25,6 +25,7 @@ class Api {
         $this->data = $_POST;
         $this->file = $_GET['file'];
         $this->zindex = $_GET['Zindex'];
+        $this->imgPath = '../../../img/custom/';    
     }
 
 
@@ -118,11 +119,11 @@ class Api {
 
 
             case 'del-view':
-                $this->response = $this->apiRequests->delView($this->idVie);
+                $this->response = $this->apiRequests->delView($this->idVie, $this->imgPath);
                 $this->returnJSONResponse();
                 break;
             case 'del-custom-element':
-                $this->response = $this->apiRequests->delCustomElement($this->idCusele);
+                $this->response = $this->apiRequests->delCustomElement($this->idCusele, $this->imgPath);
                 $this->returnJSONResponse();
                 break;
 

@@ -226,6 +226,7 @@ View.prototype.showAndLoadAuxMenu = function(customElementEditing) {
                 $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
                 $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
                 $('#sel-family').change(       function (){ customElementEditing.changeAttr('family', $(this).val()); });
+                $('.cp-alt').colorpicker({     altField: '.cp-alt-target', ok: function(event, color) { customElementEditing.changeAttr('color', color.formatted); }});
                 self.loadAuxMenuTextData(customElementEditing);
             }
         });
@@ -238,6 +239,8 @@ View.prototype.loadAuxMenuTextData = function(customElementTextEditing) {
     var self = this;
     var text_attr = customElementTextEditing.data.text_attr;
     $('#inp-size').val(text_attr.size);
+    $('.cp-alt').val(text_attr.color);
+    $('.cp-alt-target').css('background-color', '#'+text_attr.color);
     self.populateFontsToSel(text_attr.family);
 };
 

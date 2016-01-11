@@ -12,7 +12,7 @@ var ProductCustomizer = function () {
     this.currentViewId;
     this.apiUrl = 'product-customizer/api/api.php?request=';
     this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
-    this.svgUrl = 'http://www.sellosyrotulos.com/img/customSVG/'
+    this.svgUrl = 'http://www.sellosyrotulos.com/img/customSVG/';
     this.fonts = [];
     this.svgs = [];
     this.mode = 'dev'; //[pro|dev]
@@ -212,7 +212,7 @@ ProductCustomizer.prototype.delView = function (idView) {
                 self.view.rootE.css('background-image', 'none');
                 self.drawAndUpdateProductCustomizer('default');
             }
-            else { self.showMsg('ERROR', 'Add View: No new idView'); }
+            else { self.showMsg('ERROR', 'Del View: Response false'); }
         })
         .fail(function() {
             self.showMsg('ERROR', 'API Del View');
@@ -292,6 +292,7 @@ ProductCustomizer.prototype.showUploadForm = function (type) {
 
     var self = this;
     self.showMsg('LOG', 'Show upload form');
+    $('#wrapper-upload-form').show();
     $('#wrapper-upload-form').load('product-customizer/upload-form.html', function() {
         $('#wrapper-upload-form .modal .btn-close').click( function() {
             self.close('upload-form');
