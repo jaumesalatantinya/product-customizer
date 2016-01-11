@@ -4,7 +4,8 @@
 	header('Content-Type: application/json');
 	$error;
 	$target_dir = '../../img/custom/';
-	$target_file = $target_dir . basename($_FILES['file-to-upload']['name']);
+	$target_file = pathinfo($_FILES['file-to-upload']['name'],PATHINFO_FILENAME) . '_' . time() . '.' . pathinfo($_FILES['file-to-upload']['name'],PATHINFO_EXTENSION);
+	$target_dir_file = $target_dir . basename($target_file);
 	$uploadOk = 1;
 	$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
@@ -27,8 +28,8 @@
 	if ($uploadOk == 0) {
 	    echo ('{"status": "fail", "error": "Error: '.$error.'"}');
 	} else {
-	    if (move_uploaded_file($_FILES["file-to-upload"]["tmp_name"], $target_file)) {
-	    	echo ('{"status": "success", "file": "'.basename($_FILES['file-to-upload']['name']).'"}');	        
+	    if (move_uploaded_file($_FILES['file-to-upload']['tmp_name'], $target_dir_file)) {
+	    	echo ('{"status": "success", "file": "' . basename($target_file) . '"}');	        
 	    } else {
 	    	echo ('{"status": "fail", "error": "Error: No permision to move file to target dir"}');
 	    }
