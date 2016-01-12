@@ -225,7 +225,6 @@ View.prototype.showAndLoadAuxMenu = function(customElementEditing) {
                 $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');       });
                 $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
                 $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
-                $('#sel-family').change(       function (){ customElementEditing.changeAttr('family', $(this).val()); });
                 $('.cp-alt').colorpicker({     altField: '.cp-alt-target', ok: function(event, color) { customElementEditing.changeAttr('color', color.formatted); }});
                 self.loadAuxMenuTextData(customElementEditing);
             }
@@ -241,22 +240,32 @@ View.prototype.loadAuxMenuTextData = function(customElementTextEditing) {
     $('#inp-size').val(text_attr.size);
     $('.cp-alt').val(text_attr.color);
     $('.cp-alt-target').css('background-color', '#'+text_attr.color);
-    self.populateFontsToSel(text_attr.family);
+    self.populateFontsToSelector(text_attr.family);
 };
 
 
-View.prototype.populateFontsToSel = function(currentFont) {
+View.prototype.populateFontsToSelector = function(currentFont) {
 
     var self = this;
     if (self.pPCustom.fonts.length > 0){
         self.pPCustom.fonts.forEach(function(val) {
-            var option = $("<option></option>");
+            var option = $('<option></option>');
             option.attr('value',val.Font);
             option.text(val.Font);
             if (currentFont == val.Font)
                 option.attr('selected', 'selected');
             $('#sel-family').append(option);
         });
+        $('#sel-family').selectmenu({
+            change: function(event, data) {
+                self.currentElementEditing.changeAttr('family', data.item.value);
+            },
+            open: function( event, ui ) {
+                $('#sel-family-menu').find('li').each(function(i) {
+                    $(this).css('font-family', self.pPCustom.fonts[i].Font);
+                });
+            }
+        });    
     }
     else { self.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
 };

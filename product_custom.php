@@ -24,11 +24,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Sellos y Rótulos</title>
     <link href="styles/style.css" rel="stylesheet" type="text/css" />
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="product-customizer/vendor/colorpicker/jquery.colorpicker.css" rel="stylesheet" type="text/css" />
     <link href="product-customizer/styles.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
     <script src="product-customizer/vendor/colorpicker/jquery.colorpicker.js"></script>
     <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
@@ -50,9 +50,9 @@
             .fail(function(){ productCustomizer.showMsg('Error', 'API No template customization to load'); });
         });
     </script> 
-    <script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+    <!--script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
     <script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-    <link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox-1.3.4.css" media="screen" /-->
 </head>
 
 <body>

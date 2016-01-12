@@ -172,9 +172,18 @@ $toast-background-color: red;
     background-color: transparent;
     resize: none;
 }
+
 .cp-alt-target {
     width: 15px;
     height: 15px;
+}
+
+.ui-colorpicker input {
+    width: auto;
+}
+
+.ui-colorpicker label {
+    margin: 0px 0px 0px 10px;
 }
 
 .img, .svg {
@@ -228,6 +237,8 @@ $toast-background-color: red;
         background-color: white;
         margin: 150px auto;
         width: 600px;
+        max-height: 500px;
+        overflow: auto;
         form {
             img.loading {
                 display: none;
@@ -254,12 +265,4 @@ $toast-background-color: red;
             height: 60px;
         }
     }
-}
-
-
-.ui-colorpicker input {
-    width: auto;
-}
-.ui-colorpicker label {
-    margin: 0px 0px 0px 10px;
 }

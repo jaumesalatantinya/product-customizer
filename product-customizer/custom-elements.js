@@ -58,8 +58,8 @@ CustomElement.prototype.draw = function() {
         'z-index' : self.data.Zindex
     });
     self.customE.find('.custom-element').css({
-        'width' : (self.data.width - 30)+'px',
-        'height' : (self.data.height - 30)+'px',
+        'width' : (self.data.width - (self.data.type=='text' ? 40 : 30))+'px',
+        'height' : (self.data.height - (self.data.type=='text' ? 35 : 30))+'px',
     });
     if (self.mode == 'edit') {
         self.customE.find('.custom-element').addClass('custom-element-edit');
@@ -97,8 +97,8 @@ CustomElement.prototype.bindings = function () {
     self.customE.resizable({
         resize: function () {
             self.customE.find('.custom-element').css({
-                'width' : ($(this).width() - 30)+'px',
-                'height' : ($(this).height() - 30)+'px',
+                'width' : ($(this).width() - (self.data.type=='text' ? 40 : 30))+'px',
+                'height' : ($(this).height() - (self.data.type=='text' ? 35 : 30))+'px',
             });
         },
         stop: function() {

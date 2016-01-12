@@ -355,6 +355,7 @@ ProductCustomizer.prototype.showSvgPicker = function () {
 
     var self = this;
     self.showMsg('LOG', 'Picking Svg');
+    $('#wrapper-svg-picker').show();
     $('#wrapper-svg-picker').load('product-customizer/svg-picker.html', function() {
         $('#wrapper-svg-picker .modal .btn-close').click( function() {
             self.close('svg-picker');
@@ -385,9 +386,10 @@ ProductCustomizer.prototype.showMsg = function(type, msg) {
 ProductCustomizer.prototype.showMsgModal = function(type, msg) {
 
     var self = this;
+    $('#wrapper-msg-modal').show();
     $('#wrapper-msg-modal').load('product-customizer/msg-modal.html', function() {
-        $('.modal p').html(msg);
-        $('.modal a').click( function() {
+        $('#wrapper-msg-modal .modal p').html(msg);
+        $('#wrapper-msg-modal .modal .btn-close').click( function() {
             self.close('msg-modal');
         });
     });
@@ -396,5 +398,5 @@ ProductCustomizer.prototype.showMsgModal = function(type, msg) {
 
 ProductCustomizer.prototype.close = function(element) {
 
-    $('#wrapper-'+element).empty();
+    $('#wrapper-'+element).hide();
 };
