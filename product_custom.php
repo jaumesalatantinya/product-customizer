@@ -89,7 +89,7 @@
                 <div class="list">
                     <div id="product-customizer">
                         <div id="view"></div>
-                        <div id="toast">El diseño está fuera del area de impresión</div>
+                        <div id="toast"></div>
                         <ul id="nav-main"></ul>
                         <ul id="nav-views"></ul>
                         <div id="aux-menu"></div>

@@ -201,8 +201,10 @@ View.prototype.manageToast = function() {
         if (self.customElements[i].data.type != 'area' && !self.customElements[i].isInCorrectPosition)
             showToast = true;
     };
-    if (showToast)
+    if (showToast){
         $('#toast').show();
+        $('#toast').html('El diseño está fuera del area de impresión');
+    }
 };
 
 

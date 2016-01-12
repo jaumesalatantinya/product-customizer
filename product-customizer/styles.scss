@@ -1,8 +1,9 @@
 $white: #fff;
 $gray: #faf9f6;
 $light-gray: #E8E8E8;
+$dark-gray: #4D4D4D;
 $nav-main-border-color: $light-gray;
-$area-border-color: $gray;
+$area-border-color: $dark-gray;
 $border-color-edit: black;
 $area-no-printable-background-color: rgba(255, 0, 0, 0.2);
 $text-border-color: black;
@@ -119,7 +120,7 @@ $toast-background-color: red;
     left: 14px;
 }
 
-.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element {
+.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element, .btn-to-submit-text {
     display: none;
     position: absolute;
     width: 14px;
@@ -145,6 +146,13 @@ $toast-background-color: red;
     left: 0;
     background-color: yellow;
     cursor: alias;
+}
+
+.btn-to-submit-text {
+    bottom: 0;
+    left: 30px;
+    cursor: pointer;
+    background-color: green;
 }
 
 .custom-element-edit {

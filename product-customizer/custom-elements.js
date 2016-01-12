@@ -337,6 +337,7 @@ function Text(view, id) {
                         <div class="btn-move-custom-element"></div>\
                         <div class="btn-del-custom-element"></div>\
                         <div class="btn-to-front-custom-element"></div>\
+                        <div class="btn-to-submit-text"></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 };
@@ -348,6 +349,10 @@ Text.prototype.draw = function(){
     var self = this;
     self.pView.pPCustom.showMsg('LOG', 'Drawing Text: ' + self.id);
     CustomElement.prototype.draw.call(this);
+    if (self.mode == 'edit')
+        self.customE.find('.btn-to-submit-text').show();
+    else
+        self.customE.find('.btn-to-submit-text').hide();
     if (self.data){
         self.customE.find('.text').val(self.data.text);
         self.customE.find('.text').css({
@@ -365,8 +370,8 @@ Text.prototype.bindings = function () {
 
     var self = this;
     CustomElement.prototype.bindings.call(this);
-    self.customE.find('.text').change( function (){
-        self.changeText($(this).val()); 
+    self.customE.find('.btn-to-submit-text').click( function (){
+        self.changeText(self.customE.find('.text').val()); 
     });
 };
 
