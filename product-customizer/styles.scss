@@ -129,7 +129,7 @@ body {
             width: 110px;
             height: 110px;
             border: 1px solid $nav-views-border-color;
-            $.hover {
+            &.hover {
                 border: 1px solid $red;
             }
         }
