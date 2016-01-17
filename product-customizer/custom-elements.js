@@ -124,6 +124,7 @@ CustomElement.prototype.bindings = function () {
 CustomElement.prototype.editCustomElement = function (newPosSizeData) {
 
     var self = this;
+    $('#aux-menu').hide();
     if (self.pView.currentElementEditing)
         self.pView.currentElementEditing.mode = 'draw';
     self.mode = 'edit';
