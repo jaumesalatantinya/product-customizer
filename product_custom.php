@@ -36,7 +36,6 @@
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
     <script type="text/javascript"> 
         $(document).ready(function(){
-            <?php require_once('menu_jquery.php'); ?>
             var idProd = <?=$_GET['IDpro']?>;
             var productCustomizer = new ProductCustomizer();
             $.getJSON('product-customizer/api/api.php?request=get-custom-template-id&IDpro='+idProd)
@@ -50,58 +49,25 @@
             .fail(function(){ productCustomizer.showMsg('Error', 'API No template customization to load'); });
         });
     </script> 
-    <!--script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-    <script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-    <link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox-1.3.4.css" media="screen" /-->
 </head>
 
 <body>
-    <div id="div_centrado">
-        <div id="div_header">
-            <div class="col_1">
-                <a href="home.php" title="Sellos y Rótulos"><img src="imagesWEB/logo.png" alt="Sellos y Rótulos" /></a>
-            </div>
-            <div class="col_2">
-                <ul>
-                    <li><a href="#" title="<?php echo $_SESSION['MM_Empresa']; ?>" class="user"><?php echo $_SESSION['MM_Empresa']; ?></a></li>
-                    <li><a href="<?php echo $logoutAction ?>" title="Cerrar sesión" class="session">Cerrar sesión</a></li>
-                </ul>
-            </div>
+    <div id="product-customizer">
+        <div class="col-1">
+            <img src="imagesWEB/logo.png" width="228" alt="Sellos y Rótulos" />
+            <ul id="nav-main"></ul>
+            <div id="aux-menu"></div>
         </div>
-        <div id="div_body">
-            <h1>Productos</h1>
-            <div class="col_1">
-                <?php require_once('menu.php'); ?>
-            </div>
-            <div class="col_2">
-                <ul class="menu">
-                    <li><a href="list_product.php?<?php echo $queri; ?>" title="Productos">Productos</a></li>
-                    <li><a href="#" title="Personalizar" class="activat">Personalizar</a></li>
-                    <li></li>
-                    <div class="clear"></div>
-                </ul>
-                <div class="row">
-                    <form ACTION="">
-                        <h2 class="red"><span>Producto:</span> <?php echo $row_Recordset2['Producto_esp']?></h2>
-                        <div class="clear"></div>
-                    </form>
-                </div>
-                <div class="list">
-                    <div id="product-customizer">
-                        <div id="view"></div>
-                        <div id="toast"></div>
-                        <ul id="nav-main"></ul>
-                        <ul id="nav-views"></ul>
-                        <div id="aux-menu"></div>
-                        <div id="wrapper-msg-modal"></div>
-                        <div id="wrapper-upload-form"></div>
-                        <div id="wrapper-svg-picker"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="clear"></div>
+        <div class="col-2">
+            <h1><?php echo $row_Recordset2['Producto_esp']?></h1>
+            <div id="toast"></div>
+            <div id="wrapper-view"><div id="view"></div></div>
+            <ul id="nav-views"></ul>
+            <div id="wrapper-msg-modal"></div>
+            <div id="wrapper-upload-form"></div>
+            <div id="wrapper-svg-picker"></div>
         </div>
+        <div class="clear"></div>
     </div>
-    <div id="div_footer">© Sellos y Rótulos</div>
 </body>
 </html>
