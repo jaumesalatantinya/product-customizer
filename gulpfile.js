@@ -7,7 +7,7 @@ var ftp = require('vinyl-ftp');
 var Server = require('karma').Server;
 var sass = require('gulp-sass');
 
-var wFiles = ['./**/*.php', './product-customizer/**/*.html', './product-customizer/**/*.css', './product-customizer/**/*.js'];
+var wFiles = ['./**/*.php', './product-customizer/**/*.html', './product-customizer/**/*.css', './product-customizer/**/*.js', './product-customizer/**/*.png'];
 
 gulp.task('serve', function() {
     browserSync.init({
