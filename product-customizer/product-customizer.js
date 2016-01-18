@@ -173,9 +173,9 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-add-svg').click(      function () { self.showSvgPicker();             });
         $('#btn-add-img').click(      function () { self.showUploadForm('img');       });
         if (self.viewsData.length == 0)
-            $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').addClass('disabled').unbind('click');
+            $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').hide();
         if (self.isTemplate == "true")
-            $('#btn-reset').addClass('disabled').unbind('click');
+            $('#btn-reset').hide();
     });
 };
 

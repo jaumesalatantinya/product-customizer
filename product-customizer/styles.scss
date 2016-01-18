@@ -10,8 +10,6 @@ $border-color-edit: black;
 $area-no-printable-background-color: rgba(255, 0, 0, 0.2);
 $text-border-color: black;
 $nav-views-border-color: #585858;
-$disabled-color: #BBB;
-$disabled-color-backgound: #EEE;
 $toast-color: white;
 $toast-background-color: red;
 
@@ -42,6 +40,7 @@ body {
             border-bottom: 1px solid $light-gray;
             padding: 15px 0;
             font-size: 22px;
+            font-family: "Roboto Slab"; 
         }
     }
 }
@@ -78,20 +77,24 @@ body {
 #nav-main {
     position: absolute;
     list-style-type: none;
-    width: 160px;
-    margin: 20px 0 20px 10px;
-    padding-left: 5px;
+    width: 250px;
+    margin: 40px 0 20px 0;
+    padding-left: 0;
     li {
-        padding: 10px;
         background-color: $white;
+        height: 74px;
+        display: block;
+        margin-bottom: 10px;
         &:hover {
             color: $red;
             cursor: pointer;
         }
-        &.disabled{
-            color: $disabled-color;
-            background-color: $disabled-color-backgound;
-            cursor: default;
+        .nav-main-item-label {
+            display: inline-block;
+            margin: -64px 0 0 20px;
+            font-size: 20px;
+            vertical-align: middle;
+            font-family: "Roboto Slab";
         }
     }
 }
@@ -129,7 +132,7 @@ body {
             width: 110px;
             height: 110px;
             border: 1px solid $nav-views-border-color;
-            &.hover {
+            &:hover {
                 border: 1px solid $red;
             }
         }
@@ -310,4 +313,46 @@ body {
             height: 60px;
         }
     }
+}
+
+.icon {
+    display: inline-block;
+    background: url("product-customizer-icons.png") no-repeat;   
+}
+
+.icon-nav-main {
+    width: 74px;
+    height: 74px;
+    background-position-x: -10px;
+    &:hover{
+        background-position-x: -94px;
+    }
+}
+
+.icon-add-view {
+    background-position-y: -92px;
+}
+
+.icon-add-view-img {
+    background-position-y: -174px;
+}
+
+.icon-add-area {
+    background-position-y: -255px;
+}
+
+.icon-add-text {
+    background-position-y: -337px;
+}
+
+.icon-add-svg {
+    background-position-y: -419px;
+}
+
+.icon-add-img {
+    background-position-y: -501px;
+}
+
+.icon-reset {
+    background-position-y: -581px;
 }
