@@ -16,6 +16,7 @@ var ProductCustomizer = function () {
     this.fonts = [];
     this.svgs = [];
     this.mode = 'dev'; //[pro|dev]
+    this.cusEleCornersIconsSize = 40;
 };
 
 

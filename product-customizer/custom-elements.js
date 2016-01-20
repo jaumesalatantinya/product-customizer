@@ -11,6 +11,7 @@ var CustomElement = function (view, id) {
     this.isInsideNoPrintableArea;
     this.intersectsWithNoPrintableArea;
     this.data;
+    this.size = this.pView.pPCustom.cusEleCornersIconsSize;
 };
 
 CustomElement.prototype.init = function () {
@@ -58,8 +59,10 @@ CustomElement.prototype.draw = function() {
         'z-index' : self.data.Zindex
     });
     self.customE.find('.custom-element').css({
-        'width' : (self.data.width - (self.data.type=='text' ? 40 : 30))+'px',
-        'height' : (self.data.height - (self.data.type=='text' ? 35 : 30))+'px',
+        'top' : self.size,
+        'left' : self.size, 
+        'width' : (self.data.width - (self.data.type=='text' ? 40 : (self.size*2+2)))+'px',
+        'height' : (self.data.height - (self.data.type=='text' ? 35 : (self.size*2+2)))+'px',
     });
     if (self.mode == 'edit') {
         self.customE.find('.custom-element').addClass('custom-element-edit');
@@ -97,8 +100,8 @@ CustomElement.prototype.bindings = function () {
     self.customE.resizable({
         resize: function () {
             self.customE.find('.custom-element').css({
-                'width' : ($(this).width() - (self.data.type=='text' ? 40 : 30))+'px',
-                'height' : ($(this).height() - (self.data.type=='text' ? 35 : 30))+'px',
+                'width' : ($(this).width() - (self.data.type=='text' ? 40 : (self.size*2+2)))+'px',
+                'height' : ($(this).height() - (self.data.type=='text' ? 35 : (self.size*2+2)))+'px',
             });
         },
         stop: function() {
@@ -262,10 +265,10 @@ Area.prototype.contains = function (element) {
     var isContained = false;
     if (self.data.area_attr.shape == 'rectangle') {
         var a = {x:0, y:0, w: 0, h:0}, r = {x:0, y:0, w: 0, h:0};
-        a.x = self.customE.position().left + 15;     a.w = self.customE.width() - 30; 
-        a.y = self.customE.position().top + 15;      a.h = self.customE.height() - 30;
-        r.x = element.customE.position().left + 15;  r.w = element.customE.width() - 30;
-        r.y = element.customE.position().top + 15;   r.h = element.customE.height() - 30;
+        a.x = self.customE.position().left+15;     a.w = self.customE.width()-30; 
+        a.y = self.customE.position().top+15;      a.h = self.customE.height()-30;
+        r.x = element.customE.position().left+15;  r.w = element.customE.width()-30;
+        r.y = element.customE.position().top+15;   r.h = element.customE.height()-30;
         if ( ((r.x+r.w) < (a.x+a.w)) && (r.x > a.x) && (r.y > a.y) && ((r.y+r.h) < (a.y+a.h)) )
             isContained = true;
     }

@@ -6,6 +6,7 @@ var browserSync = require('browser-sync');
 var ftp = require('vinyl-ftp');
 var Server = require('karma').Server;
 var sass = require('gulp-sass');
+var del = require('del');
 
 var wFiles = ['./**/*.php', './product-customizer/**/*.html', './product-customizer/**/*.css', './product-customizer/**/*.js', './product-customizer/**/*.png'];
 
@@ -34,10 +35,16 @@ gulp.task('ftp', function() {
 });
 
 gulp.task('sass', function () {
-  gulp.src('./product-customizer/styles.scss')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./product-customizer/'));
+  del(['./product-customizer/styles.css']).then(paths => {
+    gulp.src('./product-customizer/styles.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(gulp.dest('./product-customizer/'));
+  });
 });
+
+gulp.task('clean:dist', function() {
+  return del.sync('dist');
+})
 
 gulp.task('watch', function() {
     gulp.watch(wFiles, ['ftp', 'rbs']);

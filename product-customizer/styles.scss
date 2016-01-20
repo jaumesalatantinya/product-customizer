@@ -12,6 +12,7 @@ $text-border-color: black;
 $nav-views-border-color: #585858;
 $toast-color: white;
 $toast-background-color: red;
+$icons-img: url("product-customizer-icons.png");
 
 body {
     background-image: none;
@@ -38,9 +39,9 @@ body {
             text-align: center;
             color: black;
             border-bottom: 1px solid $light-gray;
-            padding: 15px 0;
+            padding: 20px 0;
             font-size: 22px;
-            font-family: "Roboto Slab"; 
+            font-family: "Roboto Slab";
         }
     }
 }
@@ -155,21 +156,19 @@ body {
 
 .custom-element {
     position: absolute;
-    top: 14px;
-    left: 14px;
 }
 
 .btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element, .btn-to-submit-text {
     display: none;
     position: absolute;
-    width: 14px;
-    height: 14px;
+    width: 40px;
+    height: 40px;
 }
 
 .btn-move-custom-element {
     top: 0;
     left: 0;
-    background-color: blue;
+    background-position: -10px -667px;
     cursor: move;
 }
 
@@ -317,7 +316,7 @@ body {
 
 .icon {
     display: inline-block;
-    background: url("product-customizer-icons.png") no-repeat;   
+    background: $icons-img  no-repeat;   
 }
 
 .icon-nav-main {
@@ -330,7 +329,7 @@ body {
 }
 
 .icon-add-view {
-    background-position-y: -92px;
+    background-position-y: -95px;
 }
 
 .icon-add-view-img {
