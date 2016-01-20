@@ -9,6 +9,15 @@ var sass = require('gulp-sass');
 var del = require('del');
 
 var wFiles = ['./**/*.php', './product-customizer/**/*.html', './product-customizer/**/*.css', './product-customizer/**/*.js', './product-customizer/**/*.png'];
+var ftpCred = {
+    host:     'www.sellosyrotulos.com',
+    user:     'sellosyrotulos.com',
+    password: 'wwwSEL15',
+    parallel: 10,
+    log:      gutil.log
+};
+
+
 
 gulp.task('serve', function() {
     browserSync.init({
@@ -16,39 +25,32 @@ gulp.task('serve', function() {
     });
 });
 
-gulp.task('rbs', ['ftp', 'sass'], function() {
+gulp.task('rbs', ['ftp'], function() {
     browserSync.reload();
 });
 
-gulp.task('ftp', function() {
-    var conn = ftp.create( {
-        host:     'www.sellosyrotulos.com',
-        user:     'sellosyrotulos.com',
-        password: 'wwwSEL15',
-        parallel: 10,
-        log:      gutil.log
-    } );
+gulp.task('ftp', ['cleanFtp'], function(cb) {
+    var conn = ftp.create(ftpCred);
     var globs = wFiles;
     return gulp.src( globs, { base: '.', buffer: false } )
         .pipe( conn.newerOrDifferentSize( '/html/webmaster/' ) ) 
         .pipe( conn.dest( '/html/webmaster/' ) );
 });
 
-gulp.task('sass', function () {
-  del(['./product-customizer/styles.css']).then(paths => {
-    gulp.src('./product-customizer/styles.scss')
-      .pipe(sass().on('error', sass.logError))
-      .pipe(gulp.dest('./product-customizer/'));
-  });
+gulp.task('cleanFtp', function(cb) {
+  var conn = ftp.create( ftpCred );
+  conn.delete( '/html/webmaster/product-customizer/styles.css', cb );
 });
 
-gulp.task('clean:dist', function() {
-  return del.sync('dist');
-})
+gulp.task('sass', function () {
+  gulp.src('./product-customizer/styles.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./product-customizer/'));
+});
 
 gulp.task('watch', function() {
     gulp.watch(wFiles, ['ftp', 'rbs']);
-    gulp.watch('./product-customizer/styles.scss', ['sass', 'rbs']);
+    gulp.watch('./product-customizer/styles.scss', ['sass', 'ftp', 'rbs']);
 });
 
 gulp.task('tdd', function(done) {
