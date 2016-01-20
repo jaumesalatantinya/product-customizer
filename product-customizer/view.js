@@ -215,12 +215,14 @@ View.prototype.showAndLoadAuxMenu = function(customElementEditing) {
         $('#aux-menu').show();
         $('#aux-menu').load('product-customizer/aux-menu-'+customElementEditing.data.type+'.html', function() {
             if (customElementEditing.data.type == 'area') {
+                $('#aux-menu').css('width', '405px');
                 $('#btn-rectangle').click(    function (){ customElementEditing.changeAttr('shape', 'rectangle'); });
                 $('#btn-circle').click(       function (){ customElementEditing.changeAttr('shape', 'ellipse');   });
                 $('#btn-printable').click(    function (){ customElementEditing.changeAttr('printable', 'true');  });
                 $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
             }
             if (customElementEditing.data.type == 'text'){
+                $('#aux-menu').css('width', '900px');
                 $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');      });
                 $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');       });
                 $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');         });

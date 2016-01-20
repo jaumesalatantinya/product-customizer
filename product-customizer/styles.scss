@@ -30,12 +30,10 @@ body {
     .col-2 {
         float: left;
         border-left: 1px solid $light-gray;
-        width: 866px;
+        width: 846px;
+        padding: 0 10px;
         h1 {
             display: block;
-            margin: auto;
-            width: 96%;
-            clear: both;
             text-align: center;
             color: black;
             border-bottom: 1px solid $light-gray;
@@ -53,20 +51,27 @@ body {
 #toast {
     display: none;
     position: absolute;
-    width: 300px;
-    right: 100px;
+    height: 35px;
+    line-height: 35px;
     color: $toast-color;
     background-color: $toast-background-color;
+    text-align: center;
+    z-index: 1;
+    width: 700px;
+    border-radius: 10px;
+    top: 160px;
+    right: 85px;
+    font-size: 14px;
 }
 
 #wrapper-view {
     position: relative;
     background-color: $view-background-color;
     width: 840px;
-    height: 785px;
+    height: 770px;
     margin: auto;
-    margin-top: 60px;
 }
+
 #view {
     position: absolute;
     width: 600px;
@@ -79,7 +84,7 @@ body {
     position: absolute;
     list-style-type: none;
     width: 250px;
-    margin: 40px 0 20px 0;
+    margin-top: 50px;
     padding-left: 0;
     li {
         background-color: $white;
@@ -100,24 +105,32 @@ body {
     }
 }
 
+#wrapper-aux-menu {
+    width: 100%;
+    padding: 5px;
+    height: 34px;
+    margin: 10px 0;
+}
+
 #aux-menu {
     display: none;
-    position: absolute;
-    width: 140px;
-    margin: 400px 0 20px 15px;
-    padding: 5px;
-    border: 1px solid #e9e9e9;
-    background-color: white;
+    margin: 0 auto;
     select {
         margin-top: 15px;
     }
     input {
-        width: 40px;
+        display: inline-block;
+        height: 32px;
+        width: 50px;
+        margin: 0;
+        padding: 0 15px;
+        margin-left: 15px;
+        border-radius: 5px;
+        vertical-align: top;
     }
-    .wrapper-size, .wrapper-color {
-        margin: 15px 0;
-        width: 100%;
-        clear: both;
+    .wrapper-sel-family {
+        display: inline-block;
+        width: 200px;
     }
 }
 
@@ -342,6 +355,7 @@ body {
 .icon {
     display: inline-block;
     background: $icons-img  no-repeat;
+    cursor: pointer;
 }
 
 .icon-nav-main {
@@ -379,4 +393,33 @@ body {
 
 .icon-reset {
     background-position-y: -584px;
+}
+
+.icon-aux-menu-area {
+    width: 34px;
+    height: 34px;
+    background-position-y: -10px;
+    margin-right: 10px;
+    &:hover {
+        background-position-y: -51px;
+    }
+}
+
+.icon-area-rectangle {
+    background-position-x: -10px;
+}
+
+.icon-area-ellipse {
+    background-position-x: -52px;
+}
+
+.icon-area-printable {
+    width: 46px;
+    background-position-x: -95px;
+}
+
+.icon-area-no-printable {
+    margin-right: 0;
+    width: 48px;
+    background-position-x: -150px;
 }

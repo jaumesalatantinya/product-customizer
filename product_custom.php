@@ -56,10 +56,10 @@
         <div class="col-1">
             <img src="imagesWEB/logo.png" width="228" alt="Sellos y Rótulos" />
             <ul id="nav-main"></ul>
-            <div id="aux-menu"></div>
         </div>
         <div class="col-2">
             <h1><?php echo $row_Recordset2['Producto_esp']?></h1>
+            <div id="wrapper-aux-menu"><div id="aux-menu"></div></div>
             <div id="toast"></div>
             <div id="wrapper-view"><div id="view"></div></div>
             <ul id="nav-views"></ul>
