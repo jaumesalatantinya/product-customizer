@@ -6,7 +6,6 @@ var browserSync = require('browser-sync');
 var ftp = require('vinyl-ftp');
 var Server = require('karma').Server;
 var sass = require('gulp-sass');
-var del = require('del');
 
 var wFiles = ['./**/*.php', './product-customizer/**/*.html', './product-customizer/**/*.css', './product-customizer/**/*.js', './product-customizer/**/*.png'];
 var ftpCred = {

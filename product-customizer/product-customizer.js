@@ -16,7 +16,6 @@ var ProductCustomizer = function () {
     this.fonts = [];
     this.svgs = [];
     this.mode = 'dev'; //[pro|dev]
-    this.cusEleCornersIconsSize = 40;
 };
 
 
@@ -144,12 +143,15 @@ ProductCustomizer.prototype.drawNavViews = function () {
     var self = this;
     self.showMsg('LOG', 'Drawing Navigation Views');
     $('#nav-views').empty();
-    $('#nav-views').css('right', (350 - (self.viewsData.length*30)) + 'px');
+    $('#nav-views').css('right', (420 - (self.viewsData.length*60)) + 'px');
     for (var i = 0; i < self.viewsData.length; i++) {
         var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
         var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );
         var del = $('<a class="btn-fancy-close" style="display: inline;"></a>').data('idView', self.viewsData[i].IDcusvie);
         var li = $('<li>');
+        if (self.viewsData[i].IDcusvie == self.currentViewId){
+            img.addClass('active');
+        }
         a.click( function(){
             self.drawAndUpdateProductCustomizer($(this).data('idView'));
         });

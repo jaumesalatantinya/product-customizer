@@ -11,7 +11,6 @@ var CustomElement = function (view, id) {
     this.isInsideNoPrintableArea;
     this.intersectsWithNoPrintableArea;
     this.data;
-    this.size = this.pView.pPCustom.cusEleCornersIconsSize;
 };
 
 CustomElement.prototype.init = function () {
@@ -59,10 +58,10 @@ CustomElement.prototype.draw = function() {
         'z-index' : self.data.Zindex
     });
     self.customE.find('.custom-element').css({
-        'top' : self.size,
-        'left' : self.size, 
-        'width' : (self.data.width - (self.data.type=='text' ? 40 : (self.size*2+2)))+'px',
-        'height' : (self.data.height - (self.data.type=='text' ? 35 : (self.size*2+2)))+'px',
+        'top' : 40+'px',
+        'left' : 40+'px', 
+        'width' : (self.data.width - (self.data.type=='text' ? 92 : 82))+'px',
+        'height' : (self.data.height - (self.data.type=='text' ? 88 : 82))+'px',
     });
     if (self.mode == 'edit') {
         self.customE.find('.custom-element').addClass('custom-element-edit');
@@ -98,10 +97,11 @@ CustomElement.prototype.bindings = function () {
         }
     });
     self.customE.resizable({
+        handles: 'se',
         resize: function () {
             self.customE.find('.custom-element').css({
-                'width' : ($(this).width() - (self.data.type=='text' ? 40 : (self.size*2+2)))+'px',
-                'height' : ($(this).height() - (self.data.type=='text' ? 35 : (self.size*2+2)))+'px',
+                'width' : ($(this).width() - (self.data.type=='text' ? 92 : 82))+'px',
+                'height' : ($(this).height() - (self.data.type=='text' ? 88 : 82))+'px',
             });
         },
         stop: function() {
@@ -265,10 +265,10 @@ Area.prototype.contains = function (element) {
     var isContained = false;
     if (self.data.area_attr.shape == 'rectangle') {
         var a = {x:0, y:0, w: 0, h:0}, r = {x:0, y:0, w: 0, h:0};
-        a.x = self.customE.position().left+15;     a.w = self.customE.width()-30; 
-        a.y = self.customE.position().top+15;      a.h = self.customE.height()-30;
-        r.x = element.customE.position().left+15;  r.w = element.customE.width()-30;
-        r.y = element.customE.position().top+15;   r.h = element.customE.height()-30;
+        a.x = self.customE.position().left+41;     a.w = self.customE.width()-82; 
+        a.y = self.customE.position().top+41;      a.h = self.customE.height()-82;
+        r.x = element.customE.position().left+41;  r.w = element.customE.width()-82;
+        r.y = element.customE.position().top+41;   r.h = element.customE.height()-82;
         if ( ((r.x+r.w) < (a.x+a.w)) && (r.x > a.x) && (r.y > a.y) && ((r.y+r.h) < (a.y+a.h)) )
             isContained = true;
     }
@@ -286,10 +286,10 @@ Area.prototype.intersects = function (element) {
     var intersects = false;
     if (self.data.area_attr.shape == 'rectangle'){
         var a = {x1:0, x2:0, y1: 0, y2:0}, r = {x1:0, x2:0, y1: 0, y2:0};
-        a.x1 = self.customE.position().left+15;    a.x2 = a.x1 + (self.customE.width()-30); 
-        a.y1 = self.customE.position().top+15;     a.y2 = a.y1 + (self.customE.height()-30);
-        r.x1 = element.customE.position().left+15; r.x2 = r.x1 + (element.customE.width()-30);
-        r.y1 = element.customE.position().top+15;  r.y2 = r.y1 + (element.customE.height()-30);
+        a.x1 = self.customE.position().left+41;    a.x2 = a.x1 + (self.customE.width()-82); 
+        a.y1 = self.customE.position().top+41;     a.y2 = a.y1 + (self.customE.height()-82);
+        r.x1 = element.customE.position().left+41; r.x2 = r.x1 + (element.customE.width()-82);
+        r.y1 = element.customE.position().top+41;  r.y2 = r.y1 + (element.customE.height()-82);
         if (a.x1 < r.x2 && a.x2 > r.x1 && a.y1 < r.y2 && a.y2 > r.y1)
             intersects = true;
     }
@@ -304,18 +304,18 @@ Area.prototype.intersects = function (element) {
 Area.prototype.ellipseCalc = function (element){
 
     var self = this;
-    var x = [   element.customE.position().left+15,
-                (element.customE.position().left+15) + (element.customE.width()-30),
-                (element.customE.position().left+15) + (element.customE.width()-30),
-                element.customE.position().left+15 ];
-    var y = [   element.customE.position().top+15,
-                element.customE.position().top+15,
-                (element.customE.position().top+15) + (element.customE.height()-30), 
-                (element.customE.position().top+15) + (element.customE.height()-30) ];
-    var a = (self.customE.width()-30) / 2;
-    var b = (self.customE.height()-30) / 2;
-    var h = (self.customE.position().left+15) + a;
-    var k = (self.customE.position().top+15) + b;
+    var x = [   element.customE.position().left+41,
+                (element.customE.position().left+41) + (element.customE.width()-82),
+                (element.customE.position().left+41) + (element.customE.width()-82),
+                element.customE.position().left+41 ];
+    var y = [   element.customE.position().top+41,
+                element.customE.position().top+41,
+                (element.customE.position().top+41) + (element.customE.height()-82), 
+                (element.customE.position().top+41) + (element.customE.height()-82) ];
+    var a = (self.customE.width()-82) / 2;
+    var b = (self.customE.height()-82) / 2;
+    var h = (self.customE.position().left+41) + a;
+    var k = (self.customE.position().top+41) + b;
     var r = x.map(function(obj,i){
         return ( (Math.pow(x[i]-h,2)/Math.pow(a,2)) + (Math.pow(y[i]-k,2)/Math.pow(b,2)) );
     });
@@ -341,7 +341,7 @@ function Text(view, id) {
                         <div class="btn-move-custom-element"></div>\
                         <div class="btn-del-custom-element"></div>\
                         <div class="btn-to-front-custom-element"></div>\
-                        <div class="btn-to-submit-text"></div>\
+                        <div class="btn-to-submit-text"><span>Ok</span></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 };
