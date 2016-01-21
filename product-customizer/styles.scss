@@ -195,6 +195,11 @@ body {
     margin-left: 285px;
 }
 
+.msg-modal-close {
+    margin-left: 145px;
+    margin-top: -28px;
+}
+
 .wrapper-custom-element {
     position: absolute !important;
 }
@@ -327,9 +332,26 @@ body {
         width: 300px;
         margin: 300px auto;
         background-color: #fff;
-        border:1px solid #000;
-        padding:15px;
-        text-align:center;
+        // border: 1px solid #000;
+        padding: 15px;
+        text-align: center;
+        p {
+            font-size: 16px;
+            margin-top: 10px;
+            color: black;
+        }
+        button {
+            margin-top: 15px;
+            width: 120px;
+            border-radius: 5px;
+            background-color: #5e5e5e;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            &:hover {
+                background-color: $red;
+            }
+        }
     }
 }
 
@@ -359,6 +381,9 @@ body {
             background-color: #5e5e5e;
             color: white;
             padding: 10px;
+            &:hover {
+                background-color: $red;
+            }
         }
         form {
             padding: 10px;

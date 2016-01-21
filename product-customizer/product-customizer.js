@@ -392,7 +392,7 @@ ProductCustomizer.prototype.showMsgModal = function(type, msg) {
     $('#wrapper-msg-modal').show();
     $('#wrapper-msg-modal').load('product-customizer/msg-modal.html', function() {
         $('#wrapper-msg-modal .modal p').html(msg);
-        $('#wrapper-msg-modal .modal .btn-close').click( function() {
+        $('#wrapper-msg-modal .modal .btn-close, #wrapper-msg-modal .modal .btn-ok').click( function() {
             self.close('msg-modal');
         });
     });
