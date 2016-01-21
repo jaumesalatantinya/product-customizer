@@ -147,7 +147,7 @@ ProductCustomizer.prototype.drawNavViews = function () {
     for (var i = 0; i < self.viewsData.length; i++) {
         var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
         var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );
-        var del = $('<a class="btn-fancy-close" style="display: inline;"></a>').data('idView', self.viewsData[i].IDcusvie);
+        var del = $('<a class="btn-fancy-close nav-views-close" style="display: inline;"></a>').data('idView', self.viewsData[i].IDcusvie);
         var li = $('<li>');
         if (self.viewsData[i].IDcusvie == self.currentViewId){
             img.addClass('active');

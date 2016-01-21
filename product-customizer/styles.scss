@@ -13,6 +13,7 @@ $nav-views-border-color: #585858;
 $toast-color: white;
 $toast-background-color: red;
 $icons-img: url("product-customizer-icons.png");
+$primary-font: "Roboto Slab";
 
 body {
     background-image: none;
@@ -39,7 +40,7 @@ body {
             border-bottom: 1px solid $light-gray;
             padding: 20px 0;
             font-size: 22px;
-            font-family: "Roboto Slab";
+            font-family: $primary-font;
         }
     }
 }
@@ -59,7 +60,7 @@ body {
     z-index: 1;
     width: 700px;
     border-radius: 10px;
-    top: 160px;
+    top: 140px;
     right: 85px;
     font-size: 14px;
 }
@@ -100,7 +101,7 @@ body {
             margin: -64px 0 0 20px;
             font-size: 20px;
             vertical-align: middle;
-            font-family: "Roboto Slab";
+            font-family: $primary-font;
         }
     }
 }
@@ -130,7 +131,28 @@ body {
     }
     .wrapper-sel-family {
         display: inline-block;
-        width: 200px;
+        width: 180px;
+    }
+    .ui-state-default, .ui-state-hover {
+        background: none;
+    }
+    #inp-size {
+        background: $icons-img  no-repeat;
+        padding-right: 10px;
+        width: 60px;
+        background-position: -806px -780px;
+        margin-left: 0;
+    }
+    .wrapper-color {
+        display: inline-block;
+    }
+    .cp-alt-target {
+        position: absolute;
+        top: 93px;
+        left: 715px;
+    }
+    .cp-alt {
+        padding: 0px 10px 0 40px;
     }
 }
 
@@ -158,12 +180,19 @@ body {
 
 .btn-fancy-close {
     position: absolute;
-    top: -15px;
-    margin-left: 90px;
+    margin-top: -15px;
     width: 30px;
     height: 30px;
     background: transparent url('../fancybox/fancybox.png') -40px 0px;
     cursor: pointer;
+}
+
+.nav-views-close {
+    margin-left: 90px;
+}
+
+.upload-form-close {
+    margin-left: 285px;
 }
 
 .wrapper-custom-element {
@@ -307,9 +336,32 @@ body {
 #wrapper-upload-form {
     .modal {
         background-color: white;
-        margin: 150px auto;
+        margin: 300px auto;
         width: 600px;
+        h3 {
+            font-family: $primary-font;
+            color: black;
+            font-size: 16px;
+        }
+        .gray-bck {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+        }
+        .inp-file {
+            width: 80%;
+            padding: 15px 5px;
+            color: $red;
+        }
+        #btn-submit {
+            margin-top: 15px;
+            width: 120px;
+            border-radius: 5px;
+            background-color: #5e5e5e;
+            color: white;
+            padding: 10px;
+        }
         form {
+            padding: 10px;
             img.loading {
                 display: none;
             }
@@ -395,7 +447,7 @@ body {
     background-position-y: -584px;
 }
 
-.icon-aux-menu-area {
+.icon-area {
     width: 34px;
     height: 34px;
     background-position-y: -10px;
@@ -422,4 +474,36 @@ body {
     margin-right: 0;
     width: 48px;
     background-position-x: -150px;
+}
+
+.icon-text {
+    width: 40px;
+    height: 34px;
+    background-position-y: -779px;
+    margin-right: 10px;
+    &:hover {
+        background-position-y: -829px;
+    }
+}
+
+.icon-text-bold {
+    margin-left: 15px;
+    background-position-x: -546px;
+}
+
+.icon-text-italic {
+    background-position-x: -595px;
+}
+
+.icon-text-l {
+    background-position-x: -644px;
+}
+
+.icon-text-m {
+    background-position-x: -693px;
+}
+
+.icon-text-r {
+    background-position-x: -742px;
+    margin-right: 0;
 }

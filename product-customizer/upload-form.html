@@ -1,12 +1,14 @@
 <div class="overlay">
     <div class="modal">
-        <a href="#" class="btn-close">Close</a>
+        <a class="btn-close btn-fancy-close upload-form-close"></a>
         <form method="post" enctype="multipart/form-data" action="">
-            <p>Añadir imágenes <span>(JPG - Medidas óptimas: 600x600 píxels)</span></p>
-            <span>Seleccionar imagen</span><br/>
-            <input id="file-to-upload" name="file-to-upload" type="file">
-            <input id ="btn-submit" name="send" type="submit" value="Enviar imágenes">
-            <img src="imagesWEB/loading.gif" class="loading" />
+            <h3>Añadir imágenes</h3>
+            <p>(Formato .JPG - Medida mínima: 600x600px)</p>
+            <div class="gray-bck">
+                <input id="file-to-upload" class="inp-file" name="file-to-upload" type="file">
+                <input id ="btn-submit" name="send" type="submit" value="ENVIAR">
+                <img src="imagesWEB/loading.gif" class="loading" />
+            </div>
         </form>
     </div>
 </div>

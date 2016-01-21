@@ -63,7 +63,7 @@ View.prototype.drawView = function () {
 View.prototype.bindingsView = function () {
 
     var self = this;
-    self.rootE.click(function(){
+    $('#wrapper-view').click(function(){
         if (self.currentElementEditing)
             self.currentElementEditing.mode = 'draw';
         self.currentElementEditing = undefined;
@@ -222,7 +222,7 @@ View.prototype.showAndLoadAuxMenu = function(customElementEditing) {
                 $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
             }
             if (customElementEditing.data.type == 'text'){
-                $('#aux-menu').css('width', '900px');
+                $('#aux-menu').css('width', '680px');
                 $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');      });
                 $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');       });
                 $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');         });
