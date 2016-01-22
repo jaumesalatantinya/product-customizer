@@ -10,7 +10,7 @@ class Api {
     private $idProd;
     private $idCus;
     private $response;
-    private $apiRequests;
+    public $apiRequests;
 
 
     public function __construct() {
@@ -132,7 +132,7 @@ class Api {
                 break;
 
             default:
-                echo 'API PRODUCT CUSTOMIZER';
+                // echo 'API PRODUCT CUSTOMIZER';
         }
     }
 
@@ -142,6 +142,8 @@ class Api {
         header('Content-Type: application/json');
         echo json_encode($this->response);
     }
+
+
 }
 
 $api = new Api();

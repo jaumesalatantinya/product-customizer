@@ -38,11 +38,11 @@ CustomElement.prototype.loadData = function () {
             if (self.data.text_attr) self.data.text_attr = JSON.parse(self.data.text_attr);
         }
         else {
-            self.pPCustom.showMsg('ERROR', 'API: Load custom elements data return empty');    
+            self.pView.pPCustom.showMsg('ERROR', 'API: Load custom elements data return empty');    
         }
     })
     .fail(function() {
-        self.pPCustom.showMsg('ERROR', 'API: Load custom elements data return false');
+        self.pView.pPCustom.showMsg('ERROR', 'API: Load custom elements data return false');
     });
 };
 
@@ -122,6 +122,10 @@ CustomElement.prototype.bindings = function () {
         self.bringToFrontCustomElement();
         self.pView.updateViewAndCustomElements();
     });
+    if (self.data.type == 'area' && self.pView.pPCustom.isTemplate == 'false') {
+        self.customE.find('.custom-element').unbind('click');
+        self.customE.draggable('disable');
+    }
 };
 
 CustomElement.prototype.editCustomElement = function (newPosSizeData) {

@@ -1,17 +1,15 @@
 <?php
-    require_once('Connections/bd_start.php'); 
+    require_once('Connections/bd_start.php');
 ?>
 <?php
     $colname_Recordset2 = "-1";
     if (isset($_GET['IDpro']) && $_GET['IDpro']!='') {
         $colname_Recordset2 = $_GET['IDpro'];
     }
-
     $query_Recordset2 = sprintf("SELECT * FROM bd_productos WHERE IDpro=%s", GetSQLValueString($colname_Recordset2, "int"));
     $Recordset2 = mysql_query($query_Recordset2, $bd_SELLOS) or die(mysql_error());
     $row_Recordset2 = mysql_fetch_assoc($Recordset2);
     $totalRows_Recordset2 = mysql_num_rows($Recordset2);
-
     if ($totalRows_Recordset2<1){
         echo "<script language='Javascript'>location.href='list_product.php';</script>";
         exit;
@@ -36,19 +34,31 @@
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
     <script type="text/javascript"> 
         $(document).ready(function(){
-            var idProd = <?=$_GET['IDpro']?>;
+            var idCustom;
+            var idProd;
+            <?php 
+            if (isset($_GET['IDcus'])){ echo 'idCustom = ' . $_GET['IDcus'] . ';'; }
+            if (isset($_GET['IDpro'])){ echo 'idProd = ' . $_GET['IDpro'] . ';';   }
+            ?>
             var productCustomizer = new ProductCustomizer();
-            $.getJSON('product-customizer/api/api.php?request=get-custom-template-id&IDpro='+idProd)
-            .done(function(custom){
-                if (custom){
-                    productCustomizer.idCustom = custom[0].IDcus;
-                    productCustomizer.init();
-                }
-                else { productCustomizer.showMsg('Error', 'No template customization to load'); }
-            })
-            .fail(function(){ productCustomizer.showMsg('Error', 'API No template customization to load'); });
+            if (idCustom) {
+                productCustomizer.idCustom = idCustom;
+                productCustomizer.init();
+            }
+            else if (idProd) {
+                $.getJSON('product-customizer/api/api.php?request=get-custom-template-id&IDpro='+idProd)
+                .done(function(custom){
+                    if (custom){
+                        productCustomizer.idCustom = custom[0].IDcus;
+                        productCustomizer.init();
+                    }
+                    else { productCustomizer.showMsg('Error', 'Loading template customization data'); }
+                })
+                .fail(function(){ productCustomizer.showMsg('Error', 'API No template customization to load'); });
+            }
+            else { productCustomizer.showMsg('Error', 'No idCustom to load'); }
         });
-    </script> 
+    </script>
 </head>
 
 <body>

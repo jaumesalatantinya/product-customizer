@@ -47,8 +47,11 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
         self.showMsg('LOG', 'Get Customization Data from customization: ' + idCustom);
         return $.ajax(this.apiUrl + 'get-custom&IDcus=' + idCustom)
         .done(function(customData) {
-            self.idPro = customData[0].ID_pro;
-            self.isTemplate = customData[0].Is_Template;
+            if (customData) {
+                self.idPro = customData[0].ID_pro;
+                self.isTemplate = customData[0].Is_Template;
+            }
+            else { self.showMsg('ERROR', 'No data for custom:' + idCustom); }
         })
         .fail(function() {
             self.showMsg('ERROR', 'loading Customization Data');
@@ -211,6 +214,8 @@ ProductCustomizer.prototype.drawNavViews = function () {
         del.click( function(){
             self.delView($(this).data('idView'));
         });
+        if (self.isTemplate == 'false')
+            del.hide();
         a.append(img);
         li.append(del, a)
         $('#nav-views').append(li);
@@ -230,8 +235,10 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-add-img').click(      function () { self.showUploadForm('img');       });
         if (self.viewsData.length == 0)
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').hide();
-        if (self.isTemplate == "true")
+        if (self.isTemplate == 'true')
             $('#btn-reset').hide();
+        else
+            $('#btn-add-view, #btn-add-view-img, #btn-add-area').hide();
     });
 };
 

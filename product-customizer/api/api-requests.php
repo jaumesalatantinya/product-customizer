@@ -4,7 +4,7 @@ require_once('database.php');
 class ApiRequests {
 
 
-	private $db;
+	public $db;
 
 
 
