@@ -215,20 +215,22 @@ View.prototype.showAndLoadAuxMenu = function(customElementEditing) {
         $('#aux-menu').show();
         $('#aux-menu').load('product-customizer/aux-menu-'+customElementEditing.data.type+'.html', function() {
             if (customElementEditing.data.type == 'area') {
-                $('#aux-menu').css('width', '405px');
+                $('#aux-menu').css('width', '460px');
                 $('#btn-rectangle').click(    function (){ customElementEditing.changeAttr('shape', 'rectangle'); });
                 $('#btn-circle').click(       function (){ customElementEditing.changeAttr('shape', 'ellipse');   });
                 $('#btn-printable').click(    function (){ customElementEditing.changeAttr('printable', 'true');  });
                 $('#btn-no-printable').click( function (){ customElementEditing.changeAttr('printable', 'false'); });
+                $('#btn-change-size').click(  function (){ customElementEditing.changeSize($('#inp-width').val(), $('#inp-height').val()); });
+
             }
             if (customElementEditing.data.type == 'text'){
                 $('#aux-menu').css('width', '680px');
-                $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');      });
-                $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');       });
-                $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');         });
-                $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');       });
-                $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');        });
-                $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val());   });
+                $('#btn-toggle-weight').click( function (){ customElementEditing.changeAttr('weight', 'toggle');    });
+                $('#btn-toggle-style').click(  function (){ customElementEditing.changeAttr('style', 'toggle');     });
+                $('#btn-align-l').click(       function (){ customElementEditing.changeAttr('align', 'left');       });
+                $('#btn-align-m').click(       function (){ customElementEditing.changeAttr('align', 'center');     });
+                $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');      });
+                $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val()); });
                 $('.cp-alt').colorpicker({     altField: '.cp-alt-target', ok: function(event, color) { customElementEditing.changeAttr('color', color.formatted); }});
                 self.loadAuxMenuTextData(customElementEditing);
             }

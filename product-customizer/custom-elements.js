@@ -237,6 +237,27 @@ Area.prototype.draw = function() {
     }
 };
 
+Area.prototype.changeSize = function (width, height) {
+
+    var self = this;
+    if (width != '' && height != '') {
+        width *= 10;
+        height *= 10;
+        console.log(width);
+        console.log(height);
+        self.customE.css({
+            'width' : width+'px',
+            'height' : height+'px'
+        });
+        var newPosSizeData = {
+            x: self.customE.position().left, y: self.customE.position().top,
+            width: self.customE.width(), height: self.customE.height() 
+        };
+        self.updatePosSizeData(newPosSizeData);
+        self.pView.updateViewAndCustomElements();
+    }
+};
+
 Area.prototype.changeAttr = function (change, value) {
 
     var self = this;
