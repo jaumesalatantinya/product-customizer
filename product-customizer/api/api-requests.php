@@ -67,6 +67,12 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
+    public function getProduct($idProd) {
+
+        $q = 'SELECT ID_protip, Colorea FROM bd_productos WHERE IDpro =' . $idProd;
+        return $this->db->select($q);
+    }
+
 
 
 

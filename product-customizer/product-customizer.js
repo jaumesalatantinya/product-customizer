@@ -4,7 +4,10 @@
 var ProductCustomizer = function () {
 
     this.idCustom;
-    this.idProduct;
+    this.idPro;
+    this.idProType;
+    this.borderColor;
+    this.colors = [];
     this.isTemplate;
     this.rootE = $('#product-customizer');
     this.viewsData = [];
@@ -24,10 +27,14 @@ ProductCustomizer.prototype.init = function () {
     var self = this;
     if (self.idCustom) {
         self.showMsg('LOG', 'Init Customization: ' + self.idCustom);
-        self.getCustomizationData(self.idCustom);
-        self.loadFonts();
-        self.loadSvgs();
-        self.drawAndUpdateProductCustomizer('default');
+        self.getCustomizationData(self.idCustom).done(function (){
+            self.getProductData(self.idPro).done(function (){
+                self.setBorderColor(self.borderColor);
+                self.loadFonts();
+                self.loadSvgs();
+                self.drawAndUpdateProductCustomizer('default');
+            });
+        });
     }
     else { self.showMsg('ERROR', 'No id customization to init'); }
 };
@@ -38,16 +45,62 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
     var self = this;
     if (idCustom) {
         self.showMsg('LOG', 'Get Customization Data from customization: ' + idCustom);
-        $.ajax(this.apiUrl + 'get-custom&IDcus=' + idCustom)
+        return $.ajax(this.apiUrl + 'get-custom&IDcus=' + idCustom)
         .done(function(customData) {
-            self.idProduct = customData[0].ID_pro;
+            self.idPro = customData[0].ID_pro;
             self.isTemplate = customData[0].Is_Template;
         })
         .fail(function() {
             self.showMsg('ERROR', 'loading Customization Data');
         });
     }
-    else { self.showMsg('ERROR', 'loading Customization Data No idCustom passed'); }
+    else { 
+        self.showMsg('ERROR', 'loading Customization Data No idCustom passed');
+        return $.Deferred().reject();
+    }
+};
+
+
+ProductCustomizer.prototype.getProductData = function (idPro) {
+
+    var self = this;
+    if (idPro) {
+        self.showMsg('LOG', 'Get Product Data from: ' + idPro);
+        return $.ajax(this.apiUrl + 'get-product&IDpro=' + idPro)
+        .done(function(proData) {
+            if (proData) {
+                self.idProType = proData[0].ID_protip;
+                self.borderColor = proData[0].Colorea;
+            }
+            else {
+                self.showMsg('ERROR', 'API: Getting Product Data return empty');
+            }
+        })
+        .fail(function() {
+            self.showMsg('ERROR', 'API: Getting Product Data');
+        });
+    }
+    else { 
+        self.showMsg('ERROR', 'Getting Product No idPro passed');
+        return $.Deferred().reject();
+    }
+};
+
+
+ProductCustomizer.prototype.setBorderColor = function (borderColor) {
+
+    var self = this;
+    self.showMsg('LOG', 'Set border color ');
+    if (borderColor) {
+        $("head").append('<style type="text/css"></style>');
+        var new_stylesheet = $("head").children(':last');
+        var style = '.custom-element-edit{border-color:' + borderColor + ' !important;}';
+        style += '.area{border-color:' + borderColor + '}';
+        new_stylesheet.html(style);
+    }
+    else {
+        self.showMsg('ERROR', 'Setting border color no border color passed');
+    }
 };
 
 

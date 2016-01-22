@@ -15,8 +15,8 @@ View.prototype.init = function (productCustomizer, idView) {
 
     var self = this;
     self.pPCustom = productCustomizer;
-    self.pPCustom.showMsg('LOG', 'Init View: ' + self.idView);
     self.idView = idView;
+    self.pPCustom.showMsg('LOG', 'Init View: ' + self.idView);
     self.loadViewData(self.idView)
         .done(function() {
             self.drawView();

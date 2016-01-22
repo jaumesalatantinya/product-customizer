@@ -61,7 +61,7 @@ CustomElement.prototype.draw = function() {
         'top' : 40+'px',
         'left' : 40+'px', 
         'width' : (self.data.width - (self.data.type=='text' ? 92 : 82))+'px',
-        'height' : (self.data.height - (self.data.type=='text' ? 88 : 82))+'px',
+        'height' : (self.data.height - (self.data.type=='text' ? 88 : 82))+'px'
     });
     if (self.mode == 'edit') {
         self.customE.find('.custom-element').addClass('custom-element-edit');

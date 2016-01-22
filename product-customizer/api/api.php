@@ -64,6 +64,10 @@ class Api {
                 $this->response = $this->apiRequests->getSvgs();
                 $this->returnJSONResponse();
                 break;
+            case 'get-product':
+                $this->response = $this->apiRequests->getProduct($this->idProd);
+                $this->returnJSONResponse();
+                break;
 
 
 
