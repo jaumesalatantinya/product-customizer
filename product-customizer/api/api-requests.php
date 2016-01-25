@@ -152,22 +152,35 @@ class ApiRequests {
 
 
 
+    public function delCustom($idCus, $imgPath) {
 
-    public function delView($idVie, $imgPath) {
-
-        $unlinkResponse = true;
-        $img = $this->db->select('SELECT Image FROM bd_custom_views')[0]['Image'];
-        $qView = 'DELETE FROM bd_custom_views WHERE IDcusvie =' . $idVie;
-        $qElement = 'DELETE FROM bd_custom_elements WHERE ID_cusvie ='. $idVie;
-        if ( $img != 'default.jpg' && file_exists(realpath($imgPath . $img)) ) { 
-            $unlinkResponse = unlink (realpath($imgPath . $img));
+        $q = 'DELETE FROM bd_custom WHERE IDcus=' . $idCus;
+        $r = $this->db->delete($q);
+        $views = $this->getViews($idCus);
+        foreach ($views as &$view){
+            $this->delView($view['IDcusvie'], $imgPath, false);
         }
-        return ( $this->db->delete($qView) && $this->db->delete($qElement) && $unlinkResponse );
+        return $r;
+    }
+
+    public function delView($idVie, $imgPath, $mustDelViewImg) {
+
+        $img = $this->db->select('SELECT Image FROM bd_custom_views WHERE IDcusvie=' . $idVie)[0]['Image'];
+        $q = 'DELETE FROM bd_custom_views WHERE IDcusvie=' . $idVie;
+        $r = $this->db->delete($q);
+        if ( $img != 'default.jpg' && file_exists(realpath($imgPath . $img)) && $mustDelViewImg ) { 
+            $r = ($r && unlink (realpath($imgPath . $img)));
+        }
+        $customElements = $this->getCustomElements($idVie);
+        foreach ($customElements as &$customElement){
+            $this->delCustomElement($customElement['IDcusele'], $imgPath);
+        }
+        return $r;
     }
 
     public function delCustomElement($idCusele, $imgPath) {
 
-        $imgFile = $this->db->select('SELECT Img_file FROM bd_custom_elements')[0]['Img_file'];
+        $imgFile = $this->db->select('SELECT Img_file FROM bd_custom_elements WHERE IDcusele=' . $idCusele)[0]['Img_file'];
         unlink (realpath($imgPath . $imgFile));
         $q = 'DELETE FROM bd_custom_elements WHERE IDcusele=' . $idCusele;
         return $this->db->delete($q);

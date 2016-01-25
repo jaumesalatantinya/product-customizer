@@ -84,7 +84,7 @@ body {
 #nav-main {
     position: absolute;
     list-style-type: none;
-    width: 250px;
+    width: 270px;
     margin-top: 50px;
     padding-left: 0;
     li {
@@ -102,6 +102,39 @@ body {
             font-size: 20px;
             vertical-align: middle;
             font-family: $primary-font;
+        }
+    }
+    #btn-save {
+        width: 100%;
+        margin-top: 110px;
+        border-radius: 10px;
+        color: white;
+        background-color: $red;
+        padding: 20px 20px;
+        font-size: 18px;
+        font-family: $primary-font;
+        &:hover {
+            color: black;
+            cursor: pointer;
+        }
+    }
+    .nav-main-colors {
+        position: absolute;
+        margin-top: 10px;
+        padding: 12px 20px 0 20px;
+        border: 1px solid $light-gray;
+        border-radius: 10px;
+        background-color: white;
+        li{
+            display: inline-block;
+            margin-right: 24px;
+            width: 34px;
+            height: 34px;
+            border: 1px solid $light-gray;
+            background-color: $red;
+            &:nth-child(4), &:nth-child(8){
+                margin-right: 0;
+            }
         }
     }
 }
@@ -195,7 +228,7 @@ body {
     margin-left: 285px;
 }
 
-.msg-modal-close {
+.msg-modal-close, .reset-modal-close {
     margin-left: 145px;
     margin-top: -28px;
 }
@@ -355,6 +388,33 @@ body {
     }
 }
 
+#wrapper-reset {
+    .modal {
+        width: 300px;
+        margin: 300px auto;
+        background-color: #fff;
+        padding: 15px;
+        text-align: center;
+        p {
+            font-size: 16px;
+            margin-top: 10px;
+            color: black;
+        }
+        button {
+            margin-top: 15px;
+            width: 120px;
+            border-radius: 5px;
+            background-color: #5e5e5e;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            &:hover {
+                background-color: $red;
+            }
+        }
+    }
+}
+
 #wrapper-upload-form {
     .modal {
         background-color: white;
@@ -470,6 +530,14 @@ body {
 
 .icon-reset {
     background-position-y: -584px;
+}
+
+.icon-color {
+    width: 70px;
+    height: 70px;
+    border: 4px solid $light-gray;
+    background: initial;
+    background-color: green;
 }
 
 .icon-area {

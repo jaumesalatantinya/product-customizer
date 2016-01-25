@@ -45,7 +45,7 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
     var self = this;
     if (idCustom) {
         self.showMsg('LOG', 'Get Customization Data from customization: ' + idCustom);
-        return $.ajax(this.apiUrl + 'get-custom&IDcus=' + idCustom)
+        return $.ajax(self.apiUrl + 'get-custom&IDcus=' + idCustom)
         .done(function(customData) {
             if (customData) {
                 self.idPro = customData[0].ID_pro;
@@ -69,7 +69,7 @@ ProductCustomizer.prototype.getProductData = function (idPro) {
     var self = this;
     if (idPro) {
         self.showMsg('LOG', 'Get Product Data from: ' + idPro);
-        return $.ajax(this.apiUrl + 'get-product&IDpro=' + idPro)
+        return $.ajax(self.apiUrl + 'get-product&IDpro=' + idPro)
         .done(function(proData) {
             if (proData) {
                 self.idProType = proData[0].ID_protip;
@@ -111,7 +111,7 @@ ProductCustomizer.prototype.loadFonts = function () {
 
     var self = this;
     self.showMsg('LOG', 'Get fonts');
-    $.ajax(this.apiUrl + 'get-fonts')
+    $.ajax(self.apiUrl + 'get-fonts')
     .done(function(fonts) {
         self.fonts = fonts;
         var fontFamilies = self.fonts.map(function(font){
@@ -133,7 +133,7 @@ ProductCustomizer.prototype.loadSvgs = function () {
 
     var self = this;
     self.showMsg('LOG', 'Get Svgs');
-    $.ajax(this.apiUrl + 'get-svgs')
+    $.ajax(self.apiUrl + 'get-svgs')
     .done(function(svgs) {
         self.svgs = svgs;
     })
@@ -165,7 +165,7 @@ ProductCustomizer.prototype.getviewsData = function (idCustom) {
     if (idCustom) {
         self.showMsg('LOG', 'Get Views Ids from customization: ' + idCustom);
         self.viewsData = [];
-        return $.ajax(this.apiUrl + 'get-views&IDcus=' + idCustom)
+        return $.ajax(self.apiUrl + 'get-views&IDcus=' + idCustom)
         .done(function(views) {
             if (views && views.length > 0) {
                 self.viewsData = views;
@@ -233,11 +233,12 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-add-text').click(     function () { self.addText(self.currentViewId); });
         $('#btn-add-svg').click(      function () { self.showSvgPicker();             });
         $('#btn-add-img').click(      function () { self.showUploadForm('img');       });
+        $('#btn-reset').click(        function () { self.showResetModal();            });
         if (self.viewsData.length == 0)
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').hide();
         if (self.isTemplate == 'true')
             $('#btn-reset').hide();
-        else
+        if (self.isTemplate == 'false')
             $('#btn-add-view, #btn-add-view-img, #btn-add-area').hide();
     });
 };
@@ -247,7 +248,7 @@ ProductCustomizer.prototype.addView = function () {
 
     var self = this;
     if (self.idCustom) {
-        $.ajax(this.apiUrl + 'put-view&IDcus=' + self.idCustom)
+        $.ajax(self.apiUrl + 'put-view&IDcus=' + self.idCustom)
         .done(function(newViewId) {
             if (newViewId) {
                 self.showMsg('LOG', 'Adding view: ' + newViewId);
@@ -268,7 +269,7 @@ ProductCustomizer.prototype.delView = function (idView) {
     var self = this;
     self.showMsg('LOG', 'Deleting view: '+idView);
     if (idView) {
-        $.ajax(this.apiUrl + 'del-view&IDvie=' + idView)
+        $.ajax(self.apiUrl + 'del-view&IDvie=' + idView)
         .done(function(response) {
             if (response) {
                 self.view.rootE.empty();
@@ -289,7 +290,7 @@ ProductCustomizer.prototype.addArea = function(idView) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Area as custom element to DB');
-    $.ajax(this.apiUrl + 'put-area&IDvie=' + idView)
+    $.ajax(self.apiUrl + 'put-area&IDvie=' + idView)
     .done(function(response) {
         if (response) {
             self.drawAndUpdateProductCustomizer(idView);
@@ -306,7 +307,7 @@ ProductCustomizer.prototype.addText = function(idView) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Text as custom element to DB');
-    $.ajax(this.apiUrl + 'put-text&IDvie=' + idView + '&Zindex=' + self.view.getHighestZindex())
+    $.ajax(self.apiUrl + 'put-text&IDvie=' + idView + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
             self.drawAndUpdateProductCustomizer(idView);
@@ -322,7 +323,7 @@ ProductCustomizer.prototype.addImg = function(idView, file) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Img as custom element to DB');
-    $.ajax(this.apiUrl + 'put-img&IDvie=' + idView + '&file=' + file + '&Zindex=' + self.view.getHighestZindex())
+    $.ajax(self.apiUrl + 'put-img&IDvie=' + idView + '&file=' + file + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
             self.drawAndUpdateProductCustomizer(idView);
@@ -338,7 +339,7 @@ ProductCustomizer.prototype.addSvg = function(idView, idSvg) {
 
     var self = this;
     self.showMsg('LOG', 'Adding Svg as custom element to DB');
-    $.ajax(this.apiUrl + 'put-svg&IDvie=' + idView + '&IDcussvg=' + idSvg + '&Zindex=' + self.view.getHighestZindex())
+    $.ajax(self.apiUrl + 'put-svg&IDvie=' + idView + '&IDcussvg=' + idSvg + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
             self.drawAndUpdateProductCustomizer(idView);
@@ -397,6 +398,30 @@ ProductCustomizer.prototype.uploadFile = function (type){
     });
 };
 
+ProductCustomizer.prototype.showResetModal = function () {
+
+    var self = this;
+    self.showMsg('LOG', 'Show Reset Modal');
+    $('#wrapper-reset').show();
+    $('#wrapper-reset').load('product-customizer/reset-modal.html', function() {
+        $('#wrapper-reset .btn-close, #wrapper-reset .btn-cancel').click( function() {
+            self.close('reset');
+        });
+        $('#wrapper-reset .btn-ok').click( function(event) {
+            console.log('hello');
+            $.ajax(self.apiUrl + 'del-custom&IDcus=' + self.idCustom)
+            .done(function(response) {
+                if (response) {
+                    document.location.href = 'product-customizer/create_new_custom.php?IDpro=' + self.idPro;
+                }
+                else { self.showMsg('ERROR', 'Delete Custom: no response from API'); }
+            })
+            .fail(function() {
+                self.showMsg('ERROR', 'API Delete Custom');
+            });          
+        });
+    });
+};
 
 ProductCustomizer.prototype.putImgToView = function (file) {
 
@@ -452,7 +477,7 @@ ProductCustomizer.prototype.showMsgModal = function(type, msg) {
     $('#wrapper-msg-modal').show();
     $('#wrapper-msg-modal').load('product-customizer/msg-modal.html', function() {
         $('#wrapper-msg-modal .modal p').html(msg);
-        $('#wrapper-msg-modal .modal .btn-close, #wrapper-msg-modal .modal .btn-ok').click( function() {
+        $('#wrapper-msg-modal .btn-close, #wrapper-msg-modal .btn-ok').click( function() {
             self.close('msg-modal');
         });
     });

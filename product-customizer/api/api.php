@@ -121,9 +121,12 @@ class Api {
                           
 
 
-
+            case 'del-custom':
+                $this->response = $this->apiRequests->delCustom($this->idCus, $this->imgPath);
+                $this->returnJSONResponse();
+                break;
             case 'del-view':
-                $this->response = $this->apiRequests->delView($this->idVie, $this->imgPath);
+                $this->response = $this->apiRequests->delView($this->idVie, $this->imgPath, true);
                 $this->returnJSONResponse();
                 break;
             case 'del-custom-element':
@@ -132,7 +135,7 @@ class Api {
                 break;
 
             default:
-                // echo 'API PRODUCT CUSTOMIZER';
+                echo 'API PRODUCT CUSTOMIZER';
         }
     }
 

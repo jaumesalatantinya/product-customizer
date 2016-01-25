@@ -76,6 +76,7 @@
             <div id="wrapper-msg-modal"></div>
             <div id="wrapper-upload-form"></div>
             <div id="wrapper-svg-picker"></div>
+            <div id="wrapper-reset"></div>
         </div>
         <div class="clear"></div>
     </div>
