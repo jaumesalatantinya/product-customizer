@@ -10,7 +10,7 @@ class Api {
     private $idProd;
     private $idCus;
     private $response;
-    public $apiRequests;
+    private $apiRequests;
 
 
     public function __construct() {
@@ -70,7 +70,10 @@ class Api {
                 break;
 
 
-
+            case 'put-custom':
+                $this->response = $this->apiRequests->putCustom($this->idProd);
+                $this->returnJSONResponse();
+                break;
             case 'put-view':
                 $this->response = $this->apiRequests->putView($this->idCus);
                 $this->returnJSONResponse();

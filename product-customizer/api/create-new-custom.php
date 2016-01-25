@@ -1,5 +1,5 @@
 <?php
-    require_once('api/api.php');
+    require_once('api.php');
 
     if (isset($_GET['IDpro'])){
         $api = new Api();
@@ -22,7 +22,8 @@
                 //TODO if is an image clone image and update recordset
             }
         }
-        header( 'Location: ../product_custom.php?IDcus='.$idCustomNew.'&IDpro='.$idProd);
+        header('Content-Type: application/json');
+        echo '{"idCustomNew": ' .$idCustomNew. '}';
     }
     else {
         echo 'No IDpro passed as param to crate a new customization from template custom';

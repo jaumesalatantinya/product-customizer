@@ -398,6 +398,7 @@ ProductCustomizer.prototype.uploadFile = function (type){
     });
 };
 
+
 ProductCustomizer.prototype.showResetModal = function () {
 
     var self = this;
@@ -408,25 +409,42 @@ ProductCustomizer.prototype.showResetModal = function () {
             self.close('reset');
         });
         $('#wrapper-reset .btn-ok').click( function(event) {
-            console.log('hello');
             $.ajax(self.apiUrl + 'del-custom&IDcus=' + self.idCustom)
             .done(function(response) {
                 if (response) {
-                    document.location.href = 'product-customizer/create_new_custom.php?IDpro=' + self.idPro;
+                    self.createNewCustomFromTemplate(self.idPro);
                 }
                 else { self.showMsg('ERROR', 'Delete Custom: no response from API'); }
             })
             .fail(function() {
                 self.showMsg('ERROR', 'API Delete Custom');
-            });          
+            });
         });
     });
 };
 
+
+ProductCustomizer.prototype.createNewCustomFromTemplate = function (idPro){
+
+    var self = this;
+    self.showMsg('LOG', 'Creating new customziation from template custom: ' + idPro);
+    $.ajax(self.apiUrl + 'put-custom&IDpro=' + idPro)
+    .done(function(idCustomNew) {
+        if (idCustomNew) {
+            window.location.href = 'product_custom.php?IDcus=' + idCustomNew + '&IDpro=' + idPro;
+        }
+        else { self.showMsg('ERROR', 'Create new Custom: no new id custom retruned from API'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Create New Custom');
+    });
+};
+
+
 ProductCustomizer.prototype.putImgToView = function (file) {
 
     var self = this;
-    $.ajax(self.apiUrl + 'put-img-to-view&IDvie=' + self.currentViewId + '&file='+file)
+    $.ajax(self.apiUrl + 'put-img-to-view&IDvie=' + self.currentViewId + '&file=' + file)
     .done(function(response) {
         if (response) {
             self.drawAndUpdateProductCustomizer(self.currentViewId);
