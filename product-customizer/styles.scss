@@ -118,21 +118,22 @@ body {
             cursor: pointer;
         }
     }
-    .nav-main-colors {
+    #nav-main-colors {
         position: absolute;
+        display: none;
         margin-top: 10px;
         padding: 12px 20px 0 20px;
         border: 1px solid $light-gray;
         border-radius: 10px;
         background-color: white;
-        li{
+        li {
             display: inline-block;
             margin-right: 24px;
             width: 34px;
             height: 34px;
             border: 1px solid $light-gray;
             background-color: $red;
-            &:nth-child(4), &:nth-child(8){
+            &:nth-child(4), &:nth-child(8) {
                 margin-right: 0;
             }
         }
@@ -181,8 +182,8 @@ body {
     }
     .cp-alt-target {
         position: absolute;
-        top: 93px;
-        left: 715px;
+        margin-left: 28px;
+        margin-top: 8px;
     }
     .cp-alt {
         padding: 0px 10px 0 40px;
@@ -537,7 +538,6 @@ body {
     height: 70px;
     border: 4px solid $light-gray;
     background: initial;
-    background-color: green;
 }
 
 .icon-area {

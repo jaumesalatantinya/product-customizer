@@ -22,6 +22,8 @@ class Api {
         $this->idVie = $_GET['IDvie'];
         $this->idCusele = $_GET['IDcusele'];
         $this->idSvg = $_GET['IDcussvg'];
+        $this->idProtyp = $_GET['IDprotip'];
+        $this->idProcol = $_GET['IDprocol'];
         $this->data = $_POST;
         $this->file = $_GET['file'];
         $this->zindex = $_GET['Zindex'];
@@ -66,6 +68,14 @@ class Api {
                 break;
             case 'get-product':
                 $this->response = $this->apiRequests->getProduct($this->idProd);
+                $this->returnJSONResponse();
+                break;
+            case 'get-colors':
+                $this->response = $this->apiRequests->getColors($this->idProtyp);
+                $this->returnJSONResponse();
+                break;
+            case 'get-color':
+                $this->response = $this->apiRequests->getColor($this->idProcol);
                 $this->returnJSONResponse();
                 break;
 
@@ -119,6 +129,10 @@ class Api {
                 break; 
             case 'update-text-attr':
                 $this->response = $this->apiRequests->updateTextAttr($this->idCusele, $this->data);
+                $this->returnJSONResponse();
+                break;
+            case 'update-color':
+                $this->response = $this->apiRequests->updateColor($this->idCus, $this->idProcol);
                 $this->returnJSONResponse();
                 break;
                           

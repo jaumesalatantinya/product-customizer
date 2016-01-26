@@ -73,6 +73,18 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
+    public function getColors($idProtyp) {
+
+        $q = 'SELECT * FROM bd_productos_colores WHERE ID_protip =' . $idProtyp;
+        return $this->db->select($q);
+    }
+
+    public function getColor($idProcol) {
+
+        $q = 'SELECT Color FROM bd_productos_colores WHERE IDprocol =' . $idProcol;
+        return $this->db->select($q);
+    }
+
 
 
 
@@ -80,7 +92,8 @@ class ApiRequests {
     public function putCustom($idProd){
 
         $idCustomTemplate = $this->getTemplateId($idProd)[0]['IDcus'];
-        $qC = 'INSERT INTO bd_custom (ID_pro, Is_Template) VALUES (' . $idProd . ', "false")';
+        $idProcol = $this->db->select('SELECT ID_procol FROM bd_custom WHERE IDcus='.$idCustomTemplate)[0]['ID_procol'];
+        $qC = 'INSERT INTO bd_custom (ID_pro, Is_Template, ID_procol) VALUES (' . $idProd . ', "false", ' . json_encode($idProcol) .')';
         $idCustomNew = $this->db->insert($qC);
         $views = $this->getViews($idCustomTemplate);
         foreach ($views as &$view) {
@@ -169,6 +182,11 @@ class ApiRequests {
         return $this->db->update($q);
     }
 
+    public function updateColor($idCus, $idProcol) {
+
+        $q = 'UPDATE bd_custom SET ID_procol=' . $idProcol . ' WHERE IDcus=' . $idCus;
+        return $this->db->update($q);
+    }
 
 
 

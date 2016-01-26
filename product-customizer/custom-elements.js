@@ -393,6 +393,8 @@ Text.prototype.draw = function(){
             'color': '#'+self.data.text_attr.color
         });
     }
+    if (!self.pView.pPCustom.isMulticolor())
+        self.customE.find('.text').css('color', self.pView.pPCustom.getColor(self.pView.pPCustom.idColor));
 };
 
 Text.prototype.bindings = function () {

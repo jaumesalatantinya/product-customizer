@@ -232,6 +232,8 @@ View.prototype.showAndLoadAuxMenu = function(customElementEditing) {
                 $('#btn-align-r').click(       function (){ customElementEditing.changeAttr('align', 'right');      });
                 $('#inp-size').focusout(       function (){ customElementEditing.changeAttr('size', $(this).val()); });
                 $('.cp-alt').colorpicker({     altField: '.cp-alt-target', ok: function(event, color) { customElementEditing.changeAttr('color', color.formatted); }});
+                if (!self.pPCustom.isMulticolor())
+                    $('.cp-alt-target, .cp-alt').hide();
                 self.loadAuxMenuTextData(customElementEditing);
             }
         });

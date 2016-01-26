@@ -8,6 +8,7 @@ var ProductCustomizer = function () {
     this.idProType;
     this.borderColor;
     this.colors = [];
+    this.idColor;
     this.isTemplate;
     this.rootE = $('#product-customizer');
     this.viewsData = [];
@@ -30,6 +31,7 @@ ProductCustomizer.prototype.init = function () {
         self.getCustomizationData(self.idCustom).done(function (){
             self.getProductData(self.idPro).done(function (){
                 self.setBorderColor(self.borderColor);
+                self.getColors();
                 self.loadFonts();
                 self.loadSvgs();
                 self.drawAndUpdateProductCustomizer('default');
@@ -50,6 +52,7 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
             if (customData) {
                 self.idPro = customData[0].ID_pro;
                 self.isTemplate = customData[0].Is_Template;
+                self.idColor = customData[0].ID_procol;
             }
             else { self.showMsg('ERROR', 'No data for custom:' + idCustom); }
         })
@@ -103,6 +106,27 @@ ProductCustomizer.prototype.setBorderColor = function (borderColor) {
     }
     else {
         self.showMsg('ERROR', 'Setting border color no border color passed');
+    }
+};
+
+
+ProductCustomizer.prototype.getColors = function () {
+
+    var self = this;
+    if (!self.isMulticolor()) {
+        self.showMsg('LOG', 'Get Colors');
+        $.ajax(self.apiUrl + 'get-colors&IDprotip=' + self.idProType)
+        .done(function(colors) {
+            if (colors) {
+                for (var i = 0; i < colors.length; i++) {
+                    self.colors.push(colors[i]);
+                }
+            }
+            else { self.showMsg('ERROR', 'Get Colors: no colors from API'); }
+        })
+        .fail(function() {
+            self.showMsg('ERROR', 'API Get Colors');
+        });
     }
 };
 
@@ -234,12 +258,17 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-add-svg').click(      function () { self.showSvgPicker();             });
         $('#btn-add-img').click(      function () { self.showUploadForm('img');       });
         $('#btn-reset').click(        function () { self.showResetModal();            });
+        $('#btn-color').click(        function () { self.showColorPicker();           });
         if (self.viewsData.length == 0)
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').hide();
         if (self.isTemplate == 'true')
-            $('#btn-reset').hide();
+            $('#btn-reset, #btn-save').hide();
         if (self.isTemplate == 'false')
             $('#btn-add-view, #btn-add-view-img, #btn-add-area').hide();
+        if (self.isMulticolor())
+            $('#btn-color').hide();
+        else 
+            $('#btn-color .icon-color').css('background-color', self.getColor(self.idColor));
     });
 };
 
@@ -424,6 +453,55 @@ ProductCustomizer.prototype.showResetModal = function () {
 };
 
 
+ProductCustomizer.prototype.getColor = function (idColor) {
+
+    var self = this;
+    var color;
+    self.showMsg('LOG', 'Get Color');
+    for (var i = 0; i < self.colors.length; i++) {
+        if (idColor == self.colors[i].IDprocol) {
+            color = self.colors[i].Color; 
+            break;
+        }
+    }
+    return color;
+};
+
+
+ProductCustomizer.prototype.showColorPicker = function () {
+
+    var self = this;
+    self.showMsg('LOG', 'Show Color Picker');
+    $('#nav-main-colors').show();
+    for (var i = 0; i < self.colors.length; i++) {
+        var li = $('<li>').data('idColor', self.colors[i].IDprocol).css('background-color', self.colors[i].Color);
+        li.click(function(){
+            self.updateColor($(this).data('idColor'));
+        });
+        $('#nav-main-colors').append(li);
+    }
+};
+
+
+ProductCustomizer.prototype.updateColor = function (idColor) {
+
+    var self = this;
+    self.showMsg('LOG', 'Update Color: ' + idColor);
+    $('#nav-main-colors').hide();
+    self.idColor = idColor;
+    $.ajax(self.apiUrl + 'update-color&IDcus=' + self.idCustom + '&IDprocol=' + idColor)
+    .done(function(response) {
+        if (response) {
+            self.drawAndUpdateProductCustomizer(self.currentViewId);
+        }
+        else { self.showMsg('ERROR', 'Update color: no response from API'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Update color');
+    });
+};
+
+
 ProductCustomizer.prototype.createNewCustomFromTemplate = function (idPro){
 
     var self = this;
@@ -505,4 +583,14 @@ ProductCustomizer.prototype.showMsgModal = function(type, msg) {
 ProductCustomizer.prototype.close = function(element) {
 
     $('#wrapper-'+element).hide();
+};
+
+
+ProductCustomizer.prototype.isMulticolor = function () {
+
+    var self = this;
+    if ( $.inArray(self.idProType, ['1', '4', '5', '6']) != -1 )
+        return true;
+    else
+        return false;
 };
