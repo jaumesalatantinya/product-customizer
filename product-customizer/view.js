@@ -56,7 +56,10 @@ View.prototype.drawView = function () {
 
     var self = this;
     self.rootE.empty();
-    self.rootE.css('background-image', 'url('+self.pPCustom.imgUrl+self.image+')');
+    self.rootE.css({
+        'background-image': 'url('+self.pPCustom.imgUrl+self.image+')',
+        'height': self.pPCustom.height+'px'
+    });
 };
 
 

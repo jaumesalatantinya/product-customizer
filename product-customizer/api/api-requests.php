@@ -99,14 +99,13 @@ class ApiRequests {
     public function putCustom($idProd){
 
         $idCustomTemplate = $this->getTemplateId($idProd)[0]['IDcus'];
-        $idProcol = $this->db->select('SELECT ID_procol FROM bd_custom WHERE IDcus='.$idCustomTemplate)[0]['ID_procol'];
-        $qC = 'INSERT INTO bd_custom (ID_pro, Is_Template, ID_procol) VALUES (' . $idProd . ', "false", ' . json_encode($idProcol) .')';
+        $customTemplate = $this->getCustomization($idCustomTemplate)[0];
+        $qC = 'INSERT INTO bd_custom (ID_pro, Is_Template, ID_procol, Height) VALUES (' . $idProd . ', "false", ' . json_encode($customTemplate['ID_procol']) .', '.$customTemplate['Height'].')';
         $idCustomNew = $this->db->insert($qC);
         $views = $this->getViews($idCustomTemplate);
         foreach ($views as &$view) {
             $qV = 'INSERT INTO bd_custom_views (ID_cus, Image) VALUES (' . $idCustomNew . ', "'. $view['Image'] .'")';
             $idViewNew = $this->db->insert($qV);
-            
             $customElements = $this->getCustomElements($view['IDcusvie']);
             foreach ($customElements as &$customElement) {
                 $qE = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, area_attr, text, text_attr, ID_cussvg, Img_file) ';
@@ -196,6 +195,12 @@ class ApiRequests {
     public function updateColor($idCus, $idProcol) {
 
         $q = 'UPDATE bd_custom SET ID_procol=' . $idProcol . ' WHERE IDcus=' . $idCus;
+        return $this->db->update($q);
+    }
+
+    public function updateHeight($idCus, $data) {
+
+        $q = 'UPDATE bd_custom SET Height=' . $data['height'] . ' WHERE IDcus=' . $idCus;
         return $this->db->update($q);
     }
 

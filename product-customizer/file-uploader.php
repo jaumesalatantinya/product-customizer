@@ -10,8 +10,8 @@
 	$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
     $size = getimagesize($_FILES['file-to-upload']['tmp_name']);
-    if($type == 'view' && ($size == false || $size[0] != 600 || $size[1] != 600) ) {
-        $error = 'La imagen debe de ser 600x600 o está vacia';
+    if($type == 'view' && ($size == false || $size[0] != 600) ) {
+        $error = 'La imagen debe de ser 600 de ancho o está vacia';
         $uploadOk = 0;
     }
 
@@ -29,7 +29,7 @@
 	    echo ('{"status": "fail", "error": "Error: '.$error.'"}');
 	} else {
 	    if (move_uploaded_file($_FILES['file-to-upload']['tmp_name'], $target_dir_file)) {
-	    	echo ('{"status": "success", "file": "' . basename($target_file) . '"}');	        
+	    	echo ('{"status": "success", "file": "' . basename($target_file) . '", "height": "'.$size[1].'"}');	        
 	    } else {
 	    	echo ('{"status": "fail", "error": "Error: No permision to move file to target dir"}');
 	    }

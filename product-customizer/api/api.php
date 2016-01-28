@@ -136,6 +136,10 @@ class Api {
                 $this->response = $this->apiRequests->updateColor($this->idCus, $this->idProcol);
                 $this->returnJSONResponse();
                 break;
+            case 'update-height':
+                $this->response = $this->apiRequests->updateHeight($this->idCus, $this->data);
+                $this->returnJSONResponse();
+                break;
                           
 
 

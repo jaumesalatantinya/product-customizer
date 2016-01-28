@@ -10,6 +10,7 @@ class RenderCustom {
         $this->type = $_GET['type']; //[pdf|pdfwb|img]
         $this->idProd = $this->apiRequests->getProductId($this->idCus)[0]['ID_pro'];
         $this->prod = $this->apiRequests->getProduct($this->idProd)[0];
+        $this->custom = $this->apiRequests->getCustomization($this->idCus)[0];
         $this->views = $this->apiRequests->getViews($this->idCus);
         $this->imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
         $this->svgUrl = 'http://www.sellosyrotulos.com/img/customSVG/';
@@ -133,11 +134,15 @@ $render = new RenderCustom();
     <style>
         body {
             width: 600px;
+            margin: 0;
+            padding: 0;
         }
         .view {
+            margin: 0;
+            padding: 0;
             position: absolute;
             width: 600px;
-            height: 600px;
+            height: <?=$render->custom['Height']?>px;
         } 
     </style>
 </head>
@@ -146,7 +151,7 @@ $render = new RenderCustom();
     <?php
     foreach ($render->views as $i=>$view) {
         $divView = '<div class="view" ';
-        $divView .= 'style="top:'.(600*($i)).'px;';
+        $divView .= 'style="top:'.($render->custom['Height']*($i)).'px;';
         if ($render->type!='pdfwb')
             $divView .='background-image:url('.$render->imgUrl.$view['Image'].')';
         $divView .= '">';

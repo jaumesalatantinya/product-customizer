@@ -10,6 +10,7 @@ var ProductCustomizer = function () {
     this.colors = [];
     this.idColor;
     this.isTemplate;
+    this.height;
     this.rootE = $('#product-customizer');
     this.viewsData = [];
     this.view;
@@ -54,6 +55,7 @@ ProductCustomizer.prototype.getCustomizationData = function (idCustom) {
                 self.idPro = customData[0].ID_pro;
                 self.isTemplate = customData[0].Is_Template;
                 self.idColor = customData[0].ID_procol;
+                self.height = customData[0].Height;
             }
             else { self.showMsg('ERROR', 'No data for custom:' + idCustom); }
         })
@@ -225,7 +227,7 @@ ProductCustomizer.prototype.drawNavViews = function () {
     var self = this;
     self.showMsg('LOG', 'Drawing Navigation Views');
     $('#nav-views').empty();
-    $('#nav-views').css('right', (420 - (self.viewsData.length*60)) + 'px');
+    $('#nav-views').css({'right': (420 - (self.viewsData.length*60)) + 'px', 'top': (parseInt(self.height)+180) +'px'});
     for (var i = 0; i < self.viewsData.length; i++) {
         var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
         var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );
@@ -417,7 +419,7 @@ ProductCustomizer.prototype.uploadFile = function (type){
             if (response.status == 'success'){
                 $('#wrapper-upload-form').hide();
                 if (type == 'view')
-                    self.putImgToView(response.file);
+                    self.putImgToView(response.file, response.height);
                 if (type == 'img')
                     self.addImg(self.currentViewId, response.file);
             }
@@ -521,18 +523,40 @@ ProductCustomizer.prototype.createNewCustomFromTemplate = function (idPro){
 };
 
 
-ProductCustomizer.prototype.putImgToView = function (file) {
+ProductCustomizer.prototype.putImgToView = function (file, height) {
 
     var self = this;
     $.ajax(self.apiUrl + 'put-img-to-view&IDvie=' + self.currentViewId + '&file=' + file)
     .done(function(response) {
         if (response) {
-            self.drawAndUpdateProductCustomizer(self.currentViewId);
+            self.height = height;
+            self.updateHeight(height).done( function() {
+                self.drawAndUpdateProductCustomizer(self.currentViewId);                
+            });
         }
         else { self.showMsg('ERROR', 'Put Img View: No new idView'); }
     })
     .fail(function() {
         self.showMsg('ERROR', 'API Put Img View');
+    });
+};
+
+ProductCustomizer.prototype.updateHeight = function (height) {
+
+    var self = this;
+    return $.ajax({
+        type: 'POST',
+        url: self.apiUrl + 'update-height&IDcus=' + self.idCustom,
+        data: {height: height}
+    })
+    .done(function(response) {
+        if (response) {
+            self.drawAndUpdateProductCustomizer(self.currentViewId);
+        }
+        else { self.showMsg('ERROR', 'Update Height: no response'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API Update Height');
     });
 };
 
