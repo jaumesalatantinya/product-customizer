@@ -13,6 +13,7 @@ class ApiRequests {
 
         $this->db = new Database();
         $this->db->connect();
+        $this->imgPath = '../../../img/custom/'; 
     }
 
     public function getTemplateId($idProd) {
@@ -110,8 +111,12 @@ class ApiRequests {
             foreach ($customElements as &$customElement) {
                 $qE = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, area_attr, text, text_attr, ID_cussvg, Img_file) ';
                 $qE .='VALUES ('.$idViewNew.', "'.$customElement['type'].'", '.$customElement['x'].', '.$customElement['y'].', '.$customElement['width'].', '.$customElement['height'].', '.$customElement['Zindex'].' , '.json_encode($customElement['area_attr']).', "'.$customElement['text'].'", '.json_encode($customElement['text_attr']).', '.json_encode($customElement['ID_cussvg']).', "'.$customElement['Img_file'].'" )';
-                $this->db->insert($qE);
-                //TODO if is an image clone image and update recordset
+                $idCustomElementNew = $this->db->insert($qE);
+                // if ($customElement['type'] == 'img'){
+                //     substr(string,start,length)
+                //     $newFile = $customElement['Img_file']
+                //     copy($fichero, $newFile);
+                // }
             }
         }
         return $idCustomNew;
@@ -196,36 +201,36 @@ class ApiRequests {
 
 
 
-    public function delCustom($idCus, $imgPath) {
+    public function delCustom($idCus) {
 
         $q = 'DELETE FROM bd_custom WHERE IDcus=' . $idCus;
         $r = $this->db->delete($q);
         $views = $this->getViews($idCus);
         foreach ($views as &$view){
-            $this->delView($view['IDcusvie'], $imgPath, false);
+            $this->delView($view['IDcusvie'], false);
         }
         return $r;
     }
 
-    public function delView($idVie, $imgPath, $mustDelViewImg) {
+    public function delView($idVie, $mustDelViewImg) {
 
         $img = $this->db->select('SELECT Image FROM bd_custom_views WHERE IDcusvie=' . $idVie)[0]['Image'];
         $q = 'DELETE FROM bd_custom_views WHERE IDcusvie=' . $idVie;
         $r = $this->db->delete($q);
-        if ( $img != 'default.jpg' && file_exists(realpath($imgPath . $img)) && $mustDelViewImg ) { 
-            $r = ($r && unlink (realpath($imgPath . $img)));
+        if ( $img != 'default.jpg' && file_exists(realpath($this->imgPath . $img)) && $mustDelViewImg ) { 
+            $r = ($r && unlink (realpath($this->imgPath . $img)));
         }
         $customElements = $this->getCustomElements($idVie);
         foreach ($customElements as &$customElement){
-            $this->delCustomElement($customElement['IDcusele'], $imgPath);
+            $this->delCustomElement($customElement['IDcusele']);
         }
         return $r;
     }
 
-    public function delCustomElement($idCusele, $imgPath) {
+    public function delCustomElement($idCusele) {
 
         $imgFile = $this->db->select('SELECT Img_file FROM bd_custom_elements WHERE IDcusele=' . $idCusele)[0]['Img_file'];
-        unlink (realpath($imgPath . $imgFile));
+        unlink (realpath($this->imgPath . $imgFile));
         $q = 'DELETE FROM bd_custom_elements WHERE IDcusele=' . $idCusele;
         return $this->db->delete($q);
     }
