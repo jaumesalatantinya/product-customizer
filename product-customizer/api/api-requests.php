@@ -111,11 +111,13 @@ class ApiRequests {
                 $qE = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, area_attr, text, text_attr, ID_cussvg, Img_file) ';
                 $qE .='VALUES ('.$idViewNew.', "'.$customElement['type'].'", '.$customElement['x'].', '.$customElement['y'].', '.$customElement['width'].', '.$customElement['height'].', '.$customElement['Zindex'].' , '.json_encode($customElement['area_attr']).', "'.$customElement['text'].'", '.json_encode($customElement['text_attr']).', '.json_encode($customElement['ID_cussvg']).', "'.$customElement['Img_file'].'" )';
                 $idCustomElementNew = $this->db->insert($qE);
-                // if ($customElement['type'] == 'img'){
-                //     substr(string,start,length)
-                //     $newFile = $customElement['Img_file']
-                //     copy($fichero, $newFile);
-                // }
+                if ($customElement['type'] == 'img'){
+                    $newFile = time().'.'.explode('.',$customElement['Img_file'])[1];
+                    if (copy($this->imgPath.$customElement['Img_file'], $this->imgPath.$newFile)) {
+                        $qI = 'UPDATE bd_custom_elements SET Img_file="' . $newFile .'" WHERE IDcusele=' . $idCustomElementNew;
+                        $this->db->update($qI);
+                    }
+                }
             }
         }
         return $idCustomNew;
