@@ -1,16 +1,10 @@
 {
-  "name": "llatjos",
+  "name": "product-customizer",
   "version": "1.0.0",
-  "description": "Clinica Llatjos",
-  "homepage": "https://www.clinicallatjos.com",
-  "license": "Clinica Llatjos. All rights reserved",
-  "private": true,
+  "description": "Sellos y Rotulos product customizer",
+  "homepage": "https://www.sellosyrotulos.com",
+  "license": "Numon. All rights reserved",
+  "private": false,
   "dependencies": {},
-  "devDependencies": {
-    "angular": "~1.4.7",
-    "bootstrap": "~3.3.5",
-    "normalize-css": "normalize.css#~3.0.3",
-    "angular-route": "~1.4.7",
-    "angular-mocks": "~1.4.7"
-  }
+  "devDependencies": {}
 }
