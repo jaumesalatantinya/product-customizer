@@ -30,11 +30,12 @@ ProductCustomizer.prototype.init = function () {
         self.showMsg('LOG', 'Init Customization: ' + self.idCustom);
         self.getCustomizationData(self.idCustom).done(function (){
             self.getProductData(self.idPro).done(function (){
-                self.setBorderColor(self.borderColor);
-                self.getColors();
-                self.loadFonts();
-                self.loadSvgs();
-                self.drawAndUpdateProductCustomizer('default');
+                self.getColors().done(function() {
+                    self.setBorderColor(self.borderColor);
+                    self.loadFonts();
+                    self.loadSvgs();
+                    self.drawAndUpdateProductCustomizer('default');
+                });
             });
         });
     }
@@ -115,7 +116,7 @@ ProductCustomizer.prototype.getColors = function () {
     var self = this;
     if (!self.isMulticolor()) {
         self.showMsg('LOG', 'Get Colors');
-        $.ajax(self.apiUrl + 'get-colors&IDprotip=' + self.idProType)
+        return $.ajax(self.apiUrl + 'get-colors&IDprotip=' + self.idProType)
         .done(function(colors) {
             if (colors) {
                 for (var i = 0; i < colors.length; i++) {
@@ -128,6 +129,7 @@ ProductCustomizer.prototype.getColors = function () {
             self.showMsg('ERROR', 'API Get Colors');
         });
     }
+    else { return $.Deferred().resolve(); }
 };
 
 
@@ -260,7 +262,7 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-reset').click(        function () { self.showResetModal();            });
         $('#btn-color').click(        function () { self.showColorPicker();           });
         if (self.viewsData.length == 0)
-            $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img').hide();
+            $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img, #btn-color').hide();
         if (self.isTemplate == 'true')
             $('#btn-reset, #btn-save').hide();
         if (self.isTemplate == 'false')
@@ -301,8 +303,7 @@ ProductCustomizer.prototype.delView = function (idView) {
         $.ajax(self.apiUrl + 'del-view&IDvie=' + idView)
         .done(function(response) {
             if (response) {
-                self.view.rootE.empty();
-                self.view.rootE.css('background-image', 'none');
+                self.view.resetView();
                 self.drawAndUpdateProductCustomizer('default');
             }
             else { self.showMsg('ERROR', 'Del View: Response false'); }
@@ -472,18 +473,19 @@ ProductCustomizer.prototype.showColorPicker = function () {
 
     var self = this;
     self.showMsg('LOG', 'Show Color Picker');
+    $('#nav-main-colors').empty();
     $('#nav-main-colors').show();
     for (var i = 0; i < self.colors.length; i++) {
         var li = $('<li>').data('idColor', self.colors[i].IDprocol).css('background-color', self.colors[i].Color);
         li.click(function(){
-            self.updateColor($(this).data('idColor'));
+            self.changeColor($(this).data('idColor'));
         });
         $('#nav-main-colors').append(li);
     }
 };
 
 
-ProductCustomizer.prototype.updateColor = function (idColor) {
+ProductCustomizer.prototype.changeColor = function (idColor) {
 
     var self = this;
     self.showMsg('LOG', 'Update Color: ' + idColor);

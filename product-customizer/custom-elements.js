@@ -49,7 +49,6 @@ CustomElement.prototype.loadData = function () {
 CustomElement.prototype.draw = function() {
 
     var self = this;
-    var isIn
     self.customE.css({
         'width' : self.data.width+'px',
         'height' : self.data.height+'px',

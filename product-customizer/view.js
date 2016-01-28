@@ -275,7 +275,7 @@ View.prototype.populateFontsToSelector = function(currentFont) {
             }
         });    
     }
-    else { self.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
+    else { self.pPCustom.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
 };
 
 
@@ -288,4 +288,16 @@ View.prototype.getHighestZindex = function() {
             highestZIndex = self.customElements[i].data.Zindex;
     };
     return parseInt(highestZIndex) + 1;
+};
+
+
+View.prototype.resetView = function() {
+
+    var self = this;
+    self.pPCustom.showMsg('LOG', 'Reset View');
+    self.rootE.empty();
+    self.rootE.css('background-image', 'none');
+    self.currentElementEditing = undefined;
+    self.manageAuxMenu();
+    $('#toast').hide();
 };

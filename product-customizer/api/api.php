@@ -7,8 +7,6 @@ class Api {
 
 
     private $request;
-    private $idProd;
-    private $idCus;
     private $response;
     private $apiRequests;
 
@@ -68,6 +66,10 @@ class Api {
                 break;
             case 'get-product':
                 $this->response = $this->apiRequests->getProduct($this->idProd);
+                $this->returnJSONResponse();
+                break;
+            case 'get-product-id':
+                $this->response = $this->apiRequests->getProductId($this->idCus);
                 $this->returnJSONResponse();
                 break;
             case 'get-colors':

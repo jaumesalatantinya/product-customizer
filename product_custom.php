@@ -1,7 +1,5 @@
 <?php
     require_once('Connections/bd_start.php');
-?>
-<?php
     $colname_Recordset2 = "-1";
     if (isset($_GET['IDpro']) && $_GET['IDpro']!='') {
         $colname_Recordset2 = $_GET['IDpro'];
@@ -46,7 +44,7 @@
                 productCustomizer.init();
             }
             else if (idProd) {
-                $.getJSON('product-customizer/api/api.php?request=get-custom-template-id&IDpro='+idProd)
+                $.ajax('product-customizer/api/api.php?request=get-custom-template-id&IDpro='+idProd)
                 .done(function(custom){
                     if (custom){
                         productCustomizer.idCustom = custom[0].IDcus;
