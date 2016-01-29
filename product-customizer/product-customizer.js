@@ -227,7 +227,7 @@ ProductCustomizer.prototype.drawNavViews = function () {
     var self = this;
     self.showMsg('LOG', 'Drawing Navigation Views');
     $('#nav-views').empty();
-    $('#nav-views').css({'right': (420 - (self.viewsData.length*60)) + 'px', 'top': (parseInt(self.height)+180) +'px'});
+    $('#nav-views').css({'right': (420 - (self.viewsData.length*60)) + 'px', 'top': (parseInt(self.height)+170) +'px'});
     for (var i = 0; i < self.viewsData.length; i++) {
         var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
         var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );

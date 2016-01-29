@@ -4,7 +4,7 @@ $light-gray: #e1e1e1;
 $light-light-gray: #f5f5f5;
 $dark-gray: #4D4D4D;
 $red: #f52350;
-$view-background-color: #f5f5f5;
+$wrapper-view-background-color: #E6E6E6;
 $area-border-color: $dark-gray;
 $border-color-edit: black;
 $area-no-printable-background-color: rgba(255, 0, 0, 0.2);
@@ -25,7 +25,7 @@ body {
     .col-1 {
         float: left;
         width: 288px;
-        padding: 15px 0 0 15px;
+        padding: 0 0 0 15px;
         margin: 0;
     }
     .col-2 {
@@ -38,7 +38,7 @@ body {
             text-align: center;
             color: black;
             border-bottom: 1px solid $light-gray;
-            padding: 20px 0;
+            padding: 16px 0;
             font-size: 22px;
             font-family: $primary-font;
         }
@@ -60,16 +60,16 @@ body {
     z-index: 1;
     width: 700px;
     border-radius: 10px;
-    top: 140px;
+    top: 120px;
     right: 85px;
     font-size: 14px;
 }
 
 #wrapper-view {
     position: relative;
-    background-color: $view-background-color;
+    background-color: $wrapper-view-background-color;
     width: 840px;
-    height: 770px;
+    height: 760px;
     margin: auto;
 }
 
@@ -77,7 +77,7 @@ body {
     position: absolute;
     width: 600px;
     left: 140px;
-    top: 20px;
+    top: 10px;
 }
 
 #nav-main {
@@ -197,7 +197,6 @@ body {
         margin-left: 40px;
         img {
             width: 100px;
-            // height: 100px;
             border: 1px solid $nav-views-border-color;
             -webkit-box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.75);
             -moz-box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.75);
@@ -496,38 +495,37 @@ body {
 .icon-nav-main {
     width: 74px;
     height: 74px;
-    background-position-x: -10px;
     &:hover{
         background-position-x: -94px;
     }
 }
 
 .icon-add-view {
-    background-position-y: -95px;
+    background-position: -10px -95px;
 }
 
 .icon-add-view-img {
-    background-position-y: -177px;
+    background-position: -10px -177px;
 }
 
 .icon-add-area {
-    background-position-y: -258px;
+    background-position: -10px -258px;
 }
 
 .icon-add-text {
-    background-position-y: -340px;
+    background-position: -10px -340px;
 }
 
 .icon-add-svg {
-    background-position-y: -421px;
+    background-position: -10px -421px;
 }
 
 .icon-add-img {
-    background-position-y: -503px;
+    background-position: -10px -503px;
 }
 
 .icon-reset {
-    background-position-y: -584px;
+    background-position: -10px -584px;
 }
 
 .icon-color {
@@ -540,7 +538,6 @@ body {
 .icon-area {
     width: 34px;
     height: 34px;
-    background-position-y: -10px;
     margin-right: 10px;
     &:hover {
         background-position-y: -51px;
@@ -548,57 +545,61 @@ body {
 }
 
 .icon-area-rectangle {
-    background-position-x: -10px;
+    background-position: -10px -10px;
 }
 
 .icon-area-ellipse {
-    background-position-x: -52px;
+    background-position: -52px -10px;
 }
 
 .icon-area-printable {
     width: 46px;
-    background-position-x: -95px;
+    background-position: -95px -10px;
 }
 
 .icon-area-no-printable {
     margin-right: 0;
     width: 48px;
-    background-position-x: -150px;
+    background-position: -150px -10px;
 }
 
 .icon-area-ok {
     margin: 0 0 0 10px;
-    background-position-x: -204px;
+    background-position: -204px -10px;
 }
 
 .icon-text {
     width: 40px;
     height: 34px;
-    background-position-y: -779px;
-    margin-right: 10px;
+    position: absolute;
+    display: inline-block;
     &:hover {
         background-position-y: -829px;
     }
 }
 
 .icon-text-bold {
-    margin-left: 15px;
-    background-position-x: -546px;
+    margin-left: 16px;
+    background-position: -546px -779px;
 }
 
 .icon-text-italic {
-    background-position-x: -595px;
+    margin-left: 71px;
+    background-position: -595px -779px;
 }
 
 .icon-text-l {
-    background-position-x: -644px;
+    margin-left: 128px;
+    background-position: -644px -779px;
 }
 
 .icon-text-m {
-    background-position-x: -693px;
+    margin-left: 185px;
+    background-position: -693px -779px;
 }
 
 .icon-text-r {
-    background-position-x: -742px;
+    margin-left: 243px;
+    background-position: -742px -779px;
     margin-right: 0;
 }
