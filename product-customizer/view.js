@@ -195,6 +195,7 @@ View.prototype.manageAuxMenu = function() {
         $('#aux-menu').hide();
 };
 
+
 View.prototype.manageToast = function() {
 
     var self = this;
