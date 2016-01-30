@@ -27,11 +27,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
     <script src="product-customizer/vendor/colorpicker/jquery.colorpicker.js"></script>
+    <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
     <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
     <script src="product-customizer/view.js" type="text/javascript"></script>
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
     <script type="text/javascript"> 
         $(document).ready(function(){
+            $.ajaxSetup({ cache: false });
             var idCustom;
             var idProd;
             <?php 
