@@ -513,7 +513,9 @@ ProductCustomizer.prototype.createNewCustomFromTemplate = function (idPro){
     $.ajax(self.apiUrl + 'put-custom&IDpro=' + idPro)
     .done(function(idCustomNew) {
         if (idCustomNew) {
-            window.location.href = 'product_custom.php?IDcus=' + idCustomNew + '&IDpro=' + idPro;
+            $('#wrapper-reset').hide();
+            self.idCustom = idCustomNew;
+            self.init();
         }
         else { self.showMsg('ERROR', 'Create new Custom: no new id custom retruned from API'); }
     })
