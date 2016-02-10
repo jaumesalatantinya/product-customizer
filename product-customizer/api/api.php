@@ -79,6 +79,10 @@ class Api {
                 $this->response = $this->apiRequests->getColor($this->idProcol);
                 $this->returnJSONResponse();
                 break;
+            case 'get-custom-user-id':
+                $this->response = $this->apiRequests->getCustomUserId($this->idProd);
+                $this->returnJSONResponse();
+                break;
 
 
             case 'put-custom':
