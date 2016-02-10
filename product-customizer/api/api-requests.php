@@ -70,7 +70,7 @@ class ApiRequests {
 
     public function getProduct($idProd) {
 
-        $q = 'SELECT ID_protip, Colorea FROM bd_productos WHERE IDpro =' . $idProd;
+        $q = 'SELECT * FROM bd_productos WHERE IDpro =' . $idProd;
         return $this->db->select($q);
     }
 
@@ -89,6 +89,12 @@ class ApiRequests {
     public function getColor($idProcol) {
 
         $q = 'SELECT Color FROM bd_productos_colores WHERE IDprocol =' . $idProcol;
+        return $this->db->select($q);
+    }
+
+    public function getCustomUserId($idProd) {
+
+        $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE ID_pro =' . $idProd . ' ORDER BY IDecocus DESC limit 1';
         return $this->db->select($q);
     }
 
@@ -120,6 +126,8 @@ class ApiRequests {
                 }
             }
         }
+        $qE = 'INSERT INTO bd_ecommerce_custom (ID_cus, ID_pro, ID_cli, ID_provar, Num_bask) VALUES (' . $idCustomNew . ', '. $idProd .', 1, 1, 1)';
+        $this->db->insert($qE);
         return $idCustomNew;
     }
     public function putView($idCus) {
