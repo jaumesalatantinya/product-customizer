@@ -15,13 +15,15 @@ class Api {
 
         $this->apiRequests = new ApiRequests();
         $this->request = $_GET['request'];
-        $this->idProd = $_GET['IDpro'];
+        $this->idPro = $_GET['IDpro'];
         $this->idCus = $_GET['IDcus'];
         $this->idVie = $_GET['IDvie'];
         $this->idCusele = $_GET['IDcusele'];
         $this->idSvg = $_GET['IDcussvg'];
         $this->idProtyp = $_GET['IDprotip'];
         $this->idProcol = $_GET['IDprocol'];
+        $this->idCart = $_GET['IDcart'];
+        $this->idProvar = $_GET['IDprovar'];
         $this->data = $_POST;
         $this->file = $_GET['file'];
         $this->zindex = $_GET['Zindex'];   
@@ -32,7 +34,7 @@ class Api {
 
         switch ($this->request) {
             case 'get-custom-template-id':
-                $this->response = $this->apiRequests->getTemplateId($this->idProd);
+                $this->response = $this->apiRequests->getTemplateId($this->idPro);
                 $this->returnJSONResponse();
                 break;
             case 'get-custom':
@@ -64,7 +66,7 @@ class Api {
                 $this->returnJSONResponse();
                 break;
             case 'get-product':
-                $this->response = $this->apiRequests->getProduct($this->idProd);
+                $this->response = $this->apiRequests->getProduct($this->idPro);
                 $this->returnJSONResponse();
                 break;
             case 'get-product-id':
@@ -80,13 +82,13 @@ class Api {
                 $this->returnJSONResponse();
                 break;
             case 'get-custom-user-id':
-                $this->response = $this->apiRequests->getCustomUserId($this->idProd);
+                $this->response = $this->apiRequests->getCustomUserId($this->idPro);
                 $this->returnJSONResponse();
                 break;
 
 
             case 'put-custom':
-                $this->response = $this->apiRequests->putCustom($this->idProd);
+                $this->response = $this->apiRequests->putCustom($this->idPro, $this->idCart, $this->idProvar);
                 $this->returnJSONResponse();
                 break;
             case 'put-view':
