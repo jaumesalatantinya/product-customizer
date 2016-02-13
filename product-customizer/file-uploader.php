@@ -10,8 +10,8 @@
 	$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
     $size = getimagesize($_FILES['file-to-upload']['tmp_name']);
-    if($type == 'view' && ($size == false || $size[0] != 600) ) {
-        $error = 'La imagen debe de ser 600 de ancho o está vacia';
+    if($type == 'view' && ($size == false || $size[0] >= 600) ) {
+        $error = 'La imagen debe de ser más grande o igual a 600 de ancho o está vacia';
         $uploadOk = 0;
     }
 
