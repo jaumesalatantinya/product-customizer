@@ -1,11 +1,12 @@
 <?php
-    //require_once('Connections/bd_start.php');
     require_once('../Connections/bd_SELLOS.php');
     require_once('product-customizer/api/api-requests.php');
     $apiRequests = new ApiRequests();
 
     $error = '';
     $idCustom = 0;
+    $idProvar = 0;
+    $idCart = 0;
     $idPro = $_GET['IDpro'];
     $env = $_GET['env'];
     $productName = $apiRequests->getProduct($idPro)[0]['Producto_esp'];
@@ -22,9 +23,16 @@
             }
         }
         if ($env == 'front') {
-            $idCustom = $apiRequests->getCustomUserId($idPro)[0]['ID_cus'];
-            if (is_null($idCustom)) {
-                $idCustom = $apiRequests->putCustom($idPro);
+            if (!isset($_GET['IDprovar']) || $_GET['IDprovar']=='') {
+                $error = 'Error IDprovar incorrecto';
+            }
+            else {
+                $idProvar = $_GET['IDprovar'];
+                $idCart = $_SESSION["NumCarrito"];
+                $idCustom = $apiRequests->getCustomUserId($idPro)[0]['ID_cus'];
+                if (is_null($idCustom)) {
+                    $idCustom = $apiRequests->putCustom($idPro, $idCart, $idProvar);
+                }
             }
         }
     }
@@ -35,7 +43,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Sellos y Rótulos</title>
-    <link href="styles/style.css" rel="stylesheet" type="text/css" />
+    <link href="../webmaster/styles/style.css" rel="stylesheet" type="text/css" />
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="product-customizer/vendor/colorpicker/jquery.colorpicker.css" rel="stylesheet" type="text/css" />
     <link href="product-customizer/styles.css" rel="stylesheet" type="text/css" />
@@ -51,6 +59,8 @@
         $(document).ready(function(){
             $.ajaxSetup({ cache: false });
             var idCustom = <?=$idCustom?>;
+            var idProvar = <?=$idProvar?>;
+            var idCart = <?=$idCart?>;
             var error = '<?=$error?>';
 
             var productCustomizer = new ProductCustomizer();
@@ -59,6 +69,8 @@
             }
             else {
                 productCustomizer.idCustom = idCustom;
+                productCustomizer.idProvar = idProvar;
+                productCustomizer.idCart = idCart;
                 productCustomizer.init();
             }
         });
@@ -68,7 +80,7 @@
 <body>
     <div id="product-customizer">
         <div class="col-1">
-            <img src="imagesWEB/logo.png" width="228" alt="Sellos y Rótulos" />
+            <img src="../webmaster/imagesWEB/logo.png" width="228" alt="Sellos y Rótulos" />
             <ul id="nav-main"></ul>
         </div>
         <div class="col-2">
