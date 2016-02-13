@@ -244,10 +244,8 @@ Area.prototype.changeSize = function (width, height) {
 
     var self = this;
     if (width != '' && height != '') {
-        width *= 10;
-        height *= 10;
-        console.log(width);
-        console.log(height);
+        width = (width *10) + 82;
+        height = (height *10) + 82;
         self.customE.css({
             'width' : width+'px',
             'height' : height+'px'
