@@ -5,6 +5,8 @@ var ProductCustomizer = function () {
 
     this.idCustom;
     this.idPro;
+    this.idProvar;
+    this.idCart;
     this.idProType;
     this.borderColor;
     this.colors = [];
@@ -40,7 +42,7 @@ ProductCustomizer.prototype.init = function () {
             });
         });
     }
-    else { self.showMsg('ERROR', 'No id customization to init'); }
+    else { self.showMsg('ERROR', 'No id customization to init'); }    
 };
 
 
@@ -225,28 +227,30 @@ ProductCustomizer.prototype.drawView = function (idView) {
 ProductCustomizer.prototype.drawNavViews = function () {
 
     var self = this;
-    self.showMsg('LOG', 'Drawing Navigation Views');
-    $('#nav-views').empty();
-    $('#nav-views').css({'right': (420 - (self.viewsData.length*60)) + 'px', 'top': (parseInt(self.height)+170) +'px'});
-    for (var i = 0; i < self.viewsData.length; i++) {
-        var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
-        var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );
-        var del = $('<a class="btn-fancy-close nav-views-close" style="display: inline;"></a>').data('idView', self.viewsData[i].IDcusvie);
-        var li = $('<li>');
-        if (self.viewsData[i].IDcusvie == self.currentViewId){
-            img.addClass('active');
+    if (self.viewsData.length > 1) {
+        self.showMsg('LOG', 'Drawing Navigation Views');
+        $('#nav-views').empty();
+        $('#nav-views').css({'right': (420 - (self.viewsData.length*60)) + 'px', 'top': (parseInt(self.height)+170) +'px'});
+        for (var i = 0; i < self.viewsData.length; i++) {
+            var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
+            var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );
+            var del = $('<a class="btn-fancy-close nav-views-close" style="display: inline;"></a>').data('idView', self.viewsData[i].IDcusvie);
+            var li = $('<li>');
+            if (self.viewsData[i].IDcusvie == self.currentViewId){
+                img.addClass('active');
+            }
+            a.click( function(){
+                self.drawAndUpdateProductCustomizer($(this).data('idView'));
+            });
+            del.click( function(){
+                self.delView($(this).data('idView'));
+            });
+            if (self.isTemplate == 'false')
+                del.hide();
+            a.append(img);
+            li.append(del, a)
+            $('#nav-views').append(li);
         }
-        a.click( function(){
-            self.drawAndUpdateProductCustomizer($(this).data('idView'));
-        });
-        del.click( function(){
-            self.delView($(this).data('idView'));
-        });
-        if (self.isTemplate == 'false')
-            del.hide();
-        a.append(img);
-        li.append(del, a)
-        $('#nav-views').append(li);
     }
 };
 
@@ -263,6 +267,7 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-add-img').click(      function () { self.showUploadForm('img');       });
         $('#btn-reset').click(        function () { self.showResetModal();            });
         $('#btn-color').click(        function () { self.showColorPicker();           });
+        $('#btn-add-to-cart').click(  function () { self.addToCart();                 });
         if (self.viewsData.length == 0)
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img, #btn-color').hide();
         if (self.isTemplate == 'true')
@@ -487,6 +492,15 @@ ProductCustomizer.prototype.showColorPicker = function () {
 };
 
 
+ProductCustomizer.prototype.addToCart = function () {
+
+    var self = this;
+    self.showMsg('LOG', 'Add to cart');
+    var addToCartUrl = 'ecommerce_add.php?IDpro='+self.idPro+'&IDprovar='+self.idProvar+'&unit=1&p=1';
+    window.location.href = addToCartUrl;
+};
+
+
 ProductCustomizer.prototype.changeColor = function (idColor) {
 
     var self = this;
@@ -510,7 +524,7 @@ ProductCustomizer.prototype.createNewCustomFromTemplate = function (idPro){
 
     var self = this;
     self.showMsg('LOG', 'Creating new customziation from template custom: ' + idPro);
-    $.ajax(self.apiUrl + 'put-custom&IDpro=' + idPro)
+    $.ajax(self.apiUrl + 'put-custom&IDpro=' + idPro + '&IDcart=' + self.idCart + '&IDprovar=' + self.idProvar)
     .done(function(idCustomNew) {
         if (idCustomNew) {
             $('#wrapper-reset').hide();
