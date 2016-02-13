@@ -32,13 +32,13 @@ gulp.task('ftp', ['cleanFtp'], function(cb) {
     var conn = ftp.create(ftpCred);
     var globs = wFiles;
     return gulp.src( globs, { base: '.', buffer: false } )
-        .pipe( conn.newerOrDifferentSize( '/html/webmaster/' ) ) 
-        .pipe( conn.dest( '/html/webmaster/' ) );
+        .pipe( conn.newerOrDifferentSize( '/html/beta/' ) ) 
+        .pipe( conn.dest( '/html/beta/' ) );
 });
 
 gulp.task('cleanFtp', function(cb) {
   var conn = ftp.create( ftpCred );
-  conn.delete( '/html/webmaster/product-customizer/styles.css', cb );
+  conn.delete( '/html/beta/product-customizer/styles.css', cb );
 });
 
 gulp.task('sass', function () {
