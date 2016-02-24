@@ -92,9 +92,9 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
-    public function getCustomUserId($idPro) {
+    public function getCustomUserId($idPro, $idCart, $idClient) {
 
-        $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE ID_pro =' . $idPro . ' ORDER BY IDecocus DESC limit 1';
+        $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE (ID_pro=' . $idPro . ' AND Num_bask="' . $idCart . '") OR (ID_pro=' . $idPro . ' AND ID_cli= '.$idClient.')';
         return $this->db->select($q);
     }
 
@@ -102,10 +102,8 @@ class ApiRequests {
 
 
 
-    public function putCustom($idPro, $idCart, $idProvar){
+    public function putCustom($idPro, $idCart, $idProvar, $idClient) {
 
-        $qE = 'DELETE FROM bd_ecommerce_custom WHERE Num_bask = ' . $idCart;
-        $this->db->delete($qE);
         $idCustomTemplate = $this->getTemplateId($idPro)[0]['IDcus'];
         $customTemplate = $this->getCustomization($idCustomTemplate)[0];
         $qC = 'INSERT INTO bd_custom (ID_pro, Is_Template, ID_procol, Height) VALUES (' . $idPro . ', "false", ' . json_encode($customTemplate['ID_procol']) .', '.$customTemplate['Height'].')';
@@ -128,10 +126,42 @@ class ApiRequests {
                 }
             }
         }
-        $qE = 'INSERT INTO bd_ecommerce_custom (ID_cus, ID_pro, ID_cli, ID_provar, Num_bask) VALUES (' . $idCustomNew . ', '. $idPro .', 0, ' .$idProvar. ', ' . $idCart .')';
+        $qE = 'DELETE FROM bd_ecommerce_custom WHERE Num_bask = "' . $idCart . '" AND ID_pro=' . $idPro;
+        $this->db->delete($qE);
+        $qE = 'INSERT INTO bd_ecommerce_custom (ID_cus, ID_pro, ID_cli, ID_provar, Num_bask) VALUES (' . $idCustomNew . ', '. $idPro .', '.$idClient.', ' .$idProvar. ', "' . $idCart .'")';
         $this->db->insert($qE);
         return $idCustomNew;
     }
+
+    public function duplicateTemplateCustom ($idPro, $idProNew) {
+
+        $idCustomTemplate = $this->getTemplateId($idPro)[0]['IDcus'];
+        $customTemplate = $this->getCustomization($idCustomTemplate)[0];
+        $qC = 'INSERT INTO bd_custom (ID_pro, Is_Template, ID_procol, Height) VALUES (' . $idProNew . ', "true", ' . json_encode($customTemplate['ID_procol']) .', '.$customTemplate['Height'].')';
+        $idCustomNew = $this->db->insert($qC);
+        $views = $this->getViews($idCustomTemplate);
+        foreach ($views as &$view) {
+            //$newFile = time().'.'.explode('.',$view['Image'])[1];
+            //copy($this->imgPath.$view['Image'], $this->imgPath.$newFile);
+            $qV = 'INSERT INTO bd_custom_views (ID_cus, Image) VALUES (' . $idCustomNew . ', "'. $view['Image'] .'")';
+            $idViewNew = $this->db->insert($qV);
+            $customElements = $this->getCustomElements($view['IDcusvie']);
+            foreach ($customElements as &$customElement) {
+                $qE = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, area_attr, text, text_attr, ID_cussvg, Img_file) ';
+                $qE .='VALUES ('.$idViewNew.', "'.$customElement['type'].'", '.$customElement['x'].', '.$customElement['y'].', '.$customElement['width'].', '.$customElement['height'].', '.$customElement['Zindex'].' , '.json_encode($customElement['area_attr']).', "'.$customElement['text'].'", '.json_encode($customElement['text_attr']).', '.json_encode($customElement['ID_cussvg']).', "'.$customElement['Img_file'].'" )';
+                $idCustomElementNew = $this->db->insert($qE);
+                if ($customElement['type'] == 'img'){
+                    $newFile = time().'.'.explode('.',$customElement['Img_file'])[1];
+                    if (copy($this->imgPath.$customElement['Img_file'], $this->imgPath.$newFile)) {
+                        $qI = 'UPDATE bd_custom_elements SET Img_file="' . $newFile .'" WHERE IDcusele=' . $idCustomElementNew;
+                        $this->db->update($qI);
+                    }
+                }
+            }
+        }
+        return $idCustomNew;
+    }
+
     public function putView($idCus) {
 
         $q = 'INSERT INTO bd_custom_views (ID_cus) VALUES (' . $idCus . ')';
@@ -140,8 +170,8 @@ class ApiRequests {
 
     public function putArea($idVie) {
 
-        $attr = json_encode('{"shape": "rectangle", "printable": "true"}');
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, area_attr) VALUES (' . $idVie . ' , "area", 200, 200, 200, 200, 0, ' . $attr . ')';
+        $attr = json_encode('{"shape": "rectangle", "printable": "true", "detectcol": "true", "visible": "true"}');
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, area_attr) VALUES (' . $idVie . ' , "area", -15, -15, 200, 200, 0, ' . $attr . ')';
         return $this->db->insert($q);
     }
 
@@ -247,7 +277,7 @@ class ApiRequests {
     public function delCustomElement($idCusele) {
 
         $imgFile = $this->db->select('SELECT Img_file FROM bd_custom_elements WHERE IDcusele=' . $idCusele)[0]['Img_file'];
-        unlink (realpath($this->imgPath . $imgFile));
+        //unlink (realpath($this->imgPath . $imgFile));
         $q = 'DELETE FROM bd_custom_elements WHERE IDcusele=' . $idCusele;
         return $this->db->delete($q);
     }

@@ -24,6 +24,7 @@ class Api {
         $this->idProcol = $_GET['IDprocol'];
         $this->idCart = $_GET['IDcart'];
         $this->idProvar = $_GET['IDprovar'];
+        $this->idClient = $_GET['IDCli'];
         $this->data = $_POST;
         $this->file = $_GET['file'];
         $this->zindex = $_GET['Zindex'];   
@@ -82,13 +83,13 @@ class Api {
                 $this->returnJSONResponse();
                 break;
             case 'get-custom-user-id':
-                $this->response = $this->apiRequests->getCustomUserId($this->idPro);
+                $this->response = $this->apiRequests->getCustomUserId($this->idPro, $this->$idCart);
                 $this->returnJSONResponse();
                 break;
 
 
             case 'put-custom':
-                $this->response = $this->apiRequests->putCustom($this->idPro, $this->idCart, $this->idProvar);
+                $this->response = $this->apiRequests->putCustom($this->idPro, $this->idCart, $this->idProvar, $this->idClient);
                 $this->returnJSONResponse();
                 break;
             case 'put-view':

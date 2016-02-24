@@ -10,7 +10,7 @@
         $pdf = $client->setPageHeight($pageHeight);
         $pdf = $client->setPageMargins(0, 0, 0, 0);
         $pdf = $client->setMaxPages($numPages);
-        $pdf = $client->convertURI('http://www.sellosyrotulos.com/webmaster/product_custom_render_custom.php?IDcus='.$_GET['IDcus'].'&type='.$_GET['type']);
+        $pdf = $client->convertURI('http://www.sellosyrotulos.com/beta/product_custom_render_custom.php?IDcus='.$_GET['IDcus'].'&type='.$_GET['type']);
 
         header('Content-Type: application/pdf');
         header('Cache-Control: no-cache');

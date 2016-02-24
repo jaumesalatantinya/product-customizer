@@ -4,6 +4,7 @@ $light-gray: #e1e1e1;
 $light-light-gray: #f5f5f5;
 $dark-gray: #4D4D4D;
 $red: #f52350;
+$red-hover: #dc224a;
 $wrapper-view-background-color: #E6E6E6;
 $area-border-color: $dark-gray;
 $border-color-edit: black;
@@ -14,9 +15,11 @@ $toast-color: white;
 $toast-background-color: red;
 $icons-img: url("product-customizer-icons.png");
 $primary-font: "Roboto Slab";
+$secondary-font: "Open Sans";
 
 body {
     background-image: none;
+    background-color: $white;
 }
 
 #product-customizer {
@@ -69,7 +72,7 @@ body {
     position: relative;
     background-color: $wrapper-view-background-color;
     width: 840px;
-    height: 760px;
+    height: 800px;
     margin: auto;
 }
 
@@ -113,7 +116,7 @@ body {
         font-size: 18px;
         font-family: $primary-font;
         &:hover {
-            color: black;
+            background-color: $red-hover;
             cursor: pointer;
         }
     }
@@ -231,6 +234,12 @@ body {
     margin-top: -28px;
 }
 
+.edit-text-close {
+    margin-left: 400px;
+    margin-top: -50px;
+}
+
+
 /* IE11 IE10 */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
     .nav-views-close                      { margin-left: 45px;  }
@@ -252,12 +261,12 @@ body {
     position: absolute;
 }
 
-.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element, .btn-to-submit-text {
+.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element, .btn-edit-text {
     display: none;
     position: absolute;
     background: $icons-img  no-repeat;
-    width: 40px;
-    height: 40px;
+    width: 15px;
+    height: 15px;
 }
 
 .btn-move-custom-element {
@@ -284,15 +293,14 @@ body {
 .ui-resizable-se {
     background: $icons-img  no-repeat;
     background-position: -160px -673px;
-    width: 40px;
-    height: 40px;
+    width: 15px;
+    height: 15px;
 }
 
-.btn-to-submit-text {
+.btn-edit-text {
     bottom: 0;
     width: 25%;
     left: 38%;
-    height: 38px;
     border: 1px solid black;
     font-size: 16px;
     cursor: pointer;
@@ -302,10 +310,6 @@ body {
     background-color: white;
     &:hover{
         background-color: $red;
-    }
-    span {
-        display: block;
-        margin-top: 10px;
     }
 }
 
@@ -329,11 +333,8 @@ body {
     background-color: $area-no-printable-background-color;
 }
 
-.text {
-    border: 1px dotted transparent;
-    background-color: transparent;
-    resize: none;
-    overflow:hidden;
+.area-no-visible {
+    border: 1px dashed;
 }
 
 .cp-alt-target {
@@ -349,7 +350,11 @@ body {
     margin: 0px 0px 0px 10px;
 }
 
-.img, .svg {
+.text {
+    overflow: hidden;
+}
+
+.text, .img, .svg {
     border: 1px dotted transparent;
     cursor: move;
 }
@@ -436,9 +441,16 @@ body {
             color: black;
             font-size: 16px;
         }
+        p {
+            display: block;
+            margin-top: 10px;
+        }
         .gray-bck {
             background-color: #f5f5f5;
             padding: 20px 0;
+        }
+        .wrapper-inp-file {
+            width: 100%;
         }
         .inp-file {
             width: 80%;
@@ -460,6 +472,8 @@ body {
             padding: 10px;
             img.loading {
                 display: none;
+                margin: auto;
+                margin-top: 10px;
             }
         }
     }
@@ -475,6 +489,8 @@ body {
         form {
             img.loading {
                 display: none;
+                margin: auto;
+                margin-top: 10px;
             }
         }
     }
@@ -496,6 +512,36 @@ body {
         img {
             width: 60px;
             height: 60px;
+        }
+    }
+}
+
+#wrapper-edit-text {
+    .modal {
+        width: 400px;
+        margin: 300px auto;
+        background-color: #fff;
+        padding: 15px;
+        text-align: center;
+        textarea {
+            font-size: 16px;
+            color: black;
+            width: 100%;
+            height: 200px;
+            border: 1px solid #000;
+            margin: 15px 0 15px 0;
+        }
+        button {
+            margin-top: 15px;
+            width: 120px;
+            border-radius: 5px;
+            background-color: #5e5e5e;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            &:hover {
+                background-color: $red;
+            }
         }
     }
 }
@@ -554,28 +600,68 @@ body {
     width: 34px;
     height: 34px;
     margin-right: 10px;
-    &:hover {
-        background-position-y: -51px;
-    }
 }
 
 .icon-area-rectangle {
     background-position: -10px -10px;
+    &.active {
+        background-position: -10px -51px;
+    }
 }
 
 .icon-area-ellipse {
     background-position: -52px -10px;
+    &.active {
+        background-position: -52px -51px;
+    }
 }
 
 .icon-area-printable {
     width: 46px;
     background-position: -95px -10px;
+    &.active {
+        background-position: -95px -51px;
+    }
 }
 
 .icon-area-no-printable {
-    margin-right: 0;
     width: 48px;
     background-position: -150px -10px;
+    &.active {
+        background-position: -150px -51px;
+    }
+}
+
+.icon-area-detect-col {
+    width: 48px;
+    background-position: -253px -10px;
+    &.active {
+        background-position: -253px -51px;
+    }
+}
+
+.icon-area-no-detect-col {
+    width: 48px;
+    background-position: -304px -10px;
+    &.active {
+        background-position: -304px -51px;
+    }
+}
+
+.icon-area-visible {
+    width: 48px;
+    background-position: -354px -10px;
+    &.active {
+        background-position: -354px -51px;
+    }
+}
+
+.icon-area-no-visible {
+    width: 48px;
+    background-position: -404px -10px;
+    &.active {
+        background-position: -404px -51px;
+    }
 }
 
 .icon-area-ok {
@@ -588,33 +674,55 @@ body {
     height: 34px;
     position: absolute;
     display: inline-block;
-    &:hover {
-        background-position-y: -829px;
-    }
 }
 
 .icon-text-bold {
     margin-left: 16px;
     background-position: -546px -779px;
+    &.active{
+        background-position: -546px -829px;
+    }
 }
 
 .icon-text-italic {
     margin-left: 71px;
     background-position: -595px -779px;
+    &.active{
+        background-position: -595px -829px;
+    }
 }
 
 .icon-text-l {
     margin-left: 128px;
     background-position: -644px -779px;
+    &.active{
+        background-position: -644px -829px;
+    }
 }
 
-.icon-text-m {
+.icon-text-c {
     margin-left: 185px;
     background-position: -693px -779px;
+    &.active{
+        background-position: -693px -829px;
+    }
 }
 
 .icon-text-r {
     margin-left: 243px;
     background-position: -742px -779px;
     margin-right: 0;
+    &.active{
+        background-position: -742px -829px;
+    }
+}
+
+.ui-selectmenu-menu .ui-menu {
+    height: 600px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

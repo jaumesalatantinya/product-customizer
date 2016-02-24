@@ -8,6 +8,7 @@ var ProductCustomizer = function () {
     this.idProvar;
     this.idCart;
     this.idProType;
+    this.idClient;
     this.borderColor;
     this.colors = [];
     this.idColor;
@@ -22,7 +23,7 @@ var ProductCustomizer = function () {
     this.svgUrl = 'http://www.sellosyrotulos.com/img/customSVG/';
     this.fonts = [];
     this.svgs = [];
-    this.mode = 'dev'; //[pro|dev]
+    this.mode = 'pro'; //[pro|dev]
 };
 
 
@@ -103,11 +104,11 @@ ProductCustomizer.prototype.setBorderColor = function (borderColor) {
     var self = this;
     self.showMsg('LOG', 'Set border color ');
     if (borderColor) {
-        $("head").append('<style type="text/css"></style>');
-        var new_stylesheet = $("head").children(':last');
+        $('head').append('<style type="text/css"></style>');
+        var newStylesheet = $('head').children(':last');
         var style = '.custom-element-edit{border-color:' + borderColor + ' !important;}';
         style += '.area{border-color:' + borderColor + '}';
-        new_stylesheet.html(style);
+        newStylesheet.html(style);
     }
     else {
         self.showMsg('ERROR', 'Setting border color no border color passed');
@@ -179,14 +180,14 @@ ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     self.getviewsData(self.idCustom)
         .done(function(){
             if (self.viewsData && self.viewsData.length > 0 ) {
-                self.currentViewId = (idView == 'default') ? self.viewsData[0].IDcusvie : idView;
+                self.currentViewId = (idView === 'default') ? self.viewsData[0].IDcusvie : idView;
                 self.drawView(self.currentViewId);
             }
             else { self.showMsg('INFO', 'Por favor añade una vista'); }
             self.drawNavViews();
             self.drawNavMain();
-        })
-}
+        });
+};
 
 
 ProductCustomizer.prototype.getviewsData = function (idCustom) {
@@ -209,7 +210,7 @@ ProductCustomizer.prototype.getviewsData = function (idCustom) {
         self.showMsg('ERROR', 'Get Views no idCustom');
         return $.Deferred().reject();
     }
-}
+};
 
 
 ProductCustomizer.prototype.drawView = function (idView) {
@@ -221,22 +222,22 @@ ProductCustomizer.prototype.drawView = function (idView) {
         self.view.init(self, idView);
     }
     else { self.showMsg('ERROR', 'Draw View: No idView passed as param'); }
-}
+};
 
 
 ProductCustomizer.prototype.drawNavViews = function () {
 
     var self = this;
+    $('#nav-views').empty();
     if (self.viewsData.length > 1) {
         self.showMsg('LOG', 'Drawing Navigation Views');
-        $('#nav-views').empty();
-        $('#nav-views').css({'right': (420 - (self.viewsData.length*60)) + 'px', 'top': (parseInt(self.height)+170) +'px'});
+        $('#nav-views').css({'right': (420 - (self.viewsData.length*60)) + 'px', 'top': (parseInt(self.height)+210) +'px'});
         for (var i = 0; i < self.viewsData.length; i++) {
             var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
             var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );
             var del = $('<a class="btn-fancy-close nav-views-close" style="display: inline;"></a>').data('idView', self.viewsData[i].IDcusvie);
             var li = $('<li>');
-            if (self.viewsData[i].IDcusvie == self.currentViewId){
+            if (self.viewsData[i].IDcusvie === self.currentViewId){
                 img.addClass('active');
             }
             a.click( function(){
@@ -245,10 +246,11 @@ ProductCustomizer.prototype.drawNavViews = function () {
             del.click( function(){
                 self.delView($(this).data('idView'));
             });
-            if (self.isTemplate == 'false')
+            if (self.isTemplate === 'false'){
                 del.hide();
+            }
             a.append(img);
-            li.append(del, a)
+            li.append(del, a);
             $('#nav-views').append(li);
         }
     }
@@ -268,16 +270,21 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-reset').click(        function () { self.showResetModal();            });
         $('#btn-color').click(        function () { self.showColorPicker();           });
         $('#btn-add-to-cart').click(  function () { self.addToCart();                 });
-        if (self.viewsData.length == 0)
+        if (self.viewsData.length === 0) {
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img, #btn-color').hide();
-        if (self.isTemplate == 'true')
-            $('#btn-reset, #btn-save').hide();
-        if (self.isTemplate == 'false')
+        }
+        if (self.isTemplate === 'true') {
+            $('#btn-reset, #btn-add-to-cart').hide();
+        }
+        if (self.isTemplate === 'false') {
             $('#btn-add-view, #btn-add-view-img, #btn-add-area').hide();
-        if (self.isMulticolor())
+        }
+        if (self.isMulticolor()) {
             $('#btn-color').hide();
-        else 
+        }
+        else {
             $('#btn-color .icon-color').css('background-color', self.getColor(self.idColor));
+        }
     });
 };
 
@@ -401,6 +408,7 @@ ProductCustomizer.prototype.showUploadForm = function (type) {
         $('#wrapper-upload-form .modal form #btn-submit').click( function(event) {
             event.preventDefault();
             $('#wrapper-upload-form .modal form img.loading').show();
+            $('#wrapper-upload-form .modal form #btn-submit').hide();
             self.uploadFile(type);
         });
     });
@@ -421,12 +429,15 @@ ProductCustomizer.prototype.uploadFile = function (type){
         type: 'POST',
         success: function(response){
             $('#wrapper-upload-form .modal form img.loading').hide();
-            if (response.status == 'success'){
+            $('#wrapper-upload-form .modal form #btn-submit').show();
+            if (response.status === 'success') {
                 $('#wrapper-upload-form').hide();
-                if (type == 'view')
+                if (type === 'view') {
                     self.putImgToView(response.file, response.height);
-                if (type == 'img')
+                }
+                if (type === 'img') {
                     self.addImg(self.currentViewId, response.file);
+                }
             }
             else{
                 self.showMsg('ERROR', response.error);
@@ -445,7 +456,7 @@ ProductCustomizer.prototype.showResetModal = function () {
         $('#wrapper-reset .btn-close, #wrapper-reset .btn-cancel').click( function() {
             self.close('reset');
         });
-        $('#wrapper-reset .btn-ok').click( function(event) {
+        $('#wrapper-reset .btn-ok').click( function() {
             $.ajax(self.apiUrl + 'del-custom&IDcus=' + self.idCustom)
             .done(function(response) {
                 if (response) {
@@ -467,7 +478,7 @@ ProductCustomizer.prototype.getColor = function (idColor) {
     var color;
     self.showMsg('LOG', 'Get Color');
     for (var i = 0; i < self.colors.length; i++) {
-        if (idColor == self.colors[i].IDprocol) {
+        if (idColor === self.colors[i].IDprocol) {
             color = self.colors[i].Color; 
             break;
         }
@@ -496,8 +507,8 @@ ProductCustomizer.prototype.addToCart = function () {
 
     var self = this;
     self.showMsg('LOG', 'Add to cart');
-    var addToCartUrl = 'ecommerce_add.php?IDpro='+self.idPro+'&IDprovar='+self.idProvar+'&unit=1&p=1';
-    window.location.href = addToCartUrl;
+    var addToCartUrl = 'ecommerce_add.php?IDpro='+self.idPro+'&IDprovar='+self.idProvar+'&unit=1';
+    parent.window.location.href = addToCartUrl;
 };
 
 
@@ -524,7 +535,7 @@ ProductCustomizer.prototype.createNewCustomFromTemplate = function (idPro){
 
     var self = this;
     self.showMsg('LOG', 'Creating new customziation from template custom: ' + idPro);
-    $.ajax(self.apiUrl + 'put-custom&IDpro=' + idPro + '&IDcart=' + self.idCart + '&IDprovar=' + self.idProvar)
+    $.ajax(self.apiUrl + 'put-custom&IDpro=' + idPro + '&IDcart=' + self.idCart + '&IDprovar=' + self.idProvar +'&IDCli=' + self.idClient)
     .done(function(idCustomNew) {
         if (idCustomNew) {
             $('#wrapper-reset').hide();
@@ -564,16 +575,16 @@ ProductCustomizer.prototype.updateHeight = function (height) {
         type: 'POST',
         url: self.apiUrl + 'update-height&IDcus=' + self.idCustom,
         data: {height: height}
-    })
-    .done(function(response) {
-        if (response) {
-            self.drawAndUpdateProductCustomizer(self.currentViewId);
-        }
-        else { self.showMsg('ERROR', 'Update Height: no response'); }
-    })
-    .fail(function() {
-        self.showMsg('ERROR', 'API Update Height');
     });
+    // .done(function(response) {
+    //     if (response) {
+    //         self.drawAndUpdateProductCustomizer(self.currentViewId);
+    //     }
+    //     else { self.showMsg('ERROR', 'Update Height: no response'); }
+    // })
+    // .fail(function() {
+    //     self.showMsg('ERROR', 'API Update Height');
+    // });
 };
 
 
@@ -602,10 +613,12 @@ ProductCustomizer.prototype.showSvgPicker = function () {
 ProductCustomizer.prototype.showMsg = function(type, msg) {
 
     var self = this;
-    if (self.mode == 'dev')
+    if (self.mode === 'dev') {
         console.log(type + ' -> ' + msg);
-    if (type != 'LOG')
+    }
+    if (type !== 'LOG') {
         self.showMsgModal(type, msg);
+    }
 };
 
 
@@ -631,8 +644,10 @@ ProductCustomizer.prototype.close = function(element) {
 ProductCustomizer.prototype.isMulticolor = function () {
 
     var self = this;
-    if ( $.inArray(self.idProType, ['1', '4', '5', '6']) != -1 )
+    if ( $.inArray(self.idProType, ['1', '4', '5', '6']) !== -1 ) {
         return true;
-    else
+    }
+    else {
         return false;
+    }
 };

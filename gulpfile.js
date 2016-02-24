@@ -6,8 +6,10 @@ var browserSync = require('browser-sync');
 var ftp = require('vinyl-ftp');
 var Server = require('karma').Server;
 var sass = require('gulp-sass');
+var jshint = require('gulp-jshint');
 
 var wFiles = ['./**/*.php', './product-customizer/**/*.html', './product-customizer/**/*.css', './product-customizer/**/*.js', './product-customizer/**/*.png'];
+var jsFiles = ['./product-customizer/product-customizer.js', './product-customizer/view.js' , './product-customizer/custom-elements.js'];
 var ftpCred = {
     host:     'www.sellosyrotulos.com',
     user:     'sellosyrotulos.com',
@@ -48,6 +50,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('watch', function() {
+    gulp.watch(jsFiles, ['jshint']);
     gulp.watch(wFiles, ['ftp', 'rbs']);
     gulp.watch('./product-customizer/styles.scss', ['sass', 'ftp', 'rbs']);
 });
@@ -58,4 +61,10 @@ gulp.task('tdd', function(done) {
     // }, done).start();
 });
 
-gulp.task('default', ['watch', 'serve', 'tdd', 'sass']);
+gulp.task('jshint', function() {
+    return gulp.src(jsFiles)
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('default', ['watch', 'serve', 'tdd', 'sass', 'jshint']);

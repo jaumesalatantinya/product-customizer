@@ -9,6 +9,7 @@
     $idCart = 0;
     $idPro = $_GET['IDpro'];
     $env = $_GET['env'];
+    $idClient = ( isset($row_RecordsetUser['IDcli']) ? $row_RecordsetUser['IDcli'] : 0);
     $productName = $apiRequests->getProduct($idPro)[0]['Producto_esp'];
     if (!isset($_GET['env']) || $_GET['env']=='' || !isset($_GET['IDpro']) || $_GET['IDpro']=='' || is_null($productName)) {
         $error = 'Error Env o IDpro incorrectos';
@@ -29,9 +30,9 @@
             else {
                 $idProvar = $_GET['IDprovar'];
                 $idCart = $_SESSION["NumCarrito"];
-                $idCustom = $apiRequests->getCustomUserId($idPro)[0]['ID_cus'];
+                $idCustom = $apiRequests->getCustomUserId($idPro, $idCart, $idClient)[0]['ID_cus'];
                 if (is_null($idCustom)) {
-                    $idCustom = $apiRequests->putCustom($idPro, $idCart, $idProvar);
+                    $idCustom = $apiRequests->putCustom($idPro, $idCart, $idProvar, $idClient);
                 }
             }
         }
@@ -43,10 +44,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Sellos y Rótulos</title>
-    <link href="../webmaster/styles/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="product-customizer/vendor/colorpicker/jquery.colorpicker.css" rel="stylesheet" type="text/css" />
     <link href="product-customizer/styles.css" rel="stylesheet" type="text/css" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
@@ -60,8 +63,9 @@
             $.ajaxSetup({ cache: false });
             var idCustom = <?=$idCustom?>;
             var idProvar = <?=$idProvar?>;
-            var idCart = <?=$idCart?>;
+            var idCart = '<?=$idCart?>';
             var error = '<?=$error?>';
+            var idClient = <?=$idClient?>;
 
             var productCustomizer = new ProductCustomizer();
             if (error != '' || idCustom == 0) {
@@ -71,6 +75,7 @@
                 productCustomizer.idCustom = idCustom;
                 productCustomizer.idProvar = idProvar;
                 productCustomizer.idCart = idCart;
+                productCustomizer.idClient = idClient;
                 productCustomizer.init();
             }
         });
@@ -93,6 +98,7 @@
             <div id="wrapper-upload-form"></div>
             <div id="wrapper-svg-picker"></div>
             <div id="wrapper-reset"></div>
+            <div id="wrapper-edit-text"></div>
         </div>
         <div class="clear"></div>
     </div>
