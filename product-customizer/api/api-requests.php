@@ -98,6 +98,12 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
+    public function getImgVar($idPro, $idProvar){
+
+        $q = 'SELECT Imagen_var FROM bd_productos_variantes WHERE ID_pro = '.$idPro.' and IDprovar = '.$idProvar.' LIMIT 1';
+        return $this->db->select($q);
+    }
+
 
 
 
