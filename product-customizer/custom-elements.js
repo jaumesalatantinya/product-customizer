@@ -388,7 +388,7 @@ function Text(view, id) {
                         <div class="btn-move-custom-element"></div>\
                         <div class="btn-del-custom-element"></div>\
                         <div class="btn-to-front-custom-element"></div>\
-                        <div class="btn-edit-text"><span>e</span></div>\
+                        <div class="btn-edit-text"><span>EDITAR</span></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 }
