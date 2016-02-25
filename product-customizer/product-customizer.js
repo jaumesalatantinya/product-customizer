@@ -23,7 +23,7 @@ var ProductCustomizer = function () {
     this.svgUrl = 'http://www.sellosyrotulos.com/img/customSVG/';
     this.fonts = [];
     this.svgs = [];
-    this.mode = 'pro'; //[pro|dev]
+    this.mode = 'dev'; //[pro|dev]
 };
 
 
@@ -231,7 +231,6 @@ ProductCustomizer.prototype.drawNavViews = function () {
     $('#nav-views').empty();
     if (self.viewsData.length > 1) {
         self.showMsg('LOG', 'Drawing Navigation Views');
-        $('#nav-views').css({'right': (420 - (self.viewsData.length*60)) + 'px', 'top': (parseInt(self.height)+210) +'px'});
         for (var i = 0; i < self.viewsData.length; i++) {
             var a = $('<a>').data('idView', self.viewsData[i].IDcusvie);
             var img = $('<img />', { 'src': self.imgUrl+self.viewsData[i].Image} );
