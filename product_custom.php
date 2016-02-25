@@ -30,6 +30,7 @@
             else {
                 $idProvar = $_GET['IDprovar'];
                 $idCart = $_SESSION["NumCarrito"];
+                $imgVar = $apiRequests->getImgVar($idPro, $idProvar)[0]['Imagen_var'];
                 $idCustom = $apiRequests->getCustomUserId($idPro, $idCart, $idClient)[0]['ID_cus'];
                 if (is_null($idCustom)) {
                     $idCustom = $apiRequests->putCustom($idPro, $idCart, $idProvar, $idClient);
@@ -85,15 +86,26 @@
 <body>
     <div id="product-customizer">
         <div class="col-1">
-            <img src="../webmaster/imagesWEB/logo.png" width="228" alt="Sellos y Rótulos" />
+            <?php if(isset($imgVar) && $imgVar!='') { ?>
+                <img src="../js/timthumb.php?src=/../img/variant/max-<?=$imgVar?>&w=200&h=100&zc=1"/></li>
+            <?php } else { ?>
+                <img src="../js/timthumb.php?src=img/no-foto.png&w=200&h=100&zc=1" />
+            <?php } ?>
             <ul id="nav-main"></ul>
         </div>
         <div class="col-2">
             <h1><?=$productName?></h1>
             <div id="wrapper-aux-menu"><div id="aux-menu"></div></div>
             <div id="toast"></div>
-            <div id="wrapper-view"><div id="view"></div></div>
-            <ul id="nav-views"></ul>
+            <div id="wrapper-view">
+                <div id="view-col-1">
+                    <div id="view"></div>
+                </div>
+                <div id="view-col-2">
+                    <button id="btn-add-to-cart" type="button">Añadir a la cesta</button>
+                    <ul id="nav-views"></ul>
+                </div>
+            </div>
             <div id="wrapper-msg-modal"></div>
             <div id="wrapper-upload-form"></div>
             <div id="wrapper-svg-picker"></div>
