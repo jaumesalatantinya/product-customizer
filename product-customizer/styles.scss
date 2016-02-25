@@ -314,13 +314,10 @@ body {
     background-image: none;
     text-align: center;
     color: black;
-    background-color: white;
-    &:hover {
-        background-color: $red;
-    }
+    background-color: green;
     span {
         font-size: 11px;
-        background-color: #FFFFFF;
+        color: white;
     }
 }
 
@@ -535,6 +532,7 @@ body {
         padding: 15px;
         text-align: center;
         textarea {
+            font-family: $secondary-font;
             font-size: 16px;
             color: black;
             width: 100%;
