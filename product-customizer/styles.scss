@@ -16,6 +16,7 @@ $toast-background-color: red;
 $icons-img: url("product-customizer-icons.png");
 $primary-font: "Roboto Slab";
 $secondary-font: "Open Sans";
+$green: #7de2b1;
 
 body {
     background-image: none;
@@ -27,21 +28,20 @@ body {
     margin: 0px auto;
     .col-1 {
         float: left;
-        width: 288px;
+        width: 260px;
         padding: 0 0 0 15px;
         margin: 0;
     }
     .col-2 {
         float: left;
         border-left: 1px solid $light-gray;
-        width: 846px;
+        width: 870px;
         padding: 0 10px;
         h1 {
             display: block;
-            text-align: center;
             color: black;
             border-bottom: 1px solid $light-gray;
-            padding: 16px 0;
+            padding: 14px 0px 14px 21px;
             font-size: 22px;
             font-family: $primary-font;
         }
@@ -71,22 +71,63 @@ body {
 #wrapper-view {
     position: relative;
     background-color: $wrapper-view-background-color;
-    width: 840px;
-    height: 800px;
+    width: 860px;
+    height: 700px;
     margin: auto;
+    #view-col-1 {
+        #view {
+            position: absolute;
+            width: 600px;
+            left: 20px;
+            top: 50px;
+        }
+    }
+    #view-col-2 {
+        float: right;
+        width: 200px;
+        margin-right: 15px;
+        #btn-add-to-cart {
+            width: 100%;
+            margin-top: 50px;
+            border-radius: 10px;
+            color: white;
+            background-color: $red;
+            padding: 20px 20px;
+            font-size: 16px;
+            font-family: $primary-font;
+            &:hover {
+                background-color: $red-hover;
+                cursor: pointer;
+            }
+        }
+        #nav-views {
+            list-style-type: none;
+            text-align: center;
+            margin-top: 50px;
+            li {
+                margin-top: 25px;
+                img {
+                    width: 100px;
+                    max-height: 100px;
+                    border: 1px solid $nav-views-border-color;
+                    -webkit-box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.75);
+                    box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.75);
+                    &:hover, &.active {
+                        border: 1px solid $red;
+                    }
+                }
+            }
+        }
+    }
 }
 
-#view {
-    position: absolute;
-    width: 600px;
-    left: 140px;
-    top: 75px;
-}
+
 
 #nav-main {
     position: absolute;
     list-style-type: none;
-    width: 270px;
+    width: 215px;
     margin-top: 50px;
     padding-left: 0;
     li {
@@ -101,23 +142,9 @@ body {
         .nav-main-item-label {
             display: inline-block;
             margin: -64px 0 0 20px;
-            font-size: 20px;
+            font-size: 16px;
             vertical-align: middle;
             font-family: $primary-font;
-        }
-    }
-    #btn-add-to-cart {
-        width: 100%;
-        margin-top: 110px;
-        border-radius: 10px;
-        color: white;
-        background-color: $red;
-        padding: 20px 20px;
-        font-size: 18px;
-        font-family: $primary-font;
-        &:hover {
-            background-color: $red-hover;
-            cursor: pointer;
         }
     }
     #nav-main-colors {
@@ -161,7 +188,7 @@ body {
         width: 50px;
         margin: 0;
         padding: 0 15px;
-        margin-left: 15px;
+        margin-left: 5px;
         border-radius: 5px;
         vertical-align: top;
     }
@@ -189,26 +216,6 @@ body {
     }
     .cp-alt {
         padding: 0px 10px 0 40px;
-    }
-}
-
-#nav-views {
-    position: absolute;
-    list-style-type: none;navpadding: 0;
-    li {
-        display: inline;
-        margin-left: 40px;
-        img {
-            width: 100px;
-            max-height: 100px;
-            border: 1px solid $nav-views-border-color;
-            -webkit-box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.75);
-            -moz-box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.75);
-            box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.75);
-            &:hover, &.active {
-                border: 1px solid $red;
-            }
-        }
     }
 }
 
@@ -308,8 +315,12 @@ body {
     text-align: center;
     color: black;
     background-color: white;
-    &:hover{
+    &:hover {
         background-color: $red;
+    }
+    span {
+        font-size: 11px;
+        background-color: #FFFFFF;
     }
 }
 
@@ -599,7 +610,7 @@ body {
 .icon-area {
     width: 34px;
     height: 34px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .icon-area-rectangle {
@@ -611,6 +622,7 @@ body {
 
 .icon-area-ellipse {
     background-position: -52px -10px;
+    margin-right: 25px;
     &.active {
         background-position: -52px -51px;
     }
@@ -627,6 +639,7 @@ body {
 .icon-area-no-printable {
     width: 48px;
     background-position: -150px -10px;
+    margin-right: 25px;
     &.active {
         background-position: -150px -51px;
     }
@@ -635,6 +648,7 @@ body {
 .icon-area-detect-col {
     width: 48px;
     background-position: -253px -10px;
+    margin-right: 0;
     &.active {
         background-position: -253px -51px;
     }
@@ -643,6 +657,7 @@ body {
 .icon-area-no-detect-col {
     width: 48px;
     background-position: -304px -10px;
+    margin-right: 10px;
     &.active {
         background-position: -304px -51px;
     }
@@ -651,6 +666,7 @@ body {
 .icon-area-visible {
     width: 48px;
     background-position: -354px -10px;
+    margin-right: 0;
     &.active {
         background-position: -354px -51px;
     }
@@ -659,6 +675,7 @@ body {
 .icon-area-no-visible {
     width: 48px;
     background-position: -404px -10px;
+    margin-right: 20px;
     &.active {
         background-position: -404px -51px;
     }
