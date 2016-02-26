@@ -104,6 +104,7 @@ CustomElement.prototype.bindings = function () {
                 'width' : ($(this).width() - 32)+'px',
                 'height' : ($(this).height() - 32)+'px',
             });
+            self.updateEditText();
         },
         stop: function() {
             var newPosSizeData = {
@@ -127,6 +128,14 @@ CustomElement.prototype.bindings = function () {
         self.customE.find('.custom-element').unbind('click');
         self.customE.draggable('disable');
     }
+};
+
+CustomElement.prototype.updateEditText = function () {
+
+    var self = this;
+    if (self.customE.width() > 300){ self.customE.find('.btn-edit-text span').html('EDITAR'); }
+    if (self.customE.width() < 200){ self.customE.find('.btn-edit-text span').html('EDIT');   }
+    if (self.customE.width() < 150){ self.customE.find('.btn-edit-text span').html('E');      }
 };
 
 CustomElement.prototype.editCustomElement = function () {
@@ -420,6 +429,7 @@ Text.prototype.draw = function(){
     if (!self.pView.pPCustom.isMulticolor()) {
         self.customE.find('.text').css('color', self.pView.pPCustom.getColor(self.pView.pPCustom.idColor));
     }
+    self.updateEditText();
 };
 
 Text.prototype.bindings = function () {
