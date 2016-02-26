@@ -134,7 +134,7 @@ View.prototype.updateViewAndCustomElements = function() {
     self.manageCollisions();
     self.drawCustomElements();
     self.manageAuxMenu();
-    self.manageToast();
+    self.manageToastAndBtnAddToCart();
 };
 
 
@@ -235,18 +235,20 @@ View.prototype.manageAuxMenu = function() {
 };
 
 
-View.prototype.manageToast = function() {
+View.prototype.manageToastAndBtnAddToCart = function() {
 
     var self = this;
     $('#toast').hide();
+    $('#btn-add-to-cart').show();
     var showToast = false;
     for (var i = 0; i < self.customElements.length; i++) {
         if (self.customElements[i].data.type !== 'area' && !self.customElements[i].isInCorrectPosition) {
             showToast = true;
         }
     }
-    if (showToast){
+    if (showToast){        
         $('#toast').show();
+        $('#btn-add-to-cart').hide();
         $('#toast').html('El diseño está fuera del area de impresión');
     }
 };
