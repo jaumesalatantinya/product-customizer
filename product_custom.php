@@ -31,7 +31,7 @@
                 $idProvar = $_GET['IDprovar'];
                 $idCart = $_SESSION["NumCarrito"];
                 $imgVar = $apiRequests->getImgVar($idPro, $idProvar)[0]['Imagen_var'];
-                $idCustom = $apiRequests->getCustomUserId($idPro, $idCart, $idClient)[0]['ID_cus'];
+                $idCustom = $apiRequests->getCustomUserId($idPro, $idCart, $idClient);
                 if (is_null($idCustom)) {
                     $idCustom = $apiRequests->putCustom($idPro, $idCart, $idProvar, $idClient);
                 }
