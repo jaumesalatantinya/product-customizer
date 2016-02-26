@@ -490,8 +490,9 @@ ProductCustomizer.prototype.showColorPicker = function () {
 
     var self = this;
     self.showMsg('LOG', 'Show Color Picker');
+    $('#wrapper-nav-main-colors').show();
+    $('.nav-main-colors-close').click (function () { $('#wrapper-nav-main-colors').hide(); });
     $('#nav-main-colors').empty();
-    $('#nav-main-colors').show();
     for (var i = 0; i < self.colors.length; i++) {
         var li = $('<li>').data('idColor', self.colors[i].IDprocol).css('background-color', self.colors[i].Color);
         li.click(function(){
@@ -515,7 +516,7 @@ ProductCustomizer.prototype.changeColor = function (idColor) {
 
     var self = this;
     self.showMsg('LOG', 'Update Color: ' + idColor);
-    $('#nav-main-colors').hide();
+    $('#wrapper-nav-main-colors').hide();
     self.idColor = idColor;
     $.ajax(self.apiUrl + 'update-color&IDcus=' + self.idCustom + '&IDprocol=' + idColor)
     .done(function(response) {
