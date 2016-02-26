@@ -95,7 +95,12 @@ class ApiRequests {
     public function getCustomUserId($idPro, $idCart, $idClient) {
 
         $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE (ID_pro=' . $idPro . ' AND Num_bask="' . $idCart . '") OR (ID_pro=' . $idPro . ' AND ID_cli= '.$idClient.')';
-        return $this->db->select($q);
+        $idCus = $this->db->select($q)[0]['ID_cus'];
+        if (!is_null($idCus)) {
+            $q = 'UPDATE bd_ecommerce_custom SET Num_bask="' . $idCart . '" WHERE ID_cus =' . $idCus;
+            $this->db->update($q);
+        }
+        return $idCus;
     }
 
     public function getImgVar($idPro, $idProvar){
