@@ -1,5 +1,5 @@
 <?php
-    require_once('../Connections/bd_SELLOS.php');
+    require_once('Connections/bd_SELLOS.php');
     require_once('product-customizer/api/api-requests.php');
     $apiRequests = new ApiRequests();
 
@@ -67,6 +67,7 @@
             var idCart = '<?=$idCart?>';
             var error = '<?=$error?>';
             var idClient = <?=$idClient?>;
+            var env = '<?=$env?>';
 
             var productCustomizer = new ProductCustomizer();
             if (error != '' || idCustom == 0) {
@@ -77,6 +78,7 @@
                 productCustomizer.idProvar = idProvar;
                 productCustomizer.idCart = idCart;
                 productCustomizer.idClient = idClient;
+                productCustomizer.env = env;
                 productCustomizer.init();
             }
         });
