@@ -17,6 +17,7 @@ var ProductCustomizer = function () {
     this.rootE = $('#product-customizer');
     this.viewsData = [];
     this.view;
+    this.env; // [webmaster|front]
     this.currentViewId;
     this.apiUrl = 'product-customizer/api/api.php?request=';
     this.imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
@@ -272,7 +273,7 @@ ProductCustomizer.prototype.drawNavMain = function() {
         if (self.viewsData.length === 0) {
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img, #btn-color').hide();
         }
-        if (self.isTemplate === 'true') {
+        if (self.env === 'webmaster') {
             $('#btn-reset, #btn-add-to-cart').hide();
         }
         if (self.isTemplate === 'false') {
