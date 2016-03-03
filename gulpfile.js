@@ -14,7 +14,7 @@ var ftpCred = {
     host:     'www.sellosyrotulos.com',
     user:     'sellosyrotulos.com',
     password: 'wwwSEL15',
-    parallel: 10,
+    parallel: 50,
     log:      gutil.log
 };
 
@@ -34,13 +34,13 @@ gulp.task('ftp', ['cleanFtp'], function(cb) {
     var conn = ftp.create(ftpCred);
     var globs = wFiles;
     return gulp.src( globs, { base: '.', buffer: false } )
-        .pipe( conn.newerOrDifferentSize( '/html/beta/' ) ) 
-        .pipe( conn.dest( '/html/beta/' ) );
+        .pipe( conn.newerOrDifferentSize( '/html/' ) ) 
+        .pipe( conn.dest( '/html/' ) );
 });
 
 gulp.task('cleanFtp', function(cb) {
   var conn = ftp.create( ftpCred );
-  conn.delete( '/html/beta/product-customizer/styles.css', cb );
+  conn.delete( '/html/product-customizer/styles.css', cb );
 });
 
 gulp.task('sass', function () {
