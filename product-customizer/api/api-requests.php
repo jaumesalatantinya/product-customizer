@@ -94,7 +94,7 @@ class ApiRequests {
 
     public function getCustomUserId($idPro, $idCart, $idClient) {
 
-        $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE (ID_pro=' . $idPro . ' AND Num_bask="' . $idCart . '") OR (ID_pro=' . $idPro . ' AND ID_cli= '.$idClient.')';
+        $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE (ID_pro=' . $idPro . ' AND Num_bask="' . $idCart . '") OR (ID_pro=' . $idPro . ' AND ID_cli= '.$idClient.' AND ID_cli <> 0 ) ORDER BY IDecocus DESC LIMIT 1';
         $idCus = $this->db->select($q)[0]['ID_cus'];
         if (!is_null($idCus)) {
             $q = 'UPDATE bd_ecommerce_custom SET Num_bask="' . $idCart . '" WHERE ID_cus =' . $idCus;
@@ -106,6 +106,12 @@ class ApiRequests {
     public function getImgVar($idPro, $idProvar){
 
         $q = 'SELECT Imagen_var FROM bd_productos_variantes WHERE ID_pro = '.$idPro.' and IDprovar = '.$idProvar.' LIMIT 1';
+        return $this->db->select($q);
+    }
+
+    public function getIdCliFromBDPedidosCustom($idCus) {
+
+        $q = 'SELECT ID_cli from bd_pedidos_custom WHERE ID_cus = ' . $idCus;
         return $this->db->select($q);
     }
 
