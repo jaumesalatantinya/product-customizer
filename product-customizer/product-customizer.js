@@ -508,7 +508,7 @@ ProductCustomizer.prototype.addToCart = function () {
 
     var self = this;
     self.showMsg('LOG', 'Add to cart');
-    var addToCartUrl = 'ecommerce_add.php?IDpro='+self.idPro+'&IDprovar='+self.idProvar+'&unit=1';
+    var addToCartUrl = 'beta/ecommerce_add.php?IDpro='+self.idPro+'&IDprovar='+self.idProvar+'&unit=1';
     parent.window.location.href = addToCartUrl;
 };
 
