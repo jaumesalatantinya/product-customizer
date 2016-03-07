@@ -21,6 +21,9 @@
             }
             else {
                 $idCustom = $apiRequests->getTemplateId($idPro)[0]['IDcus'];
+                if ($idCustom === NULL){
+                    $idCustom = 0; $error = 'Producto no tiene Customización template. No es customizable';
+                }
             }
         }
         if ($env == 'front') {
