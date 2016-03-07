@@ -4,7 +4,7 @@
 	header('Content-Type: application/json');
 	$error;
 	$img_height;
-	$target_dir = '../../img/custom/';
+	$target_dir = '../img/custom/';
 	$target_file = pathinfo($_FILES['file-to-upload']['name'],PATHINFO_FILENAME) . '_' . time() . '.' . pathinfo($_FILES['file-to-upload']['name'],PATHINFO_EXTENSION);
 	$target_dir_file = $target_dir . basename($target_file);
 	$uploadOk = 1;
