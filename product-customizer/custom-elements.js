@@ -62,6 +62,7 @@ CustomElement.prototype.draw = function() {
         'width' : (self.data.width - 32)+'px',
         'height' : (self.data.height - 32)+'px'
     });
+    $('.ui-resizable-handle').prop('title', 'Escalar');
     if (self.mode === 'edit') {
         self.customE.find('.custom-element').addClass('custom-element-edit');
         self.customE.find('.btn-move-custom-element, .btn-del-custom-element, .btn-to-front-custom-element, .ui-resizable-handle').show();
@@ -161,6 +162,8 @@ CustomElement.prototype.updatePosSizeData = function (newPosSizeData) {
         data: newPosSizeData
     })
     .done(function(response) {
+        self.pView.pPCustom.showAutoSaved();
+        self.pView.pPCustom.updateIsModifiedFromTemplate();
         if (!response) {
             self.pView.pPCustom.showMsg('ERROR', 'Update Custom Element: API response false');
         }
@@ -177,6 +180,8 @@ CustomElement.prototype.delCustomElement = function (idCusele) {
     if (idCusele) {
         return $.ajax(self.pView.pPCustom.apiUrl + 'del-custom-element&IDcusele=' + idCusele)
         .done(function(response) {
+            self.pView.pPCustom.showAutoSaved();
+            self.pView.pPCustom.updateIsModifiedFromTemplate();
             if (!response) {
                 self.pView.pPCustom.showMsg('ERROR', 'Del Cutom Element: API response false');
             }
@@ -199,6 +204,8 @@ CustomElement.prototype.bringToFrontCustomElement = function () {
     self.data.Zindex = highestZindex;
     $.ajax(self.pView.pPCustom.apiUrl + 'update-custom-element-zindex&IDcusele=' + self.data.IDcusele + '&Zindex=' + highestZindex)
     .done(function(response) {
+        self.pView.pPCustom.showAutoSaved();
+        self.pView.pPCustom.updateIsModifiedFromTemplate();
         if (!response) {
             self.pView.pPCustom.showMsg('ERROR', 'Bring to front Cutom Element: API response false');
         }
@@ -225,8 +232,8 @@ function Area (view, id) {
     self.pView.pPCustom.showMsg('LOG', 'Add Area id:' + self.id);
     self.customE = $('<div class="wrapper-custom-element">\
                         <div class="custom-element area"></div>\
-                        <div class="btn-move-custom-element"></div>\
-                        <div class="btn-del-custom-element"></div>\
+                        <div class="btn-move-custom-element" title="Mover"></div>\
+                        <div class="btn-del-custom-element" title="Eliminar"></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 }
@@ -305,6 +312,8 @@ Area.prototype.updateData = function (newData) {
         data: newData
     })
     .done(function(response) {
+        self.pView.pPCustom.showAutoSaved();
+        self.pView.pPCustom.updateIsModifiedFromTemplate();
         if (!response) {
             self.pView.pPCustom.showMsg('ERROR', 'API: Update Area');
         }
@@ -394,9 +403,9 @@ function Text(view, id) {
     self.pView.pPCustom.showMsg('LOG', 'Add Text id:' + self.id);
     self.customE = $('<div class="wrapper-custom-element">\
                         <div class="custom-element text"></div>\
-                        <div class="btn-move-custom-element"></div>\
-                        <div class="btn-del-custom-element"></div>\
-                        <div class="btn-to-front-custom-element"></div>\
+                        <div class="btn-move-custom-element" title="Mover"></div>\
+                        <div class="btn-del-custom-element" title="Eliminar"></div>\
+                        <div class="btn-to-front-custom-element" title="Traer al frente"></div>\
                         <div class="btn-edit-text"><span>EDITAR</span></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
@@ -427,7 +436,7 @@ Text.prototype.draw = function(){
         });
     }
     if (!self.pView.pPCustom.isMulticolor()) {
-        self.customE.find('.text').css('color', self.pView.pPCustom.getColor(self.pView.pPCustom.idColor));
+        self.customE.find('.text').css('color', self.pView.pPCustom.getColor(self.pView.pPCustom.idColor).Color);
     }
     self.updateEditText();
 };
@@ -492,6 +501,8 @@ Text.prototype.updateData = function (type, newData) {
         data: newData
     })
     .done(function(response) {
+        self.pView.pPCustom.showAutoSaved();
+        self.pView.pPCustom.updateIsModifiedFromTemplate();
         if (!response) {
             self.pView.pPCustom.showMsg('ERROR', 'API: Update Custom Element');
         }
@@ -517,9 +528,9 @@ function Svg(view, id) {
                         <div class="custom-element svg">\
                             <img src="" />\
                         </div>\
-                        <div class="btn-move-custom-element"></div>\
-                        <div class="btn-del-custom-element"></div>\
-                        <div class="btn-to-front-custom-element"></div>\
+                        <div class="btn-move-custom-element" title="Mover"></div>\
+                        <div class="btn-del-custom-element" title="Eliminar"></div>\
+                        <div class="btn-to-front-custom-element" title="Traer al frente"></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 }
@@ -556,9 +567,9 @@ function Img(view, id) {
                         <div class="custom-element img">\
                             <img src="" />\
                         </div>\
-                        <div class="btn-move-custom-element"></div>\
-                        <div class="btn-del-custom-element"></div>\
-                        <div class="btn-to-front-custom-element"></div>\
+                        <div class="btn-move-custom-element" title="Mover"></div>\
+                        <div class="btn-del-custom-element" title="Eliminar"></div>\
+                        <div class="btn-to-front-custom-element" title="Traer al frente"></div>\
                       </div>');
     self.pView.rootE.append(self.customE);
 }
