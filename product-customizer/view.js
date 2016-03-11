@@ -249,7 +249,8 @@ View.prototype.manageToastAndBtnAddToCart = function() {
     if (showToast){        
         $('#toast').show();
         $('#btn-add-to-cart').hide();
-        $('#toast').html('El diseño está fuera del area de impresión');
+        $('#toast').html('El diseño está fuera de la área de impresión');
+        $('#saved').hide();
     }
     if (self.pPCustom.env === 'webmaster') {
         $('#btn-add-to-cart').hide();
