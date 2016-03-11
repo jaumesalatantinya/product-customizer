@@ -147,6 +147,10 @@ class Api {
                 $this->response = $this->apiRequests->updateHeight($this->idCus, $this->data);
                 $this->returnJSONResponse();
                 break;
+            case 'update-is-modified-from-template':
+                $this->response = $this->apiRequests->updateIsModifiedFromTemplate($this->idCus);
+                $this->returnJSONResponse();
+                break;
                           
 
 
