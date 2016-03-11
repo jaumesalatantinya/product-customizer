@@ -25,6 +25,7 @@ var ProductCustomizer = function () {
     this.fonts = [];
     this.svgs = [];
     this.mode = 'dev'; //[pro|dev]
+    this.showingAutoSaved = false;
 };
 
 
@@ -174,6 +175,20 @@ ProductCustomizer.prototype.loadSvgs = function () {
     });
 };
 
+ProductCustomizer.prototype.updateIsModifiedFromTemplate = function (){
+
+    var self = this;
+    $.ajax(self.apiUrl + 'update-is-modified-from-template&IDcus=' + self.idCustom)
+    .done(function(newViewId) {
+        if (newViewId) {
+            self.showMsg('LOG', 'API is modified from template: ' + self.idCustom);
+        }
+        else { self.showMsg('ERROR', 'API is modified from template'); }
+    })
+    .fail(function() {
+        self.showMsg('ERROR', 'API is modified from template');
+    });
+}
 
 ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     
@@ -283,7 +298,9 @@ ProductCustomizer.prototype.drawNavMain = function() {
             $('#btn-color').hide();
         }
         else {
-            $('#btn-color .icon-color').css('background-color', self.getColor(self.idColor));
+            var currentColor = self.getColor(self.idColor);
+            $('#btn-color .icon-color').css('background-color', currentColor.Color);
+            $('#btn-color .nav-main-item-label').html(currentColor.Nombre_c)
         }
     });
 };
@@ -296,6 +313,8 @@ ProductCustomizer.prototype.addView = function () {
         $.ajax(self.apiUrl + 'put-view&IDcus=' + self.idCustom)
         .done(function(newViewId) {
             if (newViewId) {
+                self.showAutoSaved();
+                self.updateIsModifiedFromTemplate();
                 self.showMsg('LOG', 'Adding view: ' + newViewId);
                 self.drawAndUpdateProductCustomizer(newViewId);
             }
@@ -317,6 +336,8 @@ ProductCustomizer.prototype.delView = function (idView) {
         $.ajax(self.apiUrl + 'del-view&IDvie=' + idView)
         .done(function(response) {
             if (response) {
+                self.showAutoSaved();
+                self.updateIsModifiedFromTemplate();
                 self.view.resetView();
                 self.drawAndUpdateProductCustomizer('default');
             }
@@ -337,6 +358,8 @@ ProductCustomizer.prototype.addArea = function(idView) {
     $.ajax(self.apiUrl + 'put-area&IDvie=' + idView)
     .done(function(response) {
         if (response) {
+            self.showAutoSaved();
+            self.updateIsModifiedFromTemplate();
             self.drawAndUpdateProductCustomizer(idView);
         }
         else { self.showMsg('ERROR', 'Add Area: No new id custom element area'); }
@@ -354,6 +377,8 @@ ProductCustomizer.prototype.addText = function(idView) {
     $.ajax(self.apiUrl + 'put-text&IDvie=' + idView + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
+            self.showAutoSaved();
+            self.updateIsModifiedFromTemplate();
             self.drawAndUpdateProductCustomizer(idView);
         }
         else { self.showMsg('ERROR', 'Add Text: No new id custom element text'); }
@@ -370,6 +395,8 @@ ProductCustomizer.prototype.addImg = function(idView, file) {
     $.ajax(self.apiUrl + 'put-img&IDvie=' + idView + '&file=' + file + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
+            self.showAutoSaved();
+            self.updateIsModifiedFromTemplate();
             self.drawAndUpdateProductCustomizer(idView);
         }
         else { self.showMsg('ERROR', 'Add Img: No new id custom element img'); }
@@ -386,6 +413,8 @@ ProductCustomizer.prototype.addSvg = function(idView, idSvg) {
     $.ajax(self.apiUrl + 'put-svg&IDvie=' + idView + '&IDcussvg=' + idSvg + '&Zindex=' + self.view.getHighestZindex())
     .done(function(response) {
         if (response) {
+            self.showAutoSaved();
+            self.updateIsModifiedFromTemplate();
             self.drawAndUpdateProductCustomizer(idView);
         }
         else { self.showMsg('ERROR', 'Add Svg: No new id custom element svg'); }
@@ -428,6 +457,8 @@ ProductCustomizer.prototype.uploadFile = function (type){
         contentType: false,
         type: 'POST',
         success: function(response){
+            self.showAutoSaved();
+            self.updateIsModifiedFromTemplate();
             $('#wrapper-upload-form .modal form img.loading').hide();
             $('#wrapper-upload-form .modal form #btn-submit').show();
             if (response.status === 'success') {
@@ -479,7 +510,7 @@ ProductCustomizer.prototype.getColor = function (idColor) {
     self.showMsg('LOG', 'Get Color');
     for (var i = 0; i < self.colors.length; i++) {
         if (idColor === self.colors[i].IDprocol) {
-            color = self.colors[i].Color; 
+            color = self.colors[i]; 
             break;
         }
     }
@@ -522,6 +553,8 @@ ProductCustomizer.prototype.changeColor = function (idColor) {
     $.ajax(self.apiUrl + 'update-color&IDcus=' + self.idCustom + '&IDprocol=' + idColor)
     .done(function(response) {
         if (response) {
+            self.showAutoSaved();
+            self.updateIsModifiedFromTemplate();
             self.drawAndUpdateProductCustomizer(self.currentViewId);
         }
         else { self.showMsg('ERROR', 'Update color: no response from API'); }
@@ -557,6 +590,8 @@ ProductCustomizer.prototype.putImgToView = function (file, height) {
     $.ajax(self.apiUrl + 'put-img-to-view&IDvie=' + self.currentViewId + '&file=' + file)
     .done(function(response) {
         if (response) {
+            self.showAutoSaved();
+            self.updateIsModifiedFromTemplate();
             self.height = height;
             self.updateHeight(height).done( function() {
                 self.drawAndUpdateProductCustomizer(self.currentViewId);                
@@ -577,15 +612,6 @@ ProductCustomizer.prototype.updateHeight = function (height) {
         url: self.apiUrl + 'update-height&IDcus=' + self.idCustom,
         data: {height: height}
     });
-    // .done(function(response) {
-    //     if (response) {
-    //         self.drawAndUpdateProductCustomizer(self.currentViewId);
-    //     }
-    //     else { self.showMsg('ERROR', 'Update Height: no response'); }
-    // })
-    // .fail(function() {
-    //     self.showMsg('ERROR', 'API Update Height');
-    // });
 };
 
 
@@ -641,6 +667,18 @@ ProductCustomizer.prototype.close = function(element) {
     $('#wrapper-'+element).hide();
 };
 
+ProductCustomizer.prototype.showAutoSaved = function () {
+
+    var self = this;
+    if (self.showingAutoSaved == false && $('#toast').is(":visible") == false){
+        $('#saved').show();
+        self.showingAutoSaved = true;
+        setTimeout(function(){
+            $('#saved').hide();
+            self.showingAutoSaved = false;
+        }, 1500);
+    }
+};
 
 ProductCustomizer.prototype.isMulticolor = function () {
 
