@@ -34,6 +34,7 @@
                 $idProvar = $_GET['IDprovar'];
                 $idCart = $_SESSION["NumCarrito"];
                 $imgVar = $apiRequests->getImgVar($idPro, $idProvar)[0]['Imagen_var'];
+                $imgPro = $apiRequests->getImgPro($idPro)[0]['Imagen'];
                 $idCustom = $apiRequests->getCustomUserId($idPro, $idCart, $idClient);
                 if (is_null($idCustom)) {
                     $idCustom = $apiRequests->putCustom($idPro, $idCart, $idProvar, $idClient);
@@ -64,6 +65,7 @@
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
     <script type="text/javascript"> 
         $(document).ready(function(){
+            $(document).tooltip();
             $.ajaxSetup({ cache: false });
             var idCustom = <?=$idCustom?>;
             var idProvar = <?=$idProvar?>;
@@ -92,9 +94,11 @@
     <div id="product-customizer">
         <div class="col-1">
             <?php if(isset($imgVar) && $imgVar!='') { ?>
-                <img src="../js/timthumb.php?src=/../img/variant/max-<?=$imgVar?>&w=200&h=100&zc=1"/></li>
+                <img class="prod-img" src="../js/timthumb.php?src=/../img/variant/max-<?=$imgVar?>&w=100&h=100&zc=1"/></li>
+            <?php } else if ( $imgVar=='' && isset($imgPro) && $imgPro!='') { ?>
+                <img class="prod-img" src="../js/timthumb.php?src=/../img/product/max-<?=$imgPro?>&w=100&h=100&zc=1"/></li>
             <?php } else { ?>
-                <img src="../js/timthumb.php?src=img/no-foto.png&w=200&h=100&zc=1" />
+                <img class="prod-img" src="../js/timthumb.php?src=img/no-foto.png&w=100&h=100&zc=1" />
             <?php } ?>
             <ul id="nav-main"></ul>
         </div>
@@ -102,6 +106,7 @@
             <h1><?=$productName?></h1>
             <div id="wrapper-aux-menu"><div id="aux-menu"></div></div>
             <div id="toast"></div>
+            <div id="saved"><span class="icon icon-save"></span>Guardado automáticamente</div>
             <div id="wrapper-view">
                 <div id="view-col-1">
                     <div id="view"></div>
