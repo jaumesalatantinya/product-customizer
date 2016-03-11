@@ -115,6 +115,13 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
+    public function getImgPro($idPro){
+
+        $q = 'SELECT * FROM bd_productos_imagenes WHERE ID_pro=' .$idPro . ' ORDER BY POS_ima, IDproima DESC LIMIT 1';
+        return $this->db->select($q);
+    }
+
+
 
 
 
@@ -260,6 +267,12 @@ class ApiRequests {
     public function updateHeight($idCus, $data) {
 
         $q = 'UPDATE bd_custom SET Height=' . $data['height'] . ' WHERE IDcus=' . $idCus;
+        return $this->db->update($q);
+    }
+
+    public function updateIsModifiedFromTemplate($idCus) {
+
+        $q = 'UPDATE bd_ecommerce_custom SET Add_to_custom = 1 WHERE ID_cus= '. $idCus;
         return $this->db->update($q);
     }
 
