@@ -1,5 +1,5 @@
 <?php
-require_once('beta/product-customizer/api/api-requests.php');
+require_once('product-customizer/api/api-requests.php');
 
 class RenderCustom {
 
@@ -11,6 +11,7 @@ class RenderCustom {
         $this->idProd = $this->apiRequests->getProductId($this->idCus)[0]['ID_pro'];
         $this->prod = $this->apiRequests->getProduct($this->idProd)[0];
         $this->custom = $this->apiRequests->getCustomization($this->idCus)[0];
+        $this->color = $this->apiRequests->getColor($this->custom['ID_procol'])[0]['Color'];
         $this->views = $this->apiRequests->getViews($this->idCus);
         $this->imgUrl = 'http://www.sellosyrotulos.com/img/custom/';
         $this->svgUrl = 'http://www.sellosyrotulos.com/img/customSVG/';
@@ -32,8 +33,8 @@ class RenderCustom {
 
         $r = $this->renderCustomElement($area);
         $r .= '<div class="custom-element area" style="';
-        $r .= 'width: '.($area['width']-82).'px;';
-        $r .= 'height: '.($area['height']-82).'px;';
+        $r .= 'width: '.($area['width']-32).'px;';
+        $r .= 'height: '.($area['height']-32).'px;';
         $r .= 'left: 15px;';
         $r .= 'top: 15px;';
         $area_attr = json_decode($area['area_attr']);
@@ -51,8 +52,8 @@ class RenderCustom {
 
         $r = $this->renderCustomElement($text);
         $r .= '<div class="custom-element text" style="';
-        $r .= 'width: '.($text['width']-92).'px;';
-        $r .= 'height: '.($text['height']-88).'px;';
+        $r .= 'width: '.($text['width']-32).'px;';
+        $r .= 'height: '.($text['height']-32).'px;';
         $r .= 'left: 15px;';
         $r .= 'top: 15px;';
         $text_attr = json_decode($text['text_attr']);
@@ -62,10 +63,8 @@ class RenderCustom {
         $r .= 'font-size: '.$text_attr->size.'px;';
         $r .= 'text-align: '.$text_attr->align.';';
         $multiColorTypes = array('1', '4', '5', '6');
-        if (in_array($this->prod['ID_protip'], $multiColorTypes))
-            $color = '#'.$text_attr->color;
-        else 
-            $color = $this->prod['Colorea'];
+        if (in_array($this->prod['ID_protip'], $multiColorTypes))   { $color = '#'.$text_attr->color;   }
+        else                                                        { $color = $this->color;            }
         $r .= 'color: '.$color.';';
         $r .= '">';
         $r .= $text['text'];
@@ -78,8 +77,8 @@ class RenderCustom {
 
         $r = $this->renderCustomElement($svg);
         $r .= '<div class="custom-element svg" style="';
-        $r .= 'width: '.($svg['width']-82).'px;';
-        $r .= 'height: '.($svg['height']-82).'px;';
+        $r .= 'width: '.($svg['width']-32).'px;';
+        $r .= 'height: '.($svg['height']-32).'px;';
         $r .= 'left: 15px;';
         $r .= 'top: 15px;';
         $r .= '">';
@@ -93,8 +92,8 @@ class RenderCustom {
 
         $r = $this->renderCustomElement($img);
         $r .= '<div class="custom-element img" style="';
-        $r .= 'width: '.($img['width']-82).'px;';
-        $r .= 'height: '.($img['height']-82).'px;';
+        $r .= 'width: '.($img['width']-32).'px;';
+        $r .= 'height: '.($img['height']-32).'px;';
         $r .= 'left: 15px;';
         $r .= 'top: 15px;';
         $r .= '">';
@@ -122,7 +121,7 @@ $render = new RenderCustom();
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Sellos y Rótulos</title>
-    <link href="beta/product-customizer/styles.css" rel="stylesheet" type="text/css" />
+    <link href="product-customizer/styles.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
     <script>
       WebFont.load({
