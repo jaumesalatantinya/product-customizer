@@ -10,6 +10,7 @@
     $idPro = $_GET['IDpro'];
     $env = $_GET['env'];
     $idClient = ( isset($row_RecordsetUser['IDcli']) ? $row_RecordsetUser['IDcli'] : 0);
+    $hideAddToCart = ( isset($_GET['hideAddToCart']) ? $_GET['hideAddToCart'] : false);
     $productName = $apiRequests->getProduct($idPro)[0]['Producto_esp'];
     if (!isset($_GET['env']) || $_GET['env']=='' || !isset($_GET['IDpro']) || $_GET['IDpro']=='' || is_null($productName)) {
         $error = 'Error Env o IDpro incorrectos';
@@ -73,6 +74,7 @@
             var error = '<?=$error?>';
             var idClient = <?=$idClient?>;
             var env = '<?=$env?>';
+            var hideAddToCart = '<?=$hideAddToCart?>'
 
             var productCustomizer = new ProductCustomizer();
             if (error != '' || idCustom == 0) {
@@ -84,6 +86,7 @@
                 productCustomizer.idCart = idCart;
                 productCustomizer.idClient = idClient;
                 productCustomizer.env = env;
+                productCustomizer.hideAddToCart = hideAddToCart;
                 productCustomizer.init();
             }
         });
