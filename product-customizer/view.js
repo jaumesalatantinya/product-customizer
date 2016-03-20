@@ -255,6 +255,9 @@ View.prototype.manageToastAndBtnAddToCart = function() {
     if (self.pPCustom.env === 'webmaster') {
         $('#btn-add-to-cart').hide();
     }
+    if (self.pPCustom.hideAddToCart === 'true'){
+        $('#btn-add-to-cart').hide();
+    }
 };
 
 
