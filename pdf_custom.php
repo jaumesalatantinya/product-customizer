@@ -142,7 +142,10 @@ $render = new RenderCustom();
             position: absolute;
             width: 600px;
             height: <?=$render->custom['Height']?>px;
-        } 
+        }
+        .area {
+            display: none;
+        }
     </style>
 </head>
 
