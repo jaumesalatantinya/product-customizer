@@ -26,6 +26,7 @@ var ProductCustomizer = function () {
     this.svgs = [];
     this.mode = 'dev'; //[pro|dev]
     this.showingAutoSaved = false;
+    this.hideAddToCart;
 };
 
 
