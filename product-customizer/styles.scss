@@ -272,6 +272,11 @@ body {
     margin-top: -50px;
 }
 
+.svg-picker-close {
+    margin-left: 385px;
+    margin-top: -15px; 
+}
+
 
 /* IE11 IE10 */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -519,23 +524,22 @@ body {
     .modal {
         background-color: white;
         margin: 150px auto;
-        width: 600px;
-        max-height: 500px;
+        width: 800px;
+        max-height: 520px;
         overflow: auto;
-        form {
-            img.loading {
-                display: none;
-                margin: auto;
-                margin-top: 10px;
-            }
+        h3 {
+            font-family: $primary-font;
+            color: black;
+            font-size: 16px;
+            margin-top: 10px;
         }
     }
     ul {
         list-style-type: none;
+        padding: 15px 40px;
     }
     ul li {
         display: block;
-        border: 1px solid $light-gray;
         width: 60px;
         height: 60px;
         float: left;
