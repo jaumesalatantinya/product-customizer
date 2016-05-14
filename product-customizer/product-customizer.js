@@ -176,6 +176,7 @@ ProductCustomizer.prototype.loadSvgs = function () {
     });
 };
 
+
 ProductCustomizer.prototype.updateIsModifiedFromTemplate = function (){
 
     var self = this;
@@ -189,7 +190,8 @@ ProductCustomizer.prototype.updateIsModifiedFromTemplate = function (){
     .fail(function() {
         self.showMsg('ERROR', 'API is modified from template');
     });
-}
+};
+
 
 ProductCustomizer.prototype.drawAndUpdateProductCustomizer = function (idView) {
     
@@ -301,7 +303,7 @@ ProductCustomizer.prototype.drawNavMain = function() {
         else {
             var currentColor = self.getColor(self.idColor);
             $('#btn-color .icon-color').css('background-color', currentColor.Color);
-            $('#btn-color .nav-main-item-label').html(currentColor.Nombre_c)
+            $('#btn-color .nav-main-item-label').html(currentColor.Nombre_c);
         }
     });
 };
@@ -671,7 +673,7 @@ ProductCustomizer.prototype.close = function(element) {
 ProductCustomizer.prototype.showAutoSaved = function () {
 
     var self = this;
-    if (self.showingAutoSaved == false && $('#toast').is(":visible") == false){
+    if (self.showingAutoSaved === false && $('#toast').is(":visible") == false){
         $('#saved').show();
         self.showingAutoSaved = true;
         setTimeout(function(){
