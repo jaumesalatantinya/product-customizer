@@ -24,7 +24,7 @@ var ProductCustomizer = function () {
     this.svgUrl = 'http://www.sellosyrotulos.com/img/customSVG/';
     this.fonts = [];
     this.svgs = [];
-    this.mode = 'dev'; //[pro|dev]
+    this.mode = 'pro'; //[pro|dev]
     this.showingAutoSaved = false;
     this.hideAddToCart;
 };
