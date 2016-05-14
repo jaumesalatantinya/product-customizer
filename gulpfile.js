@@ -56,9 +56,9 @@ gulp.task('watch', function() {
 });
 
 gulp.task('tdd', function(done) {
-    // new Server({
-    // configFile: __dirname + '/karma.conf.js'
-    // }, done).start();
+    new Server({
+    configFile: __dirname + '/karma.conf.js'
+    }, done).start();
 });
 
 gulp.task('jshint', function() {
@@ -67,4 +67,4 @@ gulp.task('jshint', function() {
     .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('default', ['watch', 'serve', 'tdd', 'sass', 'jshint']);
+gulp.task('default', ['watch', 'serve', 'sass', 'jshint']);
