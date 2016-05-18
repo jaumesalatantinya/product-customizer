@@ -425,7 +425,7 @@ Text.prototype.draw = function(){
         self.customE.find('.btn-edit-text').hide();
     }
     if (self.data){
-        self.customE.find('.text').html(self.data.text.replace(/\n/g, '<br />'));
+        self.customE.find('.text').html(self.data.text.replace(/\n/g, '<br />').replace(/'/, "'"));
         self.customE.find('.text').css({
             'font-family': self.data.text_attr.family,
             'font-weight': self.data.text_attr.weight,
@@ -474,6 +474,7 @@ Text.prototype.changeText = function (value){
 
     var self = this;
     self.data.text = value;
+    value = value.replace(/'/g, "\\'");    
     self.updateData('text', {text: value});
     self.pView.updateViewAndCustomElements();
 };
