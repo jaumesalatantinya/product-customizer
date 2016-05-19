@@ -214,7 +214,7 @@ class ApiRequests {
 
     public function putSvg($idVie, $idSvg, $zindex) {
 
-        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, ID_cussvg) VALUES (' . $idVie . ', "svg", 200, 200, 200, 300, ' . $zindex . ', "' . $idSvg . '")';
+        $q = 'INSERT INTO bd_custom_elements (ID_cusvie, type, x, y, width, height, Zindex, ID_cussvg) VALUES (' . $idVie . ', "svg", 200, 200, 200, 200, ' . $zindex . ', "' . $idSvg . '")';
         return $this->db->insert($q);
     }
 
