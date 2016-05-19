@@ -13,7 +13,7 @@ var jsFiles = ['./product-customizer/product-customizer.js', './product-customiz
 var ftpCred = {
     host:     'www.sellosyrotulos.com',
     user:     'sellosyrotulos.com',
-    password: 'wwwSEL15',
+    password: '',
     parallel: 50,
     log:      gutil.log
 };
