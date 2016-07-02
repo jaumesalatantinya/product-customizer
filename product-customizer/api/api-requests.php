@@ -151,7 +151,7 @@ class ApiRequests {
         }
         $qE = 'DELETE FROM bd_ecommerce_custom WHERE Num_bask = "' . $idCart . '" AND ID_pro=' . $idPro . 'AND ID_provar=' . $idProvar;
         $this->db->delete($qE);
-        $qE = 'INSERT INTO bd_ecommerce_custom (ID_cus, ID_pro, ID_cli, ID_provar, Num_bask) VALUES (' . $idCustomNew . ', '. $idPro .', '.$idClient.', ' .$idProvar. ', "' . $idCart .'")';
+        $qE = 'INSERT INTO bd_ecommerce_custom (ID_cus, ID_pro, ID_provar, ID_cli, Num_bask) VALUES (' . $idCustomNew . ', '. $idPro .', '.$idProvar.', ' .$idClient. ', "' . $idCart .'")';
         $this->db->insert($qE);
         return $idCustomNew;
     }
