@@ -22,6 +22,16 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
+    public function getCustomUserId($idPro, $idProvar, $idCart, $idClient) {
+
+        $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE (ID_pro=' . $idPro . ' AND ID_provar=' . $idProvar . ' AND Num_bask="' . $idCart . '") OR (ID_pro=' . $idPro . ' AND ID_provar=' . $idProvar . ' AND ID_cli='.$idClient.' AND ID_cli <> 0 ) ORDER BY IDecocus DESC LIMIT 1';
+        $idCus = $this->db->select($q)[0]['ID_cus'];
+        if (!is_null($idCus)) {
+            $q = 'UPDATE bd_ecommerce_custom SET Num_bask="' . $idCart . '" WHERE ID_cus =' . $idCus;
+            $this->db->update($q);
+        }
+        return $idCus;
+    }
 
     public function getCustomization($idCus) {
 
@@ -92,17 +102,6 @@ class ApiRequests {
         return $this->db->select($q);
     }
 
-    public function getCustomUserId($idPro, $idCart, $idClient) {
-
-        $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE (ID_pro=' . $idPro . ' AND Num_bask="' . $idCart . '") OR (ID_pro=' . $idPro . ' AND ID_cli= '.$idClient.' AND ID_cli <> 0 ) ORDER BY IDecocus DESC LIMIT 1';
-        $idCus = $this->db->select($q)[0]['ID_cus'];
-        if (!is_null($idCus)) {
-            $q = 'UPDATE bd_ecommerce_custom SET Num_bask="' . $idCart . '" WHERE ID_cus =' . $idCus;
-            $this->db->update($q);
-        }
-        return $idCus;
-    }
-
     public function getImgVar($idPro, $idProvar){
 
         $q = 'SELECT Imagen_var FROM bd_productos_variantes WHERE ID_pro = '.$idPro.' and IDprovar = '.$idProvar.' LIMIT 1';
@@ -126,11 +125,11 @@ class ApiRequests {
 
 
 
-    public function putCustom($idPro, $idCart, $idProvar, $idClient) {
+    public function putCustom($idPro, $idProvar, $idCart, $idClient) {
 
         $idCustomTemplate = $this->getTemplateId($idPro)[0]['IDcus'];
         $customTemplate = $this->getCustomization($idCustomTemplate)[0];
-        $qC = 'INSERT INTO bd_custom (ID_pro, Is_Template, ID_procol, Height) VALUES (' . $idPro . ', "false", ' . json_encode($customTemplate['ID_procol']) .', '.$customTemplate['Height'].')';
+        $qC = 'INSERT INTO bd_custom (ID_pro, ID_provar, Is_Template, ID_procol, Height) VALUES (' . $idPro . ', ' . $idProvar . ', "false", ' . json_encode($customTemplate['ID_procol']) .', '.$customTemplate['Height'].')';
         $idCustomNew = $this->db->insert($qC);
         $views = $this->getViews($idCustomTemplate);
         foreach ($views as &$view) {
@@ -150,7 +149,7 @@ class ApiRequests {
                 }
             }
         }
-        $qE = 'DELETE FROM bd_ecommerce_custom WHERE Num_bask = "' . $idCart . '" AND ID_pro=' . $idPro;
+        $qE = 'DELETE FROM bd_ecommerce_custom WHERE Num_bask = "' . $idCart . '" AND ID_pro=' . $idPro . 'AND ID_provar=' . $idProvar;
         $this->db->delete($qE);
         $qE = 'INSERT INTO bd_ecommerce_custom (ID_cus, ID_pro, ID_cli, ID_provar, Num_bask) VALUES (' . $idCustomNew . ', '. $idPro .', '.$idClient.', ' .$idProvar. ', "' . $idCart .'")';
         $this->db->insert($qE);

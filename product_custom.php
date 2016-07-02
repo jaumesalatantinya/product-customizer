@@ -36,9 +36,9 @@
                 $idCart = $_SESSION["NumCarrito"];
                 $imgVar = $apiRequests->getImgVar($idPro, $idProvar)[0]['Imagen_var'];
                 $imgPro = $apiRequests->getImgPro($idPro)[0]['Imagen'];
-                $idCustom = $apiRequests->getCustomUserId($idPro, $idCart, $idClient);
+                $idCustom = $apiRequests->getCustomUserId($idPro, $idProvar, $idCart, $idClient);
                 if (is_null($idCustom)) {
-                    $idCustom = $apiRequests->putCustom($idPro, $idCart, $idProvar, $idClient);
+                    $idCustom = $apiRequests->putCustom($idPro, $idProvar, $idCart, $idClient);
                 }
             }
         }

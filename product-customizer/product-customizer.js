@@ -572,7 +572,7 @@ ProductCustomizer.prototype.createNewCustomFromTemplate = function (idPro){
 
     var self = this;
     self.showMsg('LOG', 'Creating new customziation from template custom: ' + idPro);
-    $.ajax(self.apiUrl + 'put-custom&IDpro=' + idPro + '&IDcart=' + self.idCart + '&IDprovar=' + self.idProvar +'&IDCli=' + self.idClient)
+    $.ajax(self.apiUrl + 'put-custom&IDpro=' + idPro + '&IDprovar=' + self.idProvar + '&IDcart=' + self.idCart +'&IDCli=' + self.idClient)
     .done(function(idCustomNew) {
         if (idCustomNew) {
             $('#wrapper-reset').hide();
