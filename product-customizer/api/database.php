@@ -5,7 +5,7 @@ class Database {
     const HOST = 'qtv922.sellosyrotulos.com';
     const DATABASE = 'qtv922';
     const USER = 'qtv922';
-    const PASS = '';
+    const PASS = 'bdSELLOS15';
 
     private $con;
     private $numResults;
