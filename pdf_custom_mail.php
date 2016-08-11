@@ -9,17 +9,16 @@
         try {
             $client = new Pdfcrowd('dani3rs', '6cb8fce0fa072b77c4655a4da2631cb2');
             $productId = $apiRequests->getCustomization($_GET['IDcus'])[0]['ID_pro'];
-            $productWidth = round(floatVal($apiRequests->getProduct($productId)[0][W_anchura])*5, 1);
-            $productHeight = round(floatVal($apiRequests->getProduct($productId)[0][H_altura])*5, 1);
+            $productWidth = $apiRequests->getProduct($productId)[0][W_anchura];
+            $productHeight = $apiRequests->getProduct($productId)[0][H_altura];
             $numPages = count($apiRequests->getViews($_GET['IDcus']));
             $pageWidth = 450; // 600 * 72 / 96
             $pageHeight = (int)$apiRequests->getCustomization($_GET['IDcus'])[0]['Height'] * 72 / 96; //pixels to points conversion
-            $scaleFactorWidth = round(floatval($productWidth/600),1);
-            $scaleFactorHeight = round(floatval($productHeight/$apiRequests->getCustomization($_GET['IDcus'])[0]['Height']),1);
             if ($realSize == true) {
-                $pageWidth = (int)round($pageWidth * $scaleFactorWidth);
-                $pageHeight = (int)round($pageHeight * $scaleFactorHeight);
-                $pdf = $client->setPdfScalingFactor($scaleFactorWidth);
+                $scaleFactor = floatval($productWidth/158.75);  // 600 pixles * 72 / 96 => becomes points then 1 pint is 0.35 mm => therefor 600px are 158.75 mm in 72 pixels per inch
+                $pageWidth = str_replace('.00', 'mm', $productWidth);
+                $pageHeight = -1;
+                $pdf = $client->setPdfScalingFactor($scaleFactor);
             }
             $pdf = $client->setPageWidth($pageWidth);
             $pdf = $client->setPageHeight($pageHeight);
