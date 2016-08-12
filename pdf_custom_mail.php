@@ -23,14 +23,21 @@
             $productId = $apiRequests->getCustomization($_GET['IDcus'])[0]['ID_pro'];
             $productWidth = $apiRequests->getProduct($productId)[0][W_anchura];
             $productHeight = $apiRequests->getProduct($productId)[0][H_altura];
+            $productUnits = $apiRequests->getProduct($productId)[0][Unidad];
+            $productDiameter = $apiRequests->getProduct($productId)[0][D_diametro];
             $numPages = count($apiRequests->getViews($_GET['IDcus']));
             $pageWidth = 450; // 600 * 72 / 96
             $pageHeight = (int)$apiRequests->getCustomization($_GET['IDcus'])[0]['Height'] * 72 / 96; //pixels to points conversion
             if ($realSize == true) {
-                $scaleFactor = floatval($productWidth/158.75);  // 600 pixles * 72 / 96 => becomes points then 1 pint is 0.35 mm => therefor 600px are 158.75 mm in 72 pixels per inch
-                $pageWidth = str_replace('.00', 'mm', $productWidth);
-                $pageHeight = -1;
-                $pdf = $client->setPdfScalingFactor($scaleFactor);
+                if ( ($productWidth !== null && $productHeight !== null && $productDiameter == null ) || ($productWidth == null && $productHeight == null && $productDiameter !== null ) ) {
+                    $scaleFactor = floatval($productWidth / 158.75);  // 600 pixles * 72 / 96 => becomes points then 1 pint is 0.35 mm => therefor 600px are 158.75 mm in 72 pixels per inch
+                    $pageWidth = str_replace('.00', $productUnits, $productWidth);
+                    $pageHeight = -1;
+                    $pdf = $client->setPdfScalingFactor($scaleFactor);
+                }
+                else {
+                    exit();
+                }
             }
             $pdf = $client->setPageWidth($pageWidth);
             $pdf = $client->setPageHeight($pageHeight);
