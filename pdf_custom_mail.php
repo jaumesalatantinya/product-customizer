@@ -1,4 +1,16 @@
 <?php
+
+    /*
+     * TODO :   Refactor
+                main () {
+                    if (areAllEnviromentVaraiblesOKToGeneratePdf) {
+                        getVaraiblesNeededToCreatePDF();
+                        setupPdfConverter();
+                        setupRealsizeVaribales();
+                        Generate PDF
+                    }
+                }
+    */
     require ('pdf/pdfcrowd.php');
     require_once('product-customizer/api/api-requests.php');
     $apiRequests = new ApiRequests();
