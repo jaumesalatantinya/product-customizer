@@ -17,7 +17,7 @@
     $idCus = $_GET['IDcus'];
     $type = $_GET['type']; //[pdf|pdfwb]
     $realSize = ( isset($_GET['realSize']) ? $_GET['realSize'] : false);
-    if ( $_GET['IDcli'] === $apiRequests->getIdCliFromBDPedidosCustom($idCus)[0]['ID_cli']) {
+    //if ( $_GET['IDcli'] === $apiRequests->getIdCliFromBDPedidosCustom($idCus)[0]['ID_cli']) {
         try {
             $client = new Pdfcrowd('dani3rs', '6cb8fce0fa072b77c4655a4da2631cb2');
             $productId = $apiRequests->getCustomization($_GET['IDcus'])[0]['ID_pro'];
@@ -54,5 +54,5 @@
         catch(PdfcrowdException $e) {
             echo 'Pdfcrowd Error: ' . $e->getMessage();
         }
-    }
+    //}
 ?>

@@ -115,6 +115,7 @@
                     <div id="view"></div>
                 </div>
                 <div id="view-col-2">
+                    <button id="btn-real-size" type="button">Ver tamaño real</button>
                     <button id="btn-add-to-cart" type="button">Añadir a la cesta</button>
                     <ul id="nav-views"></ul>
                 </div>

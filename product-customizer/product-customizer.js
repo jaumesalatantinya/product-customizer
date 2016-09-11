@@ -288,6 +288,7 @@ ProductCustomizer.prototype.drawNavMain = function() {
         $('#btn-reset').click(        function () { self.showResetModal();            });
         $('#btn-color').click(        function () { self.showColorPicker();           });
         $('#btn-add-to-cart').click(  function () { self.addToCart();                 });
+        $('#btn-real-size').click(    function () { self.showRealSize();              });
         if (self.viewsData.length === 0) {
             $('#btn-add-area, #btn-add-text, #btn-add-image, #btn-add-svg, #btn-reset, #btn-add-view-img, #btn-add-img, #btn-color').hide();
         }
@@ -544,6 +545,15 @@ ProductCustomizer.prototype.addToCart = function () {
     self.showMsg('LOG', 'Add to cart');
     var addToCartUrl = 'ecommerce_add.php?IDpro='+self.idPro+'&IDprovar='+self.idProvar+'&unit=1';
     parent.window.location.href = addToCartUrl;
+};
+
+ProductCustomizer.prototype.showRealSize = function () {
+
+    var self = this;
+    self.showMsg('LOG', 'Show real size');
+    var showRealSizeUrl = 'pdf_custom_mail.php?env=front&IDcus='+self.idCustom+'&type=pdf&realSize=true';
+    //var addToCartUrl = 'ecommerce_add.php?IDpro='+self.idPro+'&IDprovar='+self.idProvar+'&unit=1';
+    parent.window.location.href = showRealSizeUrl;
 };
 
 
