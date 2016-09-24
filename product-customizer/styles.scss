@@ -1,5 +1,6 @@
 $white: #fff;
 $gray: #faf9f6;
+$medium-gray: #5e5e5e;
 $light-gray: #e1e1e1;
 $light-light-gray: #f5f5f5;
 $dark-gray: #4D4D4D;
@@ -124,6 +125,7 @@ body {
         }
         #btn-real-size {
             display: inline-block;
+            background-color: $medium-gray;
         }
         #nav-views {
             list-style-type: none;

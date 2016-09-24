@@ -4,6 +4,7 @@
   "description": "Sellos y Rotulos product customizer",
   "main": "index.js",
   "scripts": {
+    "dev": "gulp",
     "clean": "rimraf product-customizer/**/*.js product-customizer/**/*.js.map"
   },
   "repository": {
