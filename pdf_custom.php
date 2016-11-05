@@ -4,7 +4,7 @@ require_once('product-customizer/api/api-requests.php');
 class RenderCustom {
 
     public function __construct() {
-    
+
         $this->apiRequests = new ApiRequests();
         $this->idCus = $_GET['IDcus'];
         $this->type = $_GET['type']; //[pdf|pdfwb]
@@ -24,7 +24,7 @@ class RenderCustom {
         $r .= 'height: '.$element['height'].'px;';
         $r .= 'left: '.$element['x'].'px;';
         $r .= 'top: '.$element['y'].'px;';
-        $r .= 'z-index: '.$element['Zindex']; 
+        $r .= 'z-index: '.$element['Zindex'];
         $r .= '"/>';
         return $r;
     }
@@ -67,7 +67,7 @@ class RenderCustom {
         else                                                        { $color = $this->color;            }
         $r .= 'color: '.$color.';';
         $r .= '">';
-        $r .= $text['text'];
+        $r .= nl2br($text['text']);
         $r .= '</div>'; //custom-element text
         $r .= '</div>'; //wrapper-custom-element
         return $r;
