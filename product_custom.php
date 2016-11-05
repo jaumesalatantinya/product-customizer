@@ -36,9 +36,16 @@
                 $idCart = $_SESSION["NumCarrito"];
                 $imgVar = $apiRequests->getImgVar($idPro, $idProvar)[0]['Imagen_var'];
                 $imgPro = $apiRequests->getImgPro($idPro)[0]['Imagen'];
-                $idCustom = $apiRequests->getCustomUserId($idPro, $idProvar, $idCart, $idClient);
-                if (is_null($idCustom)) {
-                    $idCustom = $apiRequests->putCustom($idPro, $idProvar, $idCart, $idClient);
+                if (isset($_GET['IDcus'])) {
+                    // shopping cart
+                    $idCustom = $_GET['IDcus'];
+                }
+                else {
+                    // product page 
+                    $idCustom = $apiRequests->getCustomUserId($idPro, $idProvar, $idCart, $idClient);
+                    if (is_null($idCustom)) {
+                        $idCustom = $apiRequests->putCustom($idPro, $idProvar, $idCart, $idClient);
+                    }
                 }
             }
         }
@@ -64,7 +71,7 @@
     <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
     <script src="product-customizer/view.js" type="text/javascript"></script>
     <script src="product-customizer/product-customizer.js" type="text/javascript"></script>
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         $(document).ready(function(){
             $(document).tooltip();
             $.ajaxSetup({ cache: false });

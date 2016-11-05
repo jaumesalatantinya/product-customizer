@@ -13,7 +13,7 @@ class ApiRequests {
 
         $this->db = new Database();
         $this->db->connect();
-        $this->imgPath = '../../../img/custom/'; 
+        $this->imgPath = '../../../img/custom/';
     }
 
     public function getTemplateId($idPro) {
@@ -24,7 +24,12 @@ class ApiRequests {
 
     public function getCustomUserId($idPro, $idProvar, $idCart, $idClient) {
 
-        $q = 'SELECT ID_cus FROM bd_ecommerce_custom WHERE (ID_pro=' . $idPro . ' AND ID_provar=' . $idProvar . ' AND Num_bask="' . $idCart . '") OR (ID_pro=' . $idPro . ' AND ID_provar=' . $idProvar . ' AND ID_cli='.$idClient.' AND ID_cli <> 0 ) ORDER BY IDecocus DESC LIMIT 1';
+        $q =    'SELECT ID_cus
+                FROM bd_ecommerce_custom
+                WHERE
+                    (ID_pro=' . $idPro . ' AND ID_provar=' . $idProvar . ' AND Num_bask="' . $idCart . '" AND Add_to_cart=0) OR
+                    (ID_pro=' . $idPro . ' AND ID_provar=' . $idProvar . ' AND ID_cli='.$idClient.' AND ID_cli <> 0 AND Add_to_cart=0)
+                ORDER BY IDecocus DESC LIMIT 1';
         $idCus = $this->db->select($q)[0]['ID_cus'];
         if (!is_null($idCus)) {
             $q = 'UPDATE bd_ecommerce_custom SET Num_bask="' . $idCart . '" WHERE ID_cus =' . $idCus;
@@ -293,7 +298,7 @@ class ApiRequests {
         $img = $this->db->select('SELECT Image FROM bd_custom_views WHERE IDcusvie=' . $idVie)[0]['Image'];
         $q = 'DELETE FROM bd_custom_views WHERE IDcusvie=' . $idVie;
         $r = $this->db->delete($q);
-        if ( $img != 'default.jpg' && file_exists(realpath($this->imgPath . $img)) && $mustDelViewImg ) { 
+        if ( $img != 'default.jpg' && file_exists(realpath($this->imgPath . $img)) && $mustDelViewImg ) {
             $r = ($r && unlink (realpath($this->imgPath . $img)));
         }
         $customElements = $this->getCustomElements($idVie);
