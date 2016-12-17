@@ -246,7 +246,7 @@ View.prototype.manageToastAndBtnAddToCart = function() {
             showToast = true;
         }
     }
-    if (showToast){        
+    if (showToast){
         $('#toast').show();
         $('#btn-add-to-cart').hide();
         $('#toast').html('El diseño está fuera de la área de impresión');
@@ -257,6 +257,9 @@ View.prototype.manageToastAndBtnAddToCart = function() {
     }
     if (self.pPCustom.hideAddToCart === 'true'){
         $('#btn-add-to-cart').hide();
+    }
+    if (self.pPCustom.hideResetBtn === 'true'){
+        $('#btn-reset').hide();
     }
 };
 
@@ -332,7 +335,7 @@ View.prototype.populateFontsToSelector = function(currentFont) {
                     $(this).css('font-family', self.pPCustom.fonts[i].Font);
                 });
             }
-        });    
+        });
     }
     else { self.pPCustom.showMsg('ERROR', 'Populate Fonts to font selector: No fonts loaded'); }
 };

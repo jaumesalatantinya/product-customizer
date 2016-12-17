@@ -27,7 +27,7 @@ class Api {
         $this->idClient = $_GET['IDCli'];
         $this->data = $_POST;
         $this->file = $_GET['file'];
-        $this->zindex = $_GET['Zindex'];   
+        $this->zindex = $_GET['Zindex'];
     }
 
 
@@ -110,7 +110,7 @@ class Api {
                 break;
             case 'update-text':
                 $this->response = $this->apiRequests->updateText($this->idCusele, $this->data);
-                break; 
+                break;
             case 'update-text-attr':
                 $this->response = $this->apiRequests->updateTextAttr($this->idCusele, $this->data);
                 break;
@@ -123,7 +123,7 @@ class Api {
             case 'update-is-modified-from-template':
                 $this->response = $this->apiRequests->updateIsModifiedFromTemplate($this->idCus);
                 break;
-                          
+
 
 
             case 'del-custom':

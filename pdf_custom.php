@@ -122,7 +122,7 @@ $render = new RenderCustom();
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Sellos y Rótulos</title>
     <link href="product-customizer/styles.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.27/webfont.js"></script>
     <script>
       WebFont.load({
         google: {

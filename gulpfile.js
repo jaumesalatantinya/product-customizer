@@ -34,7 +34,7 @@ gulp.task('ftp', ['cleanFtp'], function(cb) {
     var conn = ftp.create(ftpCred);
     var globs = wFiles;
     return gulp.src( globs, { base: '.', buffer: false } )
-        .pipe( conn.newerOrDifferentSize( '/html/' ) ) 
+        .pipe( conn.newerOrDifferentSize( '/html/' ) )
         .pipe( conn.dest( '/html/' ) );
 });
 

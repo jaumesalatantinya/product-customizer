@@ -11,6 +11,7 @@
     $env = $_GET['env'];
     $idClient = ( isset($row_RecordsetUser['IDcli']) ? $row_RecordsetUser['IDcli'] : 0);
     $hideAddToCart = ( isset($_GET['hideAddToCart']) ? $_GET['hideAddToCart'] : false);
+    $hideResetBtn = ( isset($_GET['hideResetBtn']) ? $_GET['hideResetBtn'] : false);
     $productName = $apiRequests->getProduct($idPro)[0]['Producto_esp'];
     if (!isset($_GET['env']) || $_GET['env']=='' || !isset($_GET['IDpro']) || $_GET['IDpro']=='' || is_null($productName)) {
         $error = 'Error Env o IDpro incorrectos';
@@ -41,7 +42,7 @@
                     $idCustom = $_GET['IDcus'];
                 }
                 else {
-                    // product page 
+                    // product page
                     $idCustom = $apiRequests->getCustomUserId($idPro, $idProvar, $idCart, $idClient);
                     if (is_null($idCustom)) {
                         $idCustom = $apiRequests->putCustom($idPro, $idProvar, $idCart, $idClient);
@@ -65,7 +66,7 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
     <script src="product-customizer/vendor/colorpicker/jquery.colorpicker.js"></script>
     <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
     <script src="product-customizer/custom-elements.js" type="text/javascript"></script>
@@ -81,7 +82,8 @@
             var error = '<?=$error?>';
             var idClient = <?=$idClient?>;
             var env = '<?=$env?>';
-            var hideAddToCart = '<?=$hideAddToCart?>'
+            var hideAddToCart = '<?=$hideAddToCart?>';
+            var hideResetBtn = '<?=$hideResetBtn?>';
 
             var productCustomizer = new ProductCustomizer();
             if (error != '' || idCustom == 0) {
@@ -94,6 +96,7 @@
                 productCustomizer.idClient = idClient;
                 productCustomizer.env = env;
                 productCustomizer.hideAddToCart = hideAddToCart;
+                productCustomizer.hideResetBtn = hideResetBtn;
                 productCustomizer.init();
             }
         });

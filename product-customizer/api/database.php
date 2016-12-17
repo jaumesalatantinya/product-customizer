@@ -18,17 +18,17 @@ class Database {
         if ($this->con) {
             $seldb = mysql_select_db(self::DATABASE, $this->con);
             if($seldb) {
-                return true; 
+                return true;
             } else {
-                return false; 
+                return false;
             }
         } else {
-            return false; 
+            return false;
         }
     }
 
     public function select($q) {
-        
+
         $table = [];
         $query = mysql_query($q, $this->con);
         if ($query) {
@@ -47,34 +47,35 @@ class Database {
 
     public function insert($q){
 
-        $ins = @mysql_query($q);            
+        $ins = @mysql_query($q);
         if ($ins){
-            return @mysql_insert_id(); 
+            return @mysql_insert_id();
         }
         else{
-            return false; 
+            return false;
         }
     }
 
     public function update($q){
 
-        $upd = @mysql_query($q);            
+        $upd = @mysql_query($q);
         if ($upd){
-            return true; 
+            return true;
         }
         else{
-            return false; 
+            return false;
         }
     }
 
     public function delete($q) {
- 
+
+        @mysql_query('SET sql_safe_updates=0');
         $del = @mysql_query($q);
         if ($del) {
             return true;
         }
         else {
-           return false; 
+           return false;
         }
     }
 }
